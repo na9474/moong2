@@ -105,7 +105,7 @@
 <body>
 
  <jsp:include page="../common/header.jsp"/>
-    <div id="subtit" >과외매칭</div>
+    <div id="subtit" style="margin-top:70px;">과외매칭</div>
     <div id="matching-outer">
         
         <div id="map">
