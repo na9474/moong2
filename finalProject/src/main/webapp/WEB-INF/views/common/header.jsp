@@ -12,8 +12,6 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
     <script src="${path}/resources/js/jquery.fullpage.min.js"></script>
     
-  
-   
     <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
 
@@ -24,7 +22,15 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
 
     <!--font Awesome-->
-    <script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script> 
+    <script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script>
+    
+    <!--여기에 btn css링크-->
+    <link rel="stylesheet" href="${path}/resources/css/btn.css">
+    
+	<!-- 섬머노트 -->
+	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
+  	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+  	<script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script> 
     
     <style>
      @font-face {
@@ -98,7 +104,7 @@ header nav ul li{
                     <a class="nav-link" href="match.ln">과외 매칭</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">문제 풀이</a>
+                    <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">선생님 목록</a>

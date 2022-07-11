@@ -7,13 +7,11 @@
 	</settings>
 
 	<typeAliases>
-	
+		<typeAlias type="com.kh.moong.solution.model.vo.Solution" alias="solution"/>
 	</typeAliases>	
 
-	
-
 	<mappers>
-
+		<mapper resource="/mappers/solution-mapper.xml"/>
 	</mappers>
 
 	
