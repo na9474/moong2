@@ -18,7 +18,11 @@ public class LessonController {
 		
 		return "matching/matching";
 	}
-	
+	@RequestMapping("matchingEnroll.ln")
+	public String MatchingEnroll() {
+		
+		return null;
+	}
 	//선생 과외등록관련
 	
 }
