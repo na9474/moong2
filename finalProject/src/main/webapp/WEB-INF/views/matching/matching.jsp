@@ -259,6 +259,21 @@
                     <tr style="display: none;">
                             <input type="hidden" id="area" name="area">
                     </tr>
+                    <tr>
+                        <td>요일선택</td>
+                        <td><select onchange="handleOnChange(this)">
+                        <option>--선택--</option>
+                        <option>월</option>
+                        <option>화</option>
+                        <option>수</option>
+                        <option>목</option>
+                        <option>금</option>
+                        <option>주말</option>
+                        </select>
+                        <div id="result"></div>
+                        </td>
+                    <tr>
+
                 </table>
                 <div id="form-btn">
                 <button type="reset" style="float: left; " class="btn btn-secondary" >초기화</button>
@@ -281,27 +296,45 @@
             console.log($('#area').val());
         })
        
+ function handleOnChange(e) {
+               // 선택된 데이터의 텍스트값 가져오기
+    
 
+                const text = e.options[e.selectedIndex].text;
+               
+               // 선택한 텍스트 출력
+               if(text!="--선택--"){
+                if($('#result').children().length<=1){
+                        
+                    
+                        document.getElementById('result').innerHTML += '<div class="resultIn">'+text+"x"+"</div>";
 
-        // // //마우스 hover시 color변경 event
-        //  $('.outline').hover(function () {
+                }else if(1<$('#result').children().length<=3){
+                   
+                         for(var i=0; $('#result').children().length<i;i++){
+                            var a = $('#result').children();
+                         var a1 =a[i].textContent;
+                            if(text != a1){
+                                document.getElementById('result').innerHTML += '<div class="resultIn">'+text+"x"+"</div>";
+                            }
+                         }
+                }
+               }
+               
+             }
+ 
+             //선택한 지역 클릭시 취소
+               $(function(){
+                $("#result").on("click","div",function(){
+                    $(this).remove();
+                     })
+               })
 
-        //      if($(this).css("fill") == "rgb(236, 222, 204)"){
-        //         console.log("하양")
-                
-        //         $(this).css({ fill: "rgb(251, 176, 76)" });
-        //      }else{
-        //         console.log($(this).css("fill"));
-        //      }
-        //  }, function () {
-        //     if($(this).css("fill") == "rgb(236, 222, 204)"){
-        //         $('#' + $(this).attr('id')).css({ fill: "rgb(251, 176, 76)" });
-        //     }
-        //  })
+        
     
             
 
-        //금액칸에 숫자만
+       
        
 
     </script>
