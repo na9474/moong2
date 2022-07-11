@@ -36,12 +36,18 @@
         }
         
         #pageNum{
-            text-align: center;;
+            text-align: center;
         }
       
         .fp-auto-height{
     		color: rgb(248, 238, 225);
     		background-color: rgb(49, 48, 47);
+		}
+		
+		#pagingArea {width:fit-content;
+					 margin:auto;
+					 margin-top:20px;
+					 margin-bottom:20px;
 		}
 
     </style>
@@ -122,10 +128,32 @@
                 <a class="btn moong-dark" href="writeForm.so">작성</a>
             </div>
         </div>
-
-        <div style="margin-top:20px; margin-left: 20px;" id="pageNum">
-            <button class="btn moong-dark"><</button><button class="btn moong-dark">1</button><button class="btn moong-dark">2</button><button class="btn moong-dark">3</button><button class="btn moong-dark">></button><br>
-        </div>
+        
+        <div id="pagingArea">
+                <ul class="pagination">
+	                <c:choose>
+						<c:when test="${ pi.currentPage eq 1 }">
+	                    <li class="page-item disabled"><a class="btn moong-dark" href="#"><</a></li>
+						</c:when>                
+						<c:otherwise>
+						<li class="page-item"><a class="btn moong-dark" href="list.so?cpage=${pi.currentPage-1}"><</a></li>
+						</c:otherwise>
+	                </c:choose>
+                
+					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">					
+                    	<li class="page-item"><a class="btn moong-dark" href="list.so?cpage=${p}">${p}</a></li>
+					</c:forEach>
+                   
+                    <c:choose>
+                    	<c:when test="${pi.currentPage eq pi.maxPage }">
+		                    <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="btn moong-dark" href="list.so?cpage=${pi.currentPage+1}">></a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                </ul>
+            </div>
         <br><br>
         
         <footer class="section fp-auto-height">
