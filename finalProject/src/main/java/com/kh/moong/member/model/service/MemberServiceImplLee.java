@@ -1,5 +1,10 @@
 package com.kh.moong.member.model.service;
 
-public class MemberServiceImplLee {
+import org.springframework.stereotype.Service;
 
+@Service
+public class MemberServiceImplLee implements MemberServiceLee {
+
+
+	
 }
