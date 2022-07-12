@@ -9,11 +9,13 @@
 	<typeAliases>
 		<typeAlias type="com.kh.moong.solution.model.vo.Solution" alias="solution"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionFiles" alias="solutionFiles"/>
+		<typeAlias type="com.kh.moong.lesson.model.vo.LessonEnroll" alias="lessonEnroll"/>
 	</typeAliases>	
 
 	<mappers>
 		<mapper resource="/mappers/solution-mapper.xml"/>
 		<mapper resource="/mappers/solutionfiles-mapper.xml"/>
+		<mapper resource="/mappers/lessonEnroll-mapper.xml"/>
 	</mappers>
 
 </configuration>
