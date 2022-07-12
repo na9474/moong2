@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="qnaMapper">
+
+	<resultMap type="qnaQuestion" id="qnaQuestionResultSet">
+		<result column="QNA_NO" property="qnaNo"/>
+		<result column="UESR_NO" property="userNo"/>
+		<result column="TYPE_NO" property="typeNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="QUESTION_CONTENT" property="questionContent"/>
+		<result column="QUESTION_DATE" property="questionDate"/>
+		<result column="QUESTION_STATUS" property="questionStatus"/>
+	</resultMap>
+
+	<!-- QnA 수 구하기 -->
+	<!-- 로그인 후 내가 작성한 게시글 조건 추가 -->
+	<select id="selectQnaListCount" resultType="int">
+	SELECT COUNT(*)
+	FROM QNA_QUESTION
+	</select>
+
+	<!-- QnA 목록 -->
+	<select id="selectList" resultMap="qnaQuestionResultSet">
+	SELECT *
+	FROM 
+		(SELECT Q.*, M.USER_ID
+		FROM QNA_QUESTION Q
+			JOIN MEMBER M ON Q.USER_NO = M.USER_NO
+		WHERE Q.QUESTION_STATUS = 'Y'
+		ORDER BY QUESTION_DATE DESC
+			)
+	</select>
+
+</mapper>
