@@ -61,7 +61,7 @@
         </div>
         
         <div style="margin-left: 5%; float:left">과목이 중복되게 과외를 등록할 수 없습니다.</div>
-        <div style="float: right; margin-right: 5%; margin-bottom: 10px;"><button  style="height: 35px;"class="btn btn-warning">과외등록</button></div>
+        <div style="float: right; margin-right: 5%; margin-bottom: 10px;"><button  style="height: 35px;"class="btn btn-warning" onclick="location.href='enrollFrom.ln'">과외등록</button></div>
                 <table  class="table table-hover">
                     <thead>
                         <tr>
@@ -82,16 +82,26 @@
 		</tr>
 	</c:when>
 	<c:otherwise>
+				<c:forEach var="l" items="${list}">
 		 		<tr>
-                            <td>국어</td>
-                            <td>50,000</td>
-                            <td>-</td>
-                            <td style="color: blue;">등록</td>
-                            <td>1학년</td>
+                            <td>${l.subject}</td>
+                            <td>${l.fee}</td>
+                            <td>${l.career}</td>
+                            <c:choose>
+                            	<c:when test="${l.status == 'Y'}">
+	                            	<td style="color: blue;">등록</td>
+	                            </c:when>
+                            	<c:otherwise>
+                            		<td style="color: red;">정지</td>
+                            	</c:otherwise>
+                            </c:choose>
+                            
+                            <td>${l.tYear}</td>
                             <td><button class="btn btn-warning" style="margin:0px;" >상세보기</button></td>
                         </tr>
-	</c:otherwise>
-</c:choose> 
+                        </c:forEach>
+					</c:otherwise>
+				</c:choose> 
                        
                        
                     </tbody>

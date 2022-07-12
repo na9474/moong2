@@ -27,6 +27,11 @@ public class LessonEnrollController {
 			return "lesson/lessonEnrollList";
 		}
 		
+		@RequestMapping("enrollFrom.ln")
+		public String lessonEnrollForm() {
+			
+			return "lesson/lessonEnrollForm";
+		}
 		
 }
 
