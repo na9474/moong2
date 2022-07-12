@@ -11,6 +11,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result column="FEE" property="fee"/>
 	<result column="LE_STYLE" property="leStyle"/>
 	<result column="AREA" property="area"/>
+	<result column="T_YEAR" property="tYear"/>
 	<result column="CAREER" property="career"/>
 	<result column="LE_DAY" property="leDay"/>
 	<result column="TEACHINGSTYLE" property="teachingStyle"/>
@@ -19,7 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <select id="selectList" resultMap="lessonEnrollResultSet">
 	SELECT 
-SUBJECT, FEE, CAREER, STATUS,T_YEAR
+SUBJECT, FEE, CAREER, STATUS,T_YEAR,LE_NO
 FROM LESSON_ENROLL
 WHERE USER_NO = #{userNo}
 </select>
