@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -107,7 +108,7 @@ header nav ul li{
                     <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">선생님 목록</a>
+                    <a class="nav-link" href="list.ln?userNo=1">과외 등록</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">자유 게시판</a>

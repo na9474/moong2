@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="lessonEnrollMapper">
+
+<resultMap type="lessonEnroll" id="lessonEnrollResultSet">
+	<result column="LE_NO" property="leNo"/>
+	<result column="SUBJECT" property="userNo"/>
+	<result column="SUBJECT" property="subject"/>
+	<result column="FEE" property="fee"/>
+	<result column="LE_STYLE" property="leStyle"/>
+	<result column="AREA" property="area"/>
+	<result column="CAREER" property="career"/>
+	<result column="LE_DAY" property="leDay"/>
+	<result column="TEACHINGSTYLE" property="teachingStyle"/>
+	<result column="STATUS" property="status"/>
+</resultMap>
+
+<select id="selectList" resultMap="lessonEnrollResultSet">
+	SELECT 
+SUBJECT, FEE, CAREER, STATUS,T_YEAR
+FROM LESSON_ENROLL
+WHERE USER_NO = #{userNo}
+</select>
+
+</mapper>
