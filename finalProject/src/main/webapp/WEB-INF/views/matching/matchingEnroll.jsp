@@ -96,8 +96,28 @@
             font-size: 20px;
             font-weight: 700;
         }
-    
-       
+        #resultDay>span{
+            display: inline-block;
+            width: auto;
+            margin-left: 20px;
+            z-index: -1;
+            box-sizing: border-box;
+            border: 1px solid rgb(251, 176, 76);
+            margin-top: 5px;
+            margin-bottom: 5px;
+            padding: 5px;
+            font-size:20px;
+            font-weight:500;
+          }
+          #resultDay{
+           z-index: -3;
+           text-align: center;
+          }
+          .resultDayIn:hover{
+            cursor: pointer;
+            
+          }
+          /*입력폼관련*/
 
     </style>
 </head>
@@ -250,34 +270,40 @@
                     </tr>
                     <tr>
                         <td>금액 입력</td>
-                        <td><input type="text" id="fee" style="width: 300px; height: 35px; font-size:20px;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"></td>
+                        <td><input type="text" id="fee" style="width: 300px; height: 35px; font-size:20px;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required></td>
                         
                     </tr>
                     <tr>
                         <td colspan="2" class="footnote" >&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i> 입력하신 금액은 수업 시간당 금액입니다.</td>
                     </tr>
                     <tr style="display: none;">
-                            <input type="hidden" id="area" name="area">
+                            <input type="hidden" id="area" name="area" required>
                     </tr>
                     <tr>
                         <td>요일선택</td>
-                        <td><select onchange="handleOnChange(this)">
-                        <option>--선택--</option>
-                        <option>월</option>
-                        <option>화</option>
-                        <option>수</option>
-                        <option>목</option>
-                        <option>금</option>
-                        <option>주말</option>
-                        </select>
-                        <div id="result"></div>
+                        <td>
+                        <select class="form-control" onchange="handleOnChange2(this)">
+                            <option value="">--선택--</option>
+                            <option value="">상관없음</option>
+                            <option value="">월</option>
+                            <option value="">화</option>
+                            <option value="">수</option>
+                            <option value="">목</option>
+                            <option value="">금</option>
+                            <option value="">주말</option>
+                            </select>
+                            <div id="resultDay"></div>
+                            <input type="hidden" id="day" required>
                         </td>
                     <tr>
-
+					<tr>
+                        <td colspan="2" class="footnote" style="height:20px;">&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i>요일은 3개까지 선택 가능합니다.</td>
+                    </tr>
                 </table>
+               
                 <div id="form-btn">
-                <button type="reset" style="float: left; " class="btn btn-secondary" >초기화</button>
-                <button type="submit" style="float: right;" class="btn btn-primary">매칭 시작</button>
+                <button type="reset" style="float: left; " class="btn moong-dark" >초기화</button>
+                <button type="submit" style="float: right;" class="btn moong-yellow">매칭 시작</button>
                 </div>
             </form>
         </div>
@@ -293,7 +319,7 @@
            
             //클릭 시 input[name:area]에 지역값 넣기 
             $('#area').val($(this).attr('name'));
-            console.log($('#area').val());
+            
         })
        
  function handleOnChange(e) {
@@ -338,5 +364,80 @@
        
 
     </script>
+     <script>
+                    function handleOnChange2(e) {
+                        
+                        const text = e.options[e.selectedIndex].text;// 선택된 데이터의 텍스트값 가져오기
+                        
+                        if(text!="--3개까지 선택이 가능합니다--"){
+                            
+                            let resultLength = $('#resultDay').children().length;
+                            if(text =="상관없음"){
+                                document.getElementById('resultDay').innerHTML = '<span class="resultDayIn">'+text+"x"+"</span>";
+                                $('#day').val(text);
+                                
+                            }else if(text != "상관없음" && ($('.resultDayIn').text()).replaceAll("x","") != "상관없음"){
+    
+                            
+                            
+                            
+                            if(resultLength == 0) {
+                               
+                                document.getElementById('resultDay').innerHTML += '<span class="resultDayIn">'+text+"x"+"</span>";// 추가
+                              
+                                $('#day').val(text);
+                                    
+                            }
+                                
+    
+                            else if(1 <= resultLength && resultLength <= 2) {
+    
+                                let a1 = "";
+                                let text2 = "";
+                                let a = $('#resultDay').children();
+                                let flag = true;
+                                
+                                
+                                for(let i = 0; i < resultLength; i++) {
+                                    if(i == 0){
+                                        var text3="";
+                                    }
+                                    a1 = a[i].textContent;
+                                    text2 = text+"x";
+                                    
+                                    
+                                    if(a1 == text2) {
+                                        flag = true;
+                                        break;
+                                    } 
+                                    else{
+                                        text3 += a[i].textContent;
+                                        flag = false; 
+                                    } 
+                                                                
+                                }
+    
+                                if(!flag)
+                                    document.getElementById('resultDay').innerHTML += '<span class="resultDayIn">'+text+"x"+"</span>";// 추가   
+                                    $('#day').val(($('.resultDayIn').text()).replaceAll("x",""));
+                                    
+                                    
+                            }
+                            else {
+                                alert("3개까지만 선택이 가능합니다.");
+                            }
+                        }
+                    }
+                }
+                 //선택한  요일 클릭시 취소
+                   $(function(){
+                    $("#resultDay").on("click","span",function(){
+                        $(this).remove();
+                        $('#day').val(($('.resultDayIn').text()).replaceAll("x",""));
+                                    
+                       
+                         })
+                   })
+                 </script>
 </body>
 </html>

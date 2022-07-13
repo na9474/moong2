@@ -8,4 +8,8 @@ public interface LessonEnrollService {
 
 	ArrayList<LessonEnroll> selectList(int userNo);
 
+	int lessonInsertCheck(LessonEnroll le);
+
+	int lessonInsert(LessonEnroll le);
+
 }
