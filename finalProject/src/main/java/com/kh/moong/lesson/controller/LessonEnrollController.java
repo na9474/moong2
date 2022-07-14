@@ -136,7 +136,7 @@ public class LessonEnrollController {
 					
 					//조회성공
 					if(l.getLeNo()>0) {
-						mv.addObject("l",l).setViewName("lesson/lessonDetail");
+						mv.addObject("l11",l).setViewName("lesson/lessonDetail");
 					//조회실패
 					}else {
 						mv.addObject("errorMsg","조회실패").setViewName("common/errorPage");
