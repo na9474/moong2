@@ -350,7 +350,7 @@
             </script>
             <tr>
             	<th class="td-r">첨부파일</th>
-                <td><input type="file" id="upfile"  name="upfile" accept="video/*" required></td>
+                <td><input type="file" id="upfile"  name="upfile" accept="video/*" ></td>
             </tr>
           
           
