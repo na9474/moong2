@@ -29,7 +29,17 @@ public class MemberDaoLee {
 
 	//학생 정보 수정
 	public int myPageUpdate(SqlSessionTemplate sqlSession, Student stu) {
-		return sqlSession.update(sqlSession, stu);
+		return sqlSession.update("memberMapperLee.myPageUpdate", stu);
+	}
+
+	//선생님 탈퇴
+	public int teaDelete(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.update("memberMapperLee.teaDelete",userNo);
+	}
+
+	//학생 탈퇴
+	public int stuDelete(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.update("memberMapperLee.stuDelete",userNo);
 	}
 
 }

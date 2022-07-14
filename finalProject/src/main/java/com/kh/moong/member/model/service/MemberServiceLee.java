@@ -16,10 +16,16 @@ public interface MemberServiceLee {
 
 	//회원정보 수정 
 	//증명사진 등록
-	int insertIdPicture(String originalFilename, String changeName, Student stu);
+//	int insertIdPicture(String originalFilename, String changeName, Student stu);
 
 	//회원정보 수정 - 학생
 	int myPageUpdate(Student stu);
-	
 
+	//선생님 탈퇴
+	int teaDelete(int userNo);
+
+	//학생 탈퇴
+	int stuDelete(int userNo);
+	
+	
 }
