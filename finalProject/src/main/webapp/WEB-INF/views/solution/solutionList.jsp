@@ -62,11 +62,10 @@
         <div class="row optionbox">
             <div class="col-6" id="scbox">
                 <div class="input-group mb-3">
-                    <select>
-                        <option>과목</option>
-                        <option>국어</option>
-                        <option>영어</option>
-                        <option>수학</option>
+                    <select name="search_cat">
+                        <option value="writer">작성자</option>
+                        <option value="title">제목</option>
+                        <option value="contents">내용</option>
                     </select>
                     <input type="text" class="form-control">
                 </div>
