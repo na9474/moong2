@@ -76,6 +76,7 @@
             .td-r{
                 text-align: center;
                 width: 150px;
+                font-weight:500;
             }
 
 
@@ -87,16 +88,16 @@
         <div id="subtit">
             과외 등록
         </div>
-        <form metod="post" action="insert.le" >
+        <form metod="post" action="insert.le" enctype="multipart/form-data">
             <input type="hidden" name="userNo" value="1">
         <table border="1" id="lessonEnrollTb">
             <tr>
                 <td class="td-r">과목</td>
                 <td>
                     <select class="form-control" name="subject" id="subject">
-                    <option value="ko">국어</option>
-                    <option value="math">수학</option>
-                    <option value="eng">영어</option>
+                    <option value="국어">국어</option>
+                    <option value="수학">수학</option>
+                    <option value="영어">영어</option>
                     </select>
                 </td>
             </tr>
@@ -173,7 +174,7 @@
 
                             if(!flag)
                                 document.getElementById('result').innerHTML += '<span class="resultIn">'+text+"x"+"</span>";// 추가   
-                                $('#area').val(($('.resultIn').text()).replaceAll("x",""));
+                                $('#area').val(($('.resultIn').text()).replaceAll("x",","));
                                 console.log($('#area').val());
                                 
                         }
@@ -187,7 +188,7 @@
                $(function(){
                 $("#result").on("click","span",function(){
                     $(this).remove();
-                    $('#area').val(($('.resultIn').text()).replaceAll("x",""));
+                    $('#area').val(($('.resultIn').text()).replaceAll("x",","));
                                 console.log($('#area').val());
                    
                      })
@@ -288,7 +289,7 @@
 
                             if(!flag)
                                 document.getElementById('resultDay').innerHTML += '<span class="resultDayIn">'+text+"x"+"</span>";// 추가   
-                                $('#leDay').val(($('.resultDayIn').text()).replaceAll("x",""));
+                                $('#leDay').val(($('.resultDayIn').text()).replaceAll("x",","));
                             
                                 
                         }
@@ -302,7 +303,7 @@
                $(function(){
                 $("#resultDay").on("click","span",function(){
                     $(this).remove();
-                    $('#leDay').val(($('.resultDayIn').text()).replaceAll("x",""));
+                    $('#leDay').val(($('.resultDayIn').text()).replaceAll("x",","));
                               
                    
                      })
@@ -333,20 +334,26 @@
                 </td>
                 <input type="hidden" id="teachingStyle" value="1" name="teachingStyle">
             </tr>
-            <script>
+              <script>
                     function ts1(){
-                        $('#teachingStyle').val("1")
+                        $('#teachingStyle').val("상관없음")
                         
                     }
                     function ts2(){
-                        $('#teachingStyle').val("2")
+                        $('#teachingStyle').val("온라인")
                         
                     }
                     function ts3(){
-                        $('#teachingStyle').val("3")
+                        $('#teachingStyle').val("오프라인")
                         
                     }
             </script>
+            <tr>
+            	<th class="td-r">첨부파일</th>
+                <td><input type="file" id="upfile"  name="upfile" accept="video/*" required></td>
+            </tr>
+          
+          
         </table>
         <div id="btfm">
         <button type="reset" onclick="areaReset();" class="btn moong-dark">취소</button> <button type="submit" style="float: right;" class="btn moong-yellow">입력</button>

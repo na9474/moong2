@@ -12,4 +12,6 @@ public interface LessonEnrollService {
 
 	int lessonInsert(LessonEnroll le);
 
+	LessonEnroll selectLesson(int leNo);
+
 }

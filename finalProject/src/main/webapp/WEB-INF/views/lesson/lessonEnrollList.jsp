@@ -62,7 +62,7 @@
         
         <div style="margin-left: 5%; float:left">과목이 중복되게 과외를 등록할 수 없습니다.</div>
         <div style="float: right; margin-right: 5%; margin-bottom: 10px;"><button  style="height: 35px;"class="btn btn-warning" onclick="location.href='enrollFrom.le'">과외등록</button></div>
-                <table  class="table table-hover">
+                <table  class="table table-hover" id="llist">
                     <thead>
                         <tr>
                             <td>과목</td>
@@ -84,6 +84,7 @@
 	<c:otherwise>
 				<c:forEach var="l" items="${list}">
 		 		<tr>
+		 					<td style="display: none;" class="leNo" >${l.leNo}</td>
                             <td>${l.subject}</td>
                             <td>${l.fee}</td>
                             <td>${l.career}</td>
@@ -97,7 +98,7 @@
                             </c:choose>
                             
                             <td>${l.tyear}</td>
-                            <td><button class="btn btn-warning" style="margin:0px;" >상세보기</button></td>
+                            <td><button class="btn btn-warning" style="margin:0px;" onclick="">상세보기</button></td>
                         </tr>
                         </c:forEach>
 					</c:otherwise>
@@ -106,6 +107,14 @@
                        
                     </tbody>
                 </table>
+                 <script>
+           $(function(){
+            $("#llist>tbody>tr>td>button").click(function(){
+                    
+                    location.href="detail.le?leNo="+$(this).parent().parent().children(".leNo").text();
+            });
+        });
+     </script>
         </div>
     </div>
     

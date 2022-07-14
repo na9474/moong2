@@ -26,4 +26,12 @@ public class LessonEnrollDao {
 		return sqlSession.insert("lessonEnrollMapper.lessonInsert",le);
 	}
 
+	public LessonEnroll selectLesson(SqlSessionTemplate sqlSession, int leNo) {
+		
+		return sqlSession.selectOne("lessonEnrollMapper.selectLesson",leNo);
+	}
+
+
+	
+
 }
