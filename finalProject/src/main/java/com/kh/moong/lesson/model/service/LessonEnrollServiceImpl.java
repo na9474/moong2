@@ -24,4 +24,22 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 		return lessonEnrollDao.selectList(sqlSession,userNo);
 	}
 
+	@Override
+	public int lessonInsertCheck(LessonEnroll le) {
+		
+		return lessonEnrollDao.lessonInsertCheck(sqlSession,le);
+	}
+
+	@Override
+	public int lessonInsert(LessonEnroll le) {
+		
+		return lessonEnrollDao.lessonInsert(sqlSession, le);
+	}
+
+	@Override
+	public LessonEnroll selectLesson(int leNo) {
+		
+		return lessonEnrollDao.selectLesson(sqlSession,leNo);
+	}
+
 }

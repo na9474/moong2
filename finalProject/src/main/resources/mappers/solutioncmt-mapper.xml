@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="solutionCmtMapper">
+
+	<resultMap type="solutionCmt" id="solutionCmtResultSet">
+		<result column="SC_NO" property="scNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="SOLUTION_CMT_CONTENTS" property="solutionCmtContents"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="SOLUTION_NO" property="solutionNo"/>
+		<result column="USER_ID" property="userId"/>
+	</resultMap>
+	
+	<select id="cmtListAll" resultMap="solutionCmtResultSet">
+        SELECT  USER_ID,
+                SOLUTION_CMT_CONTENTS,
+                TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS "CREATE_DATE"
+		FROM 
+            (SELECT SC.*, M.USER_ID
+            FROM SOLUTION_CMT SC
+            JOIN MEMBER M ON SC.USER_NO=M.USER_NO
+        WHERE SOLUTION_NO = #{solutionNo}
+        AND SC.STATUS = 'Y'
+        ORDER BY CREATE_DATE DESC)
+	</select>
+	
+	<insert id="insertCmt" parameterType="solutionCmt">
+		INSERT INTO SOLUTION_CMT (SC_NO,SOLUTION_CMT_CONTENTS,SOLUTION_NO,USER_NO)
+		VALUES (SEQ_SCNO.NEXTVAL,#{solutionCmtContents},#{solutionNo},#{userNo})
+	</insert>
+	
+</mapper>

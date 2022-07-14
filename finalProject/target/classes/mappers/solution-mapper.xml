@@ -74,5 +74,38 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE SOLUTION_NO = #{solutionNo}
 	</update>
 	
+	<select id="searchTitle" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE S.TITLE LIKE '%#{keyword}%'
+        AND S.STATUS='Y'
+		ORDER BY CREATE_DATE DESC)
+	</select>
+	
+	<select id="searchContents" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE S.SOLUTION_CONTENTS LIKE '%#{keyword}%'
+        AND S.STATUS='Y'
+		ORDER BY CREATE_DATE DESC)
+	</select>
+	
+	<select id="searchId" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE M.USER_ID LIKE '%#{keyword}%'
+        AND S.STATUS='Y'
+		ORDER BY CREATE_DATE DESC)
+	</select>
+	
 	
 </mapper>
