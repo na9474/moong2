@@ -36,9 +36,9 @@
             <div class="col-1" id="top-optionbox">
                 <select name="subject" id="subject">
                     <option selected disabled>과목</option>
-                    <option value="국어">국어</option>
-                    <option value="영어">영어</option>
                     <option value="수학">수학</option>
+                    <option value="영어">영어</option>
+                    <option value="국어">국어</option>
                 </select>
             </div>
             <div class="col-11">
