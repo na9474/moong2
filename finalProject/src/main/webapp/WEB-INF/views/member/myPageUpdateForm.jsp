@@ -110,10 +110,12 @@
 	
 	  <div id="alarm-outer">
         <div id="subtit">
-            	선생님 MyPage 작성
+            	MyPage 수정
         </div>
 
-        <form action="teaEnroll.me">
+        <form action="myPageUpdate.me" enctype="multipart/form-data">
+        <!-- hidden으로 로그인 회원 번호 가져오기 -->
+        <%-- <input type="hidden" name="userNo" id="userNo" value="${login.userNo}"> --%>
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
@@ -136,7 +138,7 @@
                   
                     <tr>
                     	<td align="center">증명사진 등록 : </td>
-                    	<td colspan="2"><input  type="file"></td>
+                    	<td colspan="2"><input id=idPicture name="idPicture" type="file"></td>
                     </tr>
                     
                 </table>
@@ -151,6 +153,7 @@
                         <td>비밀번호 수정 : </td>
                         <td style="float: left;"><input style="width: 175px;" type="text">    </td>
                     </tr>
+                    <button>비밀번호 확인</button>
                     <tr>
                         <td>이&nbsp;&nbsp;&nbsp;&nbsp;메&nbsp;&nbsp;&nbsp;&nbsp;일 : </td>
                         <td style="float: left;"><input style="width: 175px;" type="text">    </td>
@@ -158,6 +161,8 @@
                    
                 </table>
                 <div class="line"></div>
+                
+                <!-- 선생님인 경우 화면 -->
                  <table id="teacher-tb2">
                     <tr>
                         <td>출&nbsp;&nbsp;신&nbsp;&nbsp;학&nbsp;&nbsp;교&nbsp; : </td>
@@ -169,8 +174,6 @@
                     </tr>
                     
                 </table>
-
-                
 
                 <div class="line"></div>
 
@@ -189,7 +192,8 @@
         </div>
 
         </form>
-
+		
+		<button>탈퇴하기</button>
         
     </div>
         

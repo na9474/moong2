@@ -14,6 +14,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="QUESTION_STATUS" property="questionStatus"/>
 	</resultMap>
 
+	<resultMap type="qnaType" id="qnaTypeResultSet">
+		<result column="TYPE_NO" property="typeNo"/>
+		<result column="TYPE_NAME" property="typeName"/>
+	</resultMap>
+
 	<!-- QnA 수 구하기 -->
 	<!-- 로그인 후 내가 작성한 게시글 조건 추가 -->
 	<select id="selectQnaListCount" resultType="int">
@@ -32,5 +37,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		ORDER BY QUESTION_DATE DESC
 			)
 	</select>
-
+	
+	<!-- QnA Type -->
+	<select id="selectQnaType" resultMap="qnaTypeResultSet">
+		SELECT * 
+		FROM QNA_TYPE
+	</select>
+	
+	<!-- QnA 작성 -->
+	<insert id="qnaInsert" parameterType="qnaQuestion">
+	INSERT INTO QNA_QUESTION(
+							QNA_NO,
+							USER_NO,
+							TYPE_NO,
+							TITLE,
+							QUESTION_CONTENT
+							)
+	VALUES(
+			SEQ_QNO.NEXTVAL,
+			#{userNo},
+			#{typeNo},
+			#{title},
+			#{questionContent}
+	)
+	
+	
+	
+	</insert>	
 </mapper>

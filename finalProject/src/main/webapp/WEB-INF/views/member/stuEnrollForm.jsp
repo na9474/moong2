@@ -4,25 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="jquery.fullpage.min.css">
 
-     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="resources/css/styles.css" rel="stylesheet" />
-   
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-    <script src="jquery.fullpage.min.js"></script>
-    
- <!-- Latest compiled and minified CSS -->
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
- <!-- Popper JS -->
-     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
- <!-- Latest compiled JavaScript -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
- <!--font Awesome-->
- <script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script>
 <title>Insert title here</title>
 <style>
 	.outer{
@@ -127,7 +109,7 @@
 </head>
 <body>
 
-	<jsp:include page="../common/menubar.jsp"/>
+	<jsp:include page="../common/header.jsp"/>
 	<jsp:include page="../common/myPageNavi.jsp"/>
 	
 	
@@ -184,8 +166,8 @@
                     <table id="teacher-tb2">
                         <thead align="center">
                             <tr>
-                                <th style="width:10% ;">과목</th>
-                                <th style="width:20% ;">등급</th>
+                                <th style="width:10% ; background-color: black; color:white;">과목</th>
+                                <th style="width:20% ;  background-color: black; color:white;">등급</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -236,6 +218,16 @@
                                         <option value="nine">9등급</option>
                                     </select>
                                 </td>
+                            </tr>
+                            <tr>
+                            	<td>학년</td>
+                            	<td>
+	                            	<select name="year">
+	                            		<option value="one">1학년</option>
+	                            		<option value="two">2학년</option>
+	                            		<option value="three">3학년</option>
+	                            	</select>
+                            	</td>
                             </tr>
                             <tr>
                                 <td  align="center">성적표</td>

@@ -1,14 +1,20 @@
 package com.kh.moong.member.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.kh.moong.member.model.service.MemberServiceLee;
+import com.kh.moong.member.model.vo.IdPicture;
 import com.kh.moong.member.model.vo.Student;
 import com.kh.moong.member.model.vo.Teacher;
 
@@ -18,121 +24,213 @@ public class MemberContollerLee {
 	@Autowired 
 	private MemberServiceLee memberService;
 	
-	//¸¶ÀÌÆäÀÌÁö ¸ŞÀÎÀ¸·Î ÀÌµ¿
+	//ë§ˆì´í˜ì´ì§€ ë©”ì¸ ì´ë™
 	@RequestMapping("myPageMain.me")
 	public String myPageMain() {
 
 		return "member/myPageMain";
 	}
 	
-	//ÇĞ»ı µî·Ï ÆäÀÌÁö
-		@RequestMapping("stuEnrollForm.me")
-		public String stuEnrollForm() {
+	//í•™ìƒ ë“±ë¡ í˜ì´ì§€
+	@RequestMapping("stuEnrollForm.me")
+	public String stuEnrollForm() {
 
-			return "member/stuEnrollForm";
-		}
+		return "member/stuEnrollForm";
+	}
+	
+	//ì„ ìƒë‹˜ ë“±ë¡ í˜ì´ì§€
+	@RequestMapping("teaEnrollForm.me")
+	public String teaEnrollForm() {
+
+		return "member/teaEnrollForm";
+	}
+	
+	//ì„ ìƒë‹˜ ë“±ë¡ í•˜ê¸°
+	@RequestMapping("teaEnroll.me")
+	public String teaEnroll(Teacher tea, HttpSession session, Model model) {
+
+		int result = memberService.teaEnroll(tea);
 		
-		//¼±»ı´Ô µî·Ï ÆäÀÌÁö
-		@RequestMapping("teaEnrollForm.me")
-		public String teaEnrollForm() {
-
-			return "member/teaEnrollForm";
-		}
-		
-		//¼±»ı´Ô µî·Ï ÇÏ±â
-		@RequestMapping("teaEnroll.me")
-		public String teaEnroll(Teacher tea, HttpSession session, Model model) {
-
-			int result = memberService.teaEnroll(tea);
+		if(result>0) {//ì„±ê³µ
 			
-			if(result>0) {//¼º°ø
-				
-				session.setAttribute("alertMsg","¼±»ı´ÔÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
-				
-				return "redirect:myPageMain.me";
-			}else {//½ÇÆĞ
-				model.addAttribute("errorMsg","¼±»ı´Ô µî·Ï ½ÇÆĞ");
-				
-				//¿¡·¯ÆäÀÌÁö º¸¿©ÁÖ±â
-			}
+			session.setAttribute("alertMsg","ì„ ìƒë‹˜ìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			
 			return "redirect:myPageMain.me";
+		}else {//ì‹¤íŒ¨
+			model.addAttribute("errorMsg","ì„ ìƒë‹˜ ë“±ë¡ ì‹¤íŒ¨");
+			
+			//ì—ëŸ¬í˜ì´ì§€ 
 		}
 		
-		//ÇĞ»ı µî·Ï ÇÏ±â
-		@RequestMapping("stuEnroll.me")
-		public String stuEnroll(Student stu, HttpSession session, Model model) {
+		return "redirect:myPageMain.me";
+	}
+	
+	//í•™ìƒ ë“±ë¡ í•˜ê¸°
+	@RequestMapping("stuEnroll.me")
+	public String stuEnroll(Student stu, HttpSession session, Model model) {
 
-			int result = memberService.stuEnroll(stu);
+		int result = memberService.stuEnroll(stu);
+		
+		if(result>0) {//ì„±ê³µ
 			
-			if(result>0) {//¼º°ø
-				
-				session.setAttribute("alertMsg", "ÇĞ»ıÀ¸·Î µî·ÏµÇ¾ú½À´Ï´Ù.");
-				
-				return "redirect:myPageMain.me";
-			}else {//½ÇÆĞ
-				model.addAttribute("errorMsg","ÇĞ»ı µî·Ï ½ÇÆĞ");
-				
-				//¿¡·¯ ÆäÀÌÁö º¸¿©ÁÖ±â
-			}
+			session.setAttribute("alertMsg", "í•™ìƒìœ¼ë¡œ ë“±ë¡ë˜ì—ˆìŠµë‹ˆë‹¤.");
 			
 			return "redirect:myPageMain.me";
+		}else {//ì‹¤íŒ¨
+			model.addAttribute("errorMsg","í•™ìƒ ë“±ë¡ ì‹¤íŒ¨");
+			
+			//ì—ëŸ¬í˜ì´ì§€
 		}
 		
-		//ÇĞ»ı ¸¶ÀÌÆäÀÌÁö
-		@RequestMapping("stuMyPage.me")
-		public String stuMyPage() {
+		return "redirect:myPageMain.me";
+	}
+	
+	//í•™ìƒ ë§ˆì´í˜ì´ì§€
+	@RequestMapping("stuMyPage.me")
+	public String stuMyPage() {
 
-			return "member/stuMyPage";
-		}
+		return "member/stuMyPage";
+	}
+	
+	//í•™ìƒ ë§ˆì´íŒ¨ì´ì§€ ìˆ˜ì •
+	@RequestMapping("stuUpdate.me")
+	public String stuUpdate() {
 		
+//		int result = memberService.stuUpdate()
 		
-		//¼±»ı´Ô ¸¶ÀÌÆäÀÌÁö
-		@RequestMapping("teaMyPage.me")
-		public String teaMyPage() {
+		return "member/stuUpdate";
+	}
+	
+	//ì„±ì  ìˆ˜ì •
+	//í•™ìƒ ì„±ì  ìˆ˜ì • í˜ì´ì§€ ì´ë™
+	@RequestMapping("stuGradeUpdateForm.me")
+	public String stuGradeUPdateForm() {
+		
+		return "member/stuGradeUpdateForm";
+	}
+	
+	//í•™ìƒ ì„±ì  ìˆ˜ì •
+	@RequestMapping("stuGradeUpdate.me")
+	public String stuGradeUPdate(Student stu,Model model) {
+		
+		int result = memberService.stuGradeUpdate(stu);
+		
+		return "member/stuGradeUpdateForm";
+	}
+	
+	
+	//ì„ ìƒë‹˜ ë§ˆì´í˜ì´ì§€
+	@RequestMapping("teaMyPage.me")
+	public String teaMyPage() {
 
-			return "member/teaMyPage";
-		}
-		
-		//°ú¿Ü¸ñ·Ï
-		@RequestMapping("lessonList.me")
-		public String lessonList() {
+		return "member/teaMyPage";
+	}
 
-			return "member/lessonList";
-		}
-		
-		
-		
-		
-		//ÀÛ¼º °Ô½Ã±Û
-		//ÀÛ¼º °Ô½Ã±Û ¸ñ·Ï
-		@RequestMapping("myBoardListView.me")
-		public String myBoardListView() {
+	//ì„ ìƒë‹˜ ë§ˆì´í˜ì´ì§€ ìˆ˜ì •
+	@RequestMapping("teaUpdate.me")
+	public String teaUpdate() {
 
-			return "member/myBoardListView";
-		}
-		
-		//ÀÛ¼º °Ô½Ã±Û »ó¼¼º¸±â
-		
-		
-		//ÁÁ¾Æ¿ä °Ô½Ã±Û
-		//ÁÁ¾Æ¿ä °Ô½Ã±Û ¸ñ·Ï
-		@RequestMapping("likeBoardListView.me")
-		public String likeBoardListView() {
+		return "member/teaUpdate";
+	}
+	
+	
+	//ê³¼ì™¸ ëª©ë¡
+	@RequestMapping("lessonList.me")
+	public String lessonList() {
 
-			return "member/likeBoardListView";
-		}
-		
-		//ÁÁ¾Æ¿ä °Ô½Ã±Û »ó¼¼º¸±â
-		
-		
-		
-		//ÇĞ»ı ¼ºÀû ¼öÁ¤
-		@RequestMapping("stuGradeUpdate.me")
-		public String stuGradeUpdate() {
+		return "member/lessonList";
+	}
+	
+	//ë§ˆì´í˜ì´ì§€ ê³µí†µ ìˆ˜ì •í˜ì´ì§€ ì´ë™
+	@RequestMapping("myPageUpdateForm.me")
+	public String myPageUpdateForm() {
 
-			return "member/stuGradeUpdate";
+		return "member/myPageUpdateForm";
+	}
+	
+	//ë§ˆì´í˜ì´ì§€ ê³µí†µ ìˆ˜ì •í•˜ê¸°
+	@RequestMapping("myPageUpdate.me")
+	public String myPageUpdate(Student stu, IdPicture ip, MultipartFile idPicture, HttpSession session, Model model) {
+
+		//í•™ìƒì¸ ê²½ìš° 
+		//ì¦ëª…ì‚¬ì§„ ìˆëŠ”ê²½ìš° 
+		if(!idPicture.getOriginalFilename().equals("")) { //ì¦ëª…ì‚¬ì§„ íŒŒì¼ ì—†ëŠ” ê²½ìš°
+			
+			String changeName = saveFile(idPicture,session);
+			
+			ip.setIpOriginName(idPicture.getOriginalFilename());
+			ip.setIpSysName("resources/iPUploadFiles"+changeName);
+			ip.setUserNo(stu.getUserNo());
+			
+			
+			
 		}
+			//ê°œì¸ì •ë³´ ìˆ˜ì •
+			int result = memberService.myPageUpdate(stu);
+			
+			if(result>0) {
+				session.setAttribute("alertMsg", "íšŒì› ì •ë³´ ìˆ˜ì • ì„±ê³µ");
+				return "redirect:myPageMain.me";
+			}else {
+				System.out.println("ìˆ˜ì • ì‹¤íŒ¨");
+				return "member/myPageUpdate";
+			}
+		
+		
+		
+	}
+	
+	//íŒŒì¼ ëª… ì²˜ë¦¬ ë©”ì†Œë“œ
+	public String saveFile(MultipartFile idPicture,HttpSession session) {
+
+		String originName = idPicture.getOriginalFilename(); // dog.jpg 
+		
+		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+	
+		int ranNum = (int)(Math.random() * 90000 + 10000); //5ìë¦¬ ëœë¤ê°’
+		
+		String ext = originName.substring(originName.lastIndexOf("."));
+		
+		String changeName = currentTime + ranNum + ext;
+		
+		String savePath = session.getServletContext().getRealPath("/resources/iPUploadFiles/");
+		
+		try {
+			idPicture.transferTo(new File(savePath+changeName));
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		return changeName;
+	}
+	
+	
+	//ì‘ì„± ê²Œì‹œê¸€
+	//ì‘ì„± ê²Œì‹œê¸€ ëª©ë¡
+	@RequestMapping("myBoardListView.me")
+	public String myBoardListView() {
+
+		return "member/myBoardListView";
+	}
+	
+	//ì‘ì„± ê²Œì‹œê¸€ ìƒì„¸ë³´ê¸°
+	
+	
+	//ì¢‹ì•„ìš” ê²Œì‹œê¸€
+	//ì¢‹ì•„ìš” ê²Œì‹œê¸€ ëª©ë¡
+	@RequestMapping("likeBoardListView.me")
+	public String likeBoardListView() {
+
+		return "member/likeBoardListView";
+	}
+	
+	//ì¢‹ì•„ìš” ê²Œì‹œê¸€ ìƒì„¸ë³´ê¸°
+	
+	
+	
+
 		
 	
 	

@@ -10,6 +10,7 @@ import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.qna.model.dao.QnaDao;
 import com.kh.moong.qna.model.vo.QnaAnswer;
 import com.kh.moong.qna.model.vo.QnaQuestion;
+import com.kh.moong.qna.model.vo.QnaType;
 
 @Service
 public class QnaServiceImpl implements QnaService {
@@ -31,8 +32,8 @@ public class QnaServiceImpl implements QnaService {
 	}
 
 	@Override
-	public int insertQna(QnaQuestion qq) {
-		return qnaDao.insertQna(sqlSession,qq);
+	public int qnaInsert(QnaQuestion qq) {
+		return qnaDao.qnaInsert(sqlSession,qq);
 	}
 
 	@Override
@@ -63,6 +64,11 @@ public class QnaServiceImpl implements QnaService {
 	@Override
 	public int insertAnswer(QnaAnswer qa) {
 		return qnaDao.selectAnswer(sqlSession,qa);
+	}
+
+	@Override
+	public ArrayList<QnaType> selectQnaType() {
+		return qnaDao.selectQnaType(sqlSession);
 	}
 
 }

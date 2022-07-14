@@ -3,7 +3,37 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapperLee">
+	
+	<!-- 선생님 등록 하기 -->
+	<insert id="teaEnroll" parameterType="teacher">
+	INSERT INTO TEACHER(
+						USER_NO,
+						SELF_INTRODUCTION,
+						SCHOOL_INFO,
+						RATING)
+				VALUES(
+						#{userNo},
+						#{selfIntroduction},
+						#{schoolInfo},
+						#{rating})
+	
+	</insert>
 
-
+	<!-- 학생 등록 하기 -->
+	<insert id="stuEnroll" parameterType="student">
+	INSERT INTO STUDENT(
+						USER_NO,
+						YEAR,
+						KO,
+						MATH,
+						ENG)
+				VALUES(
+						#{userNo},
+						#{year},
+						#{ko},
+						#{math},
+						#{eng})
+						
+	</insert>
 
 </mapper>

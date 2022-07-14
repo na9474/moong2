@@ -14,6 +14,9 @@
 		<typeAlias type="com.kh.moong.qna.model.vo.QnaAnswer" alias="qnaAnswer"/>
 		<typeAlias type="com.kh.moong.qna.model.vo.QnaType" alias="qnaType"/>
 		<typeAlias type="com.kh.moong.qna.model.vo.QnaFile" alias="qnaFile"/>
+		<typeAlias type="com.kh.moong.member.model.vo.Member" alias="member"/>
+		<typeAlias type="com.kh.moong.member.model.vo.Teacher" alias="teacher"/>
+		<typeAlias type="com.kh.moong.member.model.vo.Student" alias="student"/>
 	</typeAliases>	
 
 	<mappers>
