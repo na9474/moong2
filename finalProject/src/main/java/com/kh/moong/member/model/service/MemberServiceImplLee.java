@@ -36,15 +36,27 @@ public class MemberServiceImplLee implements MemberServiceLee {
 	}
 
 	//학생 증명사진 등록
-	@Override
-	public int insertIdPicture(String originalFilename, String changeName, Student stu) {
+//	@Override
+//	public int insertIdPicture(String originalFilename, String changeName, Student stu) {
 //		return memberDao.insertIdPicture(sqlSession,stu,originalFilename,changeName);
-	}
+//	}
 
 	//학생 정보 수정
 	@Override
 	public int myPageUpdate(Student stu) {
 		return memberDao.myPageUpdate(sqlSession,stu);
+	}
+
+	//선생님 탈퇴
+	@Override
+	public int teaDelete(int userNo) {
+		return memberDao.teaDelete(sqlSession,userNo);
+	}
+	
+	//학생 탈퇴
+	@Override
+	public int stuDelete(int userNo) {
+		return memberDao.stuDelete(sqlSession,userNo);
 	}
 
 
