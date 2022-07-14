@@ -88,7 +88,7 @@
         <div id="subtit">
             과외 등록
         </div>
-        <form metod="post" action="insert.le" enctype="multipart/form-data">
+        <form method="post" action="insert.le" enctype="multipart/form-data">
             <input type="hidden" name="userNo" value="1">
         <table border="1" id="lessonEnrollTb">
             <tr>

@@ -30,7 +30,7 @@ public class LessonEnrollController {
 		
 		
 		String originName =upfile.getOriginalFilename(); 
-		
+			
 		
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		
@@ -47,7 +47,6 @@ public class LessonEnrollController {
 		
 		
 		String savePath = session.getServletContext().getRealPath("/resources/lesson_video/");
-		
 		
 		try {
 			upfile.transferTo(new File(savePath+changeName));
@@ -89,20 +88,20 @@ public class LessonEnrollController {
 			
 			//똑같은 과목으로 등록된 과외가 있는지 확인
 			int result  = ls.lessonInsertCheck(le);
-					 System.out.println(le);
-					 System.out.println(result);
+					 
+					 
 				if(result>0) { //똑같은 과목으로 생성된 과외가 있음(과외등록불가능)
 					session.setAttribute("alertMsg", "등록된 같은 과목이 있습니다 ");
 					mv.setViewName("lesson/lessonEnrollForm");
 				}else { //똑같은 과목으로 생성된 과외가 없음(과외등록가능) 
-						System.out.println("1");
-						System.out.println(upfile);
+					
+						
 						
 						String changeName = saveFile(upfile,session);
 						
 						le.setLeOriginname(upfile.getOriginalFilename());
 						le.setLeChangename("resources/lesson_video/"+changeName);
-						System.out.println(le);
+						
 					
 					int result2 = ls.lessonInsert(le);
 					
@@ -134,7 +133,7 @@ public class LessonEnrollController {
 					
 					//조회성공
 					if(l.getLeNo()>0) {
-						mv.addObject("l11",l).setViewName("lesson/lessonDetail");
+						mv.addObject("l",l).setViewName("lesson/lessonDetail");
 					//조회실패
 					}else {
 						mv.addObject("errorMsg","조회실패").setViewName("common/errorPage");

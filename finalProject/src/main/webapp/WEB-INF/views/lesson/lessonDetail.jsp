@@ -48,8 +48,8 @@
         height: 400px;
         margin:auto;
         margin-bottom: 10px;
-        /*공란색칠*/
-        background-color: orange;
+       
+       
     }
     /*영역잡기 끝*/
 
@@ -225,8 +225,8 @@
                 <div class="line"></div>
 
                 <div style="margin:auto; height: 500px;">
-                    <div class="mid">어필 영상</div>
-                    <div id="vi"></div>
+                    <div class="mid" >어필 영상</div>
+                    <video controls  id="vi" src="${l.leChangename}" style="margin-left:100px;"></video>
                     <div>첨부파일 : </div>
 
                 </div>
