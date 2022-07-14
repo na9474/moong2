@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.qna.model.vo.QnaAnswer;
 import com.kh.moong.qna.model.vo.QnaQuestion;
+import com.kh.moong.qna.model.vo.QnaType;
 
 @Repository
 public class QnaDao {
@@ -27,8 +28,9 @@ public class QnaDao {
 		return (ArrayList)sqlSession.selectList("qnaMapper.selectList",null,rowBounds);
 	}
 
-	public int insertQna(SqlSessionTemplate sqlSession, QnaQuestion qq) {
-		return 0;
+	public int qnaInsert(SqlSessionTemplate sqlSession, QnaQuestion qq) {
+		return sqlSession.insert("qnaMapper.qnaInsert", qq);
+		
 	}
 
 	public int increaseCount(SqlSessionTemplate sqlSession, int qnaNo) {
@@ -53,6 +55,10 @@ public class QnaDao {
 
 	public int selectAnswer(SqlSessionTemplate sqlSession, QnaAnswer qa) {
 		return 0;
+	}
+
+	public ArrayList<QnaType> selectQnaType(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("qnaMapper.selectQnaType");
 	}
 
 

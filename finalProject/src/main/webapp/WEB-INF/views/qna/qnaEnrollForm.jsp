@@ -1,32 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="jquery.fullpage.min.css">
 
-
-
- <!--font Awesome-->
- <script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script>
- 
-<!--      섬머노트
-<script src="resources/js/summernote/summernote-lite.js"></script>
-<script src="resources/js/summernote/lang/summernote-ko-KR.js"></script>
-
-<link rel="stylesheet" href="resources/css/summernote/summernote-lite.css"> -->
-    
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
-​
-​
-    <!-- 섬머노트 -->
-    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
-    <script script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-    <script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script>
-    
 <title>Insert title here</title>
     <style>
         @font-face {
@@ -68,30 +48,30 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	<jsp:include page="../common/myPageNavi.jsp"/>
+
 	
 	<div class="outer">
-        <br><br>
-        <form action="">
+        <br><br><br>
+        <form action="qnaInsert.qu" method="post" enctype="multipart/form-data">
              <div class="container-md p-4 bg-white rounded">
         <h2>QnA 글작성</h2>
         <br>
 
         <div class="row titlebox">
-            <div class="col-1" id="top-optionbox">
-                <select>
-                    <option>문의</option>
-                    <option>국어</option>
-                    <option>영어</option>
-                    <option>수학</option>
+            <div class="col-1" id="top-optionbox" name="type">
+                <select name="type">
+                	<c:forEach var="t" items="${list }">
+                		<option value="${t.typeNo }">${t.typeName }</option>
+                	</c:forEach>
+
                 </select>
             </div>
             <div class="col-11">
                 <div class="input-group input-group-sm mb-3">
-                    <div class="input-group-prepend">
+                    <div class="input-group-prepend" >
                       <span class="input-group-text" id="inputGroup-sizing-sm">제목</span>
                     </div>
-                    <input type="text" class="form-control" placeholder="제목을 입력하세요">
+                    <input type="text" class="form-control"  name="title" id="title" placeholder="제목을 입력하세요">
                 </div>
             </div>
         </div>
@@ -99,13 +79,13 @@
          <!--섬머노트-->
         <div class="row contentbox" >
             <div class="col-12">
-                <textarea class="summernote" name="editordata"></textarea>
+                <textarea class="summernote" name="questionContent"></textarea>
             </div>
         </div>
 
         <div class="row bottombox">
             <div class="col-12" id="bottombox">
-                <button type="button" class="btn moong-dark">작성</button>
+                <button type="submit" class="btn moong-dark">작성</button>
             </div>
         </div>
 
@@ -118,8 +98,7 @@
  
         
 	
-	</div>
-	</div>
+
 
 
 <!--섬머노트-->
@@ -134,7 +113,48 @@
 			  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
 		});
     });
-    </script>
+    
+
+	// 툴바생략
+	var setting = {
+            height : 300,
+            minHeight : null,
+            maxHeight : null,
+            focus : true,
+            lang : 'ko-KR',
+            toolbar : toolbar,
+            //콜백 함수
+            callbacks : { 
+            	onImageUpload : function(files, editor, welEditable) {
+            // 파일 업로드(다중업로드를 위해 반복문 사용)
+            for (var i = files.length - 1; i >= 0; i--) {
+            uploadSummernoteImageFile(files[i],
+            this);
+            		}
+            	}
+            }
+         };
+        $('#summernote').summernote(setting);
+
+        
+        function uploadSummernoteImageFile(file, el) {
+			data = new FormData();
+			data.append("file", file);
+			$.ajax({
+				data : data,
+				type : "POST",
+				url : "uploadSummernoteImageFile",
+				contentType : false,
+				enctype : 'multipart/form-data',
+				processData : false,
+				success : function(data) {
+					$(el).summernote('editor.insertImage', data.url);
+				}
+			});
+		}
+
+        </script>
+
 
 </body>
 </html>

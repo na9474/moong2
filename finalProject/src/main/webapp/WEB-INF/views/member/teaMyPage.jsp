@@ -4,25 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="jquery.fullpage.min.css">
 
-     <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="resources/css/styles.css" rel="stylesheet" />
-   
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
-    <script src="jquery.fullpage.min.js"></script>
-    
- <!-- Latest compiled and minified CSS -->
- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-
- <!-- Popper JS -->
-     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-
- <!-- Latest compiled JavaScript -->
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-
- <!--font Awesome-->
- <script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script>
 <title>Insert title here</title>
 <style>
 	.outer{
@@ -127,7 +109,7 @@
 </head>
 <body>
 	
-	<jsp:include page="../common/menubar.jsp"/>
+	<jsp:include page="../common/header.jsp"/>
 	<jsp:include page="../common/myPageNavi.jsp"/>
 	
 
@@ -189,7 +171,9 @@
 
         </div>
         
-
+		<button onclick="location.href='teaUpdate.me'" style="float: right; margin:auto">수정하기</button>
+		<button onclick="location.href='myPageUpdateForm.me'" style="float: right; margin:auto">공통 페이지 수정하기</button>
+		<button onclick="location.href='teaDelete.me'" style="float: right; margin:auto">탈퇴하기</button>
         
     </div>
 

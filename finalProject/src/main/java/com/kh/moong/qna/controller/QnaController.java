@@ -1,17 +1,29 @@
 package com.kh.moong.qna.controller;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.google.gson.JsonObject;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.qna.model.service.QnaService;
 import com.kh.moong.qna.model.vo.QnaQuestion;
+import com.kh.moong.qna.model.vo.QnaType;
 
 @Controller
 public class QnaController {
@@ -22,16 +34,14 @@ public class QnaController {
 
 
 	//QnA
-	//QnA ¸ñ·Ï
-	@RequestMapping("qnaListView.me")
+	//QnA ëª©ë¡
+	@RequestMapping("qnaListView.qu")
 	public String qnaListView(
 			@RequestParam(value="cpage",defaultValue="1") int currentPage,
 			Model model
 							) {
-
-		//QnA°Ô½Ã±Û ¼ö ±¸ÇÑ µÚ ¸ñ·Ï ÆäÀÌÁö·Î º¸³»ÁÖ±â
 		
-		//°Ô½Ã±Û ¼ö 
+		//ì „ì²´ ê²Œì‹œê¸€ ìˆ˜
 		int listCount = qnaService.selectQnaListCount();
 		
 		int pageLimit = 10;
@@ -49,15 +59,62 @@ public class QnaController {
 		return "qna/qnaListView";
 	}
 	
-	//QnA ÀÛ¼º
-	@RequestMapping("qnaEnrollForm.me")
-	public String qnaEnrollForm() {
+	//QnA ì‘ì„± í˜ì´ì§€ ì´ë™
+	@RequestMapping("qnaEnrollForm.qu")
+	public String qnaEnrollForm(Model model) {
 
-		return "member/qnaEnrollForm";
+		//ì¹´í…Œê³ ë¦¬ ê°€ì ¸ì˜¤ê¸°
+		ArrayList<QnaType> list = qnaService.selectQnaType();
+		
+		model.addAttribute("list",list);
+		
+		return "qna/qnaEnrollForm";
 	}
 	
-	//QnA ¼öÁ¤
-	//¼öÁ¤ Àü ³»¿ë ºÒ·¯¿À±â
+	//QnA ì‘ì„±í•˜ê¸°
+	@RequestMapping("qnaInsert.qu")
+	public String qnaInsert(QnaQuestion qq, Model model) {
+
+//		System.out.println(qq);
+		
+		int result = qnaService.qnaInsert(qq);
+		
+		return "qna/qnaEnrollForm";
+	}
 	
-	//¼öÁ¤ÇÏ±â
+	
+	//QnA ì´ë¯¸ì§€ ì—…ë¡œë“œ
+	@RequestMapping(value="/uploadSummernoteImageFile", produces = "application/json; charset=utf8")
+	@ResponseBody
+	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request )  {
+		JsonObject jsonObject = new JsonObject();
+		
+        /*
+		 * String fileRoot = "C:\\summernote_image\\"; // ì™¸ë¶€ê²½ë¡œë¡œ ì €ì¥ì„ í¬ë§í• ë•Œ.
+		 */
+		
+		// ë‚´ë¶€ê²½ë¡œë¡œ ì €ì¥
+		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
+		String fileRoot = contextRoot+"resources/fileupload/";
+		
+		String originalFileName = multipartFile.getOriginalFilename();	//ì˜¤ë¦¬ì§€ë‚  íŒŒì¼ëª…
+		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//íŒŒì¼ í™•ì¥ì
+		String savedFileName = UUID.randomUUID() + extension;	//ì €ì¥ë  íŒŒì¼ ëª…
+		
+		File targetFile = new File(fileRoot + savedFileName);	
+		try {
+			InputStream fileStream = multipartFile.getInputStream();
+			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//íŒŒì¼ ì €ì¥
+			jsonObject.addProperty("url", "/summernote/resources/fileupload/"+savedFileName); // contextroot + resources + ì €ì¥í•  ë‚´ë¶€ í´ë”ëª…
+			jsonObject.addProperty("responseCode", "success");
+				
+		} catch (IOException e) {
+			FileUtils.deleteQuietly(targetFile);	//ì €ì¥ëœ íŒŒì¼ ì‚­ì œ
+			jsonObject.addProperty("responseCode", "error");
+			e.printStackTrace();
+		}
+		String a = jsonObject.toString();
+		return a;
+	}
+
 }

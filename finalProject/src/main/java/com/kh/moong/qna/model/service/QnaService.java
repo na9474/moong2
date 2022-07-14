@@ -5,34 +5,41 @@ import java.util.ArrayList;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.qna.model.vo.QnaAnswer;
 import com.kh.moong.qna.model.vo.QnaQuestion;
+import com.kh.moong.qna.model.vo.QnaType;
 
 public interface QnaService {
 
-	//ÀüÃ¼ QnA °Ô½Ã±Û ¼ö Á¶È¸
+	//QnA ì „ì²´ ê²Œì‹œê¸€ ìˆ˜
 	int selectQnaListCount();
 
-	//QnA ¸®½ºÆ® Á¶È¸
+	//QnA ëª©ë¡ ì¡°íšŒ
 	ArrayList<QnaQuestion> selectList(PageInfo pi);
 
-	//QnA ÀÛ¼ºÇÏ±â
-	int insertQna(QnaQuestion qq);
+	//QnA ì‘ì„±
+	//QnaType ê°€ì ¸ì˜¤ê¸°
+	ArrayList<QnaType> selectQnaType();
 	
-	//QnA »ó¼¼Á¶È¸
-	//Á¶È¸¼ö Áõ°¡
+	//QnA ì‘ì„±
+	int qnaInsert(QnaQuestion qq);
+	
+	//QnA ìƒì„¸ì¡°íšŒ
+	//ì¡°íšŒìˆ˜ ì¦ê°€
 	int increaseCount(int qnaNo);
 	
-	//»ó¼¼Á¶È¸
+	//QnA ìƒì„¸ë³´ê¸°
 	QnaQuestion selectQuestion(int qnaNo);
 	
-	//QnA »èÁ¦
+	//QnA ì‚­ì œ
 	int deleteQna(int qnaNo);
 	
-	//QnA ¼öÁ¤
+	//QnA ìˆ˜ì •
 	int updateQna(QnaQuestion qq);
 	
-	//´äº¯ ¸®½ºÆ® Á¶È¸
+	//ëŒ“ê¸€ ë¦¬ìŠ¤íŠ¸ ì¡°íšŒ
 	ArrayList<QnaAnswer> selectAnswerList(int qnaNo);
 
-	//´äº¯ ÀÛ¼º - °ü¸®ÀÚ¸¸ °¡´É
+	//ëŒ“ê¸€ ì‘ì„±
 	int insertAnswer(QnaAnswer qa);
+
+
 }

@@ -1,5 +1,12 @@
 package com.kh.moong.member.model.vo;
 
-public class Teacher {
+import lombok.Data;
 
+@Data
+public class Teacher {
+	
+	private int userNo;
+	private String selfIntroduction;
+	private String schoolInfo;
+	private int rating;
 }
