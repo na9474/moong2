@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="solutionMapper">
+
+	<resultMap type="solution" id="solutionResultSet">
+		<result column="SOLUTION_NO" property="solutionNo"/>
+		<result column="SUBJECT" property="subject"/>
+		<result column="TAG" property="tag"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="SOLUTION_CONTENTS" property="solutionContents"/>
+		<result column="COUNT" property="count"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="USER_ID" property="userId"/>
+	</resultMap>
+	
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM SOLUTION
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="listAll" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE S.STATUS='Y'
+		ORDER BY CREATE_DATE DESC)
+	</select>
+	
+	<insert id="insertSolution" parameterType="solution">
+		INSERT INTO SOLUTION(
+						  SOLUTION_NO
+						 ,SUBJECT
+						 ,TAG
+						 ,USER_NO
+						 ,TITLE
+						 ,SOLUTION_CONTENTS
+						 )
+		VALUES(
+				SEQ_SNO.NEXTVAL
+				,#{subject}
+				,#{tag}
+				,#{userNo}
+				,#{title}
+				,#{solutionContents}
+				)
+	</insert>
+	
+	<update id="increaseCount" parameterType="_int">
+		UPDATE SOLUTION
+		SET COUNT = COUNT + 1
+		WHERE STATUS = 'Y'
+		AND SOLUTION_NO = #{solutionNo}
+	</update>
+	
+	<select id="selectSolution" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE SOLUTION_NO = #{solutionNo})
+	</select>
+	
+	<update id="deleteSolution" parameterType="_int">
+		UPDATE SOLUTION
+		SET STATUS='N'
+		WHERE SOLUTION_NO = #{solutionNo}
+	</update>
+	
+	<select id="searchTitle" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE S.TITLE LIKE '%#{keyword}%'
+        AND S.STATUS='Y'
+		ORDER BY CREATE_DATE DESC)
+	</select>
+	
+	<select id="searchContents" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE S.SOLUTION_CONTENTS LIKE '%#{keyword}%'
+        AND S.STATUS='Y'
+		ORDER BY CREATE_DATE DESC)
+	</select>
+	
+	<select id="searchId" resultMap="solutionResultSet">
+		SELECT *
+		FROM 
+            (SELECT S.*, M.USER_ID
+            FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		WHERE M.USER_ID LIKE '%#{keyword}%'
+        AND S.STATUS='Y'
+		ORDER BY CREATE_DATE DESC)
+	</select>
+	
+	
+</mapper>

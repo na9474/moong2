@@ -1,5 +1,9 @@
 package com.kh.moong.common.model.vo;
 
+import java.util.ArrayList;
+
+import com.kh.moong.solution.model.vo.Solution;
+
 public class PageInfo {
 
 	private int listCount;
@@ -107,6 +111,7 @@ public class PageInfo {
 				+ ", boardLimit=" + boardLimit + ", maxPage=" + maxPage + ", startPage=" + startPage + ", endPage="
 				+ endPage + "]";
 	}
+
 	
 	
 }

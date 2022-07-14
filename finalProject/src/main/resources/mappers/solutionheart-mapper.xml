@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="solutionHeartMapper">
+
+	<resultMap type="solutionHeart" id="sHeartResultSet">
+		<result column="SH_NO" property="shNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="SOLUTION_NO" property="solutionNo"/>
+	</resultMap>
+	
+	<!-- 추천하기 -->
+	<insert id="sHeartInsert" parameterType="SolutionHeart">
+		INSERT INTO SOLUTION_HEART(
+						  SH_NO
+						 ,USER_NO
+						 ,SOLUTION_NO
+						 )
+		VALUES(
+				SEQ_SHNO.NEXTVAL
+				,#{userNo}
+				,#{solutionNo}
+				)
+	</insert>
+	
+	<!-- 추천취소 -->
+	<delete id="sHeartDelete">
+		DELETE
+		FROM SOLUTION_HEART
+		WHERE USER_NO = #{userNo} AND SOLUTION_NO = #{solutionNo}
+	</delete>
+	
+	<!-- 게시물별 추천수  -->
+	<select id="sHeartCount" resultMap="sHeartResultSet">
+		SELECT COUNT(*) AS COUNT
+		FROM SOLUTION_HEART
+		WHERE SOLUTION_NO = #{solutionNo}
+	</select>
+	
+	<!-- 해당 user가 해당 게시물을 추천했는지 확인(0/1로 구분) -->
+	<select id="sHeartCheck" resultMap="sHeartResultSet">
+		SELECT COUNT(*) AS COUNT
+		FROM SOLUTION_HEART
+		WHERE SOLUTION_NO = #{solutionNo} AND USER_NO = #{userNo}
+	</select>
+	
+	
+</mapper>
