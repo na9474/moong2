@@ -7,13 +7,16 @@
 	</settings>
 
 	<typeAliases>
-	
+		<typeAlias type="com.kh.moong.chat.model.vo.Chat" alias="chat"/>
+		<typeAlias type="com.kh.moong.chat.model.vo.ChatReport" alias="chatReport"/>
+		<typeAlias type="com.kh.moong.chat.model.vo.Room" alias="room"/>
+		<typeAlias type="com.kh.moong.chat.model.vo.RoomJoin" alias="roomJoin"/>
 	</typeAliases>	
 
 	
 
 	<mappers>
-
+		<mapper resource="/mapper/chat-mapper.xml"/>
 	</mappers>
 
 	

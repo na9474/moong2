@@ -130,7 +130,7 @@ header nav ul li{
                             <a class="nav-link" href="#"> <i class="fa-solid fa-check" style="color:red;">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림 </i>  </a>
                        </li>
                         <li class="nav-item">            
-                            <a class="nav-link" href="#"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
+                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
                        </li>
                        <li class="nav-item">            
                         <a class="nav-link" href="#">마이페이지</a>
