@@ -11,6 +11,11 @@
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionFiles" alias="solutionFiles"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionCmt" alias="solutionCmt"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionHeart" alias="solutionHeart"/>
+		<typeAlias type="com.kh.moong.lesson.model.vo.LessonEnroll" alias="lessonEnroll"/>
+		<typeAlias type="com.kh.moong.qna.model.vo.QnaQuestion" alias="qnaQuestion"/>
+		<typeAlias type="com.kh.moong.qna.model.vo.QnaAnswer" alias="qnaAnswer"/>
+		<typeAlias type="com.kh.moong.qna.model.vo.QnaType" alias="qnaType"/>
+		<typeAlias type="com.kh.moong.qna.model.vo.QnaFile" alias="qnaFile"/>
 	</typeAliases>	
 
 	<mappers>
@@ -18,6 +23,9 @@
 		<mapper resource="/mappers/solutionfiles-mapper.xml"/>
 		<mapper resource="/mappers/solutioncmt-mapper.xml"/>
 		<mapper resource="/mappers/solutionheart-mapper.xml"/>
+		<mapper resource="/mappers/lessonEnroll-mapper.xml"/>
+		<mapper resource="/mappers/qna-mapper.xml"/>
+		<mapper resource="/mappers/member-mapperLee.xml"/>
 	</mappers>
 
 </configuration>
