@@ -15,4 +15,15 @@ public class LessonEnrollDao {
 		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectList",userNo);
 	}
 
+	public int lessonInsertCheck(SqlSessionTemplate sqlSession, LessonEnroll le) {
+		
+		
+		return  sqlSession.selectOne("lessonEnrollMapper.lessonInsertCheck",le);
+	}
+
+	public int lessonInsert(SqlSessionTemplate sqlSession, LessonEnroll le) {
+		
+		return sqlSession.insert("lessonEnrollMapper.lessonInsert",le);
+	}
+
 }

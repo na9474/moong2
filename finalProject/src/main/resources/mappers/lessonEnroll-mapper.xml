@@ -6,12 +6,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <resultMap type="lessonEnroll" id="lessonEnrollResultSet">
 	<result column="LE_NO" property="leNo"/>
-	<result column="SUBJECT" property="userNo"/>
+	<result column="USER_NO" property="userNo"/>
 	<result column="SUBJECT" property="subject"/>
 	<result column="FEE" property="fee"/>
 	<result column="LE_STYLE" property="leStyle"/>
 	<result column="AREA" property="area"/>
-	<result column="T_YEAR" property="tYear"/>
+	<result column="T_YEAR" property="tyear"/>
 	<result column="CAREER" property="career"/>
 	<result column="LE_DAY" property="leDay"/>
 	<result column="TEACHINGSTYLE" property="teachingStyle"/>
@@ -25,4 +25,39 @@ FROM LESSON_ENROLL
 WHERE USER_NO = #{userNo}
 </select>
 
+
+<select id="lessonInsertCheck" resultType="_int">
+SELECT COUNT(*)
+FROM LESSON_ENROLL
+WHERE USER_NO = #{userNo}
+AND SUBJECT = #{subject}
+AND STATUS ='Y'
+</select>
+
+<insert id="lessonInsert"  parameterType="lessonEnroll">
+	INSERT INTO LESSON_ENROLL(LE_NO,
+                          USER_NO,
+                          SUBJECT,
+                          FEE,
+                          T_YEAR,
+                          LE_STYLE,
+                          AREA,
+                          CAREER,
+                          LE_DAY,
+                          TEACHINGSTYLE,
+                          STATUS
+                          )
+                    VALUES(SEQ_LENO.NEXTVAL,
+                        #{userNo},
+                        #{subject},
+                        #{fee},
+                  		#{tyear},
+                        #{leStyle},
+                        #{area},
+                        #{career},
+                       	#{leDay},
+                        #{teachingStyle},
+                        
+                    )
+</insert>
 </mapper>

@@ -61,7 +61,7 @@
         </div>
         
         <div style="margin-left: 5%; float:left">과목이 중복되게 과외를 등록할 수 없습니다.</div>
-        <div style="float: right; margin-right: 5%; margin-bottom: 10px;"><button  style="height: 35px;"class="btn btn-warning" onclick="location.href='enrollFrom.ln'">과외등록</button></div>
+        <div style="float: right; margin-right: 5%; margin-bottom: 10px;"><button  style="height: 35px;"class="btn btn-warning" onclick="location.href='enrollFrom.le'">과외등록</button></div>
                 <table  class="table table-hover">
                     <thead>
                         <tr>
@@ -96,7 +96,7 @@
                             	</c:otherwise>
                             </c:choose>
                             
-                            <td>${l.tYear}</td>
+                            <td>${l.tyear}</td>
                             <td><button class="btn btn-warning" style="margin:0px;" >상세보기</button></td>
                         </tr>
                         </c:forEach>
