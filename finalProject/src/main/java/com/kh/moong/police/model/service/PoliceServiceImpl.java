@@ -22,7 +22,7 @@ public class PoliceServiceImpl implements PoliceService {
 	}
 
 	@Override
-	public int deletePolice(int soltionNo) {
+	public int deletePolice(int solutionNo) {
 		return policeDao.deletePolice(sqlSession, solutionNo);
 	}
 	
