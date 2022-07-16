@@ -28,13 +28,14 @@
 	</typeAliases>	
 
 	<mappers>
-		<mapper resource="/mapper/chat-mapper.xml"/>
+		<mapper resource="/mappers/chat-mapper.xml"/>
 		<mapper resource="/mappers/solution-mapper.xml"/>
 		<mapper resource="/mappers/solutionfiles-mapper.xml"/>
 		<mapper resource="/mappers/solutioncmt-mapper.xml"/>
 		<mapper resource="/mappers/solutionheart-mapper.xml"/>
 		<mapper resource="/mappers/lessonEnroll-mapper.xml"/>
 		<mapper resource="/mappers/qna-mapper.xml"/>
+		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/member-mapperLee.xml"/>
 		<mapper resource="/mappers/police-mapper.xml"/>
 	</mappers>
