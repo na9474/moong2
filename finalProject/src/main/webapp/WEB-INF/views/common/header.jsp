@@ -113,6 +113,9 @@ header nav ul li{
                   <li class="nav-item">
                     <a class="nav-link" href="#">자유 게시판</a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="list.po">관리자 페이지</a>
+                  </li>
                 </ul>
                 <!--로그인 전-->
                 <!-- <div class="collapse navbar-collapse justify-content-end" id="collapsibleNavbar">        

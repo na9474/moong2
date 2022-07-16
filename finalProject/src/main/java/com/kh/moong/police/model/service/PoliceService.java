@@ -7,7 +7,7 @@ import com.kh.moong.police.model.vo.Police;
 
 public interface PoliceService {
 	
-	//신고하기
+	//게시글 신고하기
 	int addPolice(Police p);
 	
 	//신고삭제

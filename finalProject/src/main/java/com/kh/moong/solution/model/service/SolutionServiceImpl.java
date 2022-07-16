@@ -28,8 +28,8 @@ public class SolutionServiceImpl implements SolutionService {
 	}
 
 	@Override
-	public ArrayList<Solution> listAll(PageInfo pi) {
-		return solutionDao.listAll(sqlSession,pi);
+	public ArrayList<Solution> listAll(PageInfo pi, String search_cat, String keyword, String subject, String tag) {
+		return solutionDao.listAll(sqlSession, pi, search_cat, keyword, subject, tag);
 	}
 
 	@Override
@@ -70,21 +70,6 @@ public class SolutionServiceImpl implements SolutionService {
 	@Override
 	public int insertCmt(SolutionCmt sc) {
 		return solutionDao.insertCmt(sqlSession,sc);
-	}
-
-	@Override
-	public ArrayList<Solution> searchTitle(String keyword) {
-		return solutionDao.searchTitle(sqlSession,keyword);
-	}
-	
-	@Override
-	public ArrayList<Solution> searchContents(String keyword) {
-		return solutionDao.searchContents(sqlSession,keyword);
-	}
-	
-	@Override
-	public ArrayList<Solution> searchId(String keyword) {
-		return solutionDao.searchId(sqlSession,keyword);
 	}
 	
 	@Override

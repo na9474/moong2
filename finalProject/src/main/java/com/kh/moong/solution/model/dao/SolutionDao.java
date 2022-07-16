@@ -1,6 +1,7 @@
 package com.kh.moong.solution.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -23,14 +24,22 @@ public class SolutionDao {
 	}
 	
 	//게시글 리스트 조회
-	public ArrayList<Solution> listAll(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<Solution> listAll(SqlSessionTemplate sqlSession, PageInfo pi, String search_cat, String keyword
+										,String subject, String tag) {
 		
 		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 
 		RowBounds rowBounds = new RowBounds(offset,limit);
 		
- 		return (ArrayList)sqlSession.selectList("solutionMapper.listAll",null,rowBounds);
+		HashMap<String, String> param = new HashMap<String, String>();
+		param.put ( "search_cat" , search_cat);
+		param.put ( "keyword" , keyword);
+		param.put ( "subject" , subject);
+		param.put( "tag", tag );
+
+		
+ 		return (ArrayList)sqlSession.selectList("solutionMapper.listAll",param,rowBounds);
 	}
 	
 	//게시글 작성하기
@@ -66,21 +75,6 @@ public class SolutionDao {
 	//댓글작성
 	public int insertCmt(SqlSessionTemplate sqlSession, SolutionCmt sc) {
 		return sqlSession.insert("solutionCmtMapper.insertCmt",sc);
-	}
-	
-	//제목으로 검색
-	public ArrayList<Solution> searchTitle(SqlSessionTemplate sqlSession, String keyword) {
- 		return (ArrayList)sqlSession.selectList("solutionMapper.searchTitle",keyword);
-	}
-	
-	//내용으로 검색
-	public ArrayList<Solution> searchContents(SqlSessionTemplate sqlSession, String keyword) {
- 		return (ArrayList)sqlSession.selectList("solutionMapper.searchContents",keyword);
-	}
-	
-	//아이디로 검색
-	public ArrayList<Solution> searchId(SqlSessionTemplate sqlSession, String keyword) {
- 		return (ArrayList)sqlSession.selectList("solutionMapper.searchId",keyword);
 	}
 	
 	//추천하기

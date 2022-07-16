@@ -15,7 +15,7 @@ public interface SolutionService {
 	int selectListCount();
 	
 	//게시글 리스트 조회
-	ArrayList<Solution> listAll(PageInfo pi);
+	ArrayList<Solution> listAll(PageInfo pi, String search_cat, String keyword, String subject, String tag);
 	
 	//게시글 작성하기
 	int insertSolution(Solution s);
@@ -40,15 +40,6 @@ public interface SolutionService {
 	
 	//댓글 작성
 	public abstract int insertCmt(SolutionCmt sc);
-	
-	//제목으로 검색
-	ArrayList<Solution> searchTitle(String keyword);
-	
-	//내용으로 검색
-	ArrayList<Solution> searchContents(String keyword);
-	
-	//아이디로 검색
-	ArrayList<Solution> searchId(String keyword);
 	
 	//추천하기
 	int sHeartInsert(SolutionHeart sh);

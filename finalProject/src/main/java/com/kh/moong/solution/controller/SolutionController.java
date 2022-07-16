@@ -30,7 +30,11 @@ public class SolutionController {
 	@RequestMapping("list.so")
 	public String listAll(
 					@RequestParam(value="cpage",defaultValue="1") int currentPage,
-					Model model
+					Model model,
+					String search_cat,
+					String keyword,
+					String subject,
+					String tag
 							) {
 		
 		int listCount = solutionService.selectListCount();
@@ -40,7 +44,7 @@ public class SolutionController {
 		
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
-		ArrayList<Solution> list = solutionService.listAll(pi);
+		ArrayList<Solution> list = solutionService.listAll(pi, search_cat, keyword, subject, tag);
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);

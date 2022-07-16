@@ -51,15 +51,6 @@
 		    height: 600px;
 		}
 
-        #modifybut{
-            text-align: right;
-            padding-right: 0px;
-        }
-
-        #deletebut{
-            text-align: left;
-        }
-
         #cmtfi{
             text-align: right;
             padding-top: 35px;
@@ -149,13 +140,20 @@
             <div class="col-12" id="co-contentText">${s.solutionContents}</div>
         </div>
 
-        <div class="row etc">
-            <div class="col-10"></div>
+        <div class="row etc" id=etcBtn>
+            <div class="col-9"></div>
             <div class="col-1" id="modifybut">
                 <a class="btn moong-dark" onclick="postFormSubmit(1)">수정</a>
             </div>
             <div class="col-1" id="deletebut">
                 <a class="btn moong-dark" onclick="postFormSubmit(2)">삭제</a>
+            </div>
+            
+            <div class="col-1" id="policebut">
+	            <form id="reportPolice" method="post" action="report.so" enctype="multipart/form-data" accept-charset="utf-8">
+	            	<input type="hidden" name="solutionNo" value="${s.solutionNo}">
+	                <button type="submit" class="btn moong-dark">신고</button>
+	            </form>
             </div>
         </div>
         
@@ -174,7 +172,7 @@
             }
         </script>
             
-        <br>
+        <br><br>
         <h4>답변(<span id="cmtCount">0</span>)</h4>
         <br>
         
@@ -278,6 +276,8 @@
                 <td>9999</td>
                 <td>2222-22-22</td>
               </tr>
+              
+              
               
             </tbody>
         </table>

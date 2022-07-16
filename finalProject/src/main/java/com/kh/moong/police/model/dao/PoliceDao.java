@@ -12,7 +12,7 @@ import com.kh.moong.police.model.vo.Police;
 @Repository
 public class PoliceDao {
 	
-	//신고하기
+	//게시글 신고하기
 	public int addPolice(SqlSessionTemplate sqlSession, Police p) {
 		return sqlSession.insert("policeMapper.addPolice",p);
 	}

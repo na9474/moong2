@@ -12,20 +12,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="SOLUTION_NO" property="solutionNo"/>
 	</resultMap>
 	
-	<!-- 신고하기 -->
+	<!-- 게시글 신고하기 -->
 	<insert id="addPolice" parameterType="police">
 		INSERT INTO POLICE(
 						  P_NO
 						 ,USER_NO
 						 ,REASON
-						 ,CREATE_DATE
 						 ,SOLUTION_NO
 						 )
 		VALUES(
 				SEQ_PNO.NEXTVAL
 				,#{userNo}
 				,#{reason}
-				,#{createDate}
 				,#{solutionNo}
 				)
 	</insert>
