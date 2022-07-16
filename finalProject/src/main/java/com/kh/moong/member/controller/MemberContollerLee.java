@@ -101,6 +101,34 @@ public class MemberContollerLee {
 		return "member/stuUpdate";
 	}
 	
+	//선생님 탈퇴하기
+	@RequestMapping("teaDelete.me")
+	public String teaDelete() {
+
+		//세션에 담긴 로그인 정보 가져오기
+//		String userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		int userNo = 1;
+		
+		int result = memberService.teaDelete(userNo);
+		
+		return "redirect:/";
+	}
+	
+	//학생 탈퇴하기
+	@RequestMapping("stuDelete.me")
+	public String stuDelete() {
+		
+		//세션에 담긴 로그인 정보 가져오기
+//		String userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		int userNo = 1;
+		
+		int result = memberService.stuDelete(userNo);
+		
+		
+		return "redirect:/";
+	}
+	
+	
 	//성적 수정
 	//학생 성적 수정 페이지 이동
 	@RequestMapping("stuGradeUpdateForm.me")
@@ -161,8 +189,6 @@ public class MemberContollerLee {
 			ip.setIpOriginName(idPicture.getOriginalFilename());
 			ip.setIpSysName("resources/iPUploadFiles"+changeName);
 			ip.setUserNo(stu.getUserNo());
-			
-			
 			
 		}
 			//개인정보 수정
