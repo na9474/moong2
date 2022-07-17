@@ -23,6 +23,8 @@
 		<typeAlias type="com.kh.moong.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.moong.member.model.vo.Teacher" alias="teacher"/>
 		<typeAlias type="com.kh.moong.member.model.vo.Student" alias="student"/>
+		<typeAlias type="com.kh.moong.matching.model.vo.Matching" alias="matching"/>
+		
 	</typeAliases>	
 
 	<mappers>
@@ -34,6 +36,7 @@
 		<mapper resource="/mappers/lessonEnroll-mapper.xml"/>
 		<mapper resource="/mappers/qna-mapper.xml"/>
 		<mapper resource="/mappers/member-mapperLee.xml"/>
+		<mapper resource="/mappers/matching-mapper.xml"/>
 	</mappers>
 
 </configuration>

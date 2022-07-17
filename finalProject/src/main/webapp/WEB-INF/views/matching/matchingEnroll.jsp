@@ -233,7 +233,7 @@
             </svg>
         </div>
         <div id="select">
-            <form action="">
+            <form action="post" action="insert.ma">
                 <table  id="selectfrom-tb">
                     <tr>
                         <td>과목 선택</td>

@@ -3,7 +3,7 @@ package com.kh.moong.matching.model.vo;
 import lombok.Data;
 
 @Data
-public class Mathcing {
+public class Matching {
 private int maNo;					//	MA_NO	NUMBER
 private int userNo;					//	USER_NO	NUMBER
 private String random;					//	RANDOM	VARCHAR2(1 BYTE)

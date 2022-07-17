@@ -1,1 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="matchingmapper">
+
+
+<resultMap type="matching" id="matchingResultSet">
+<result column="MA_NO" property="maNo"/>
+<result column="USER_NO" property="userNo"/>
+<result column="RANDOM" property="random"/>
+<result column="GENDER" property="gender"/>
+<result column="SUBJECT" property="subject"/>
+<result column="AREA" property="area"/>
+<result column="FEE" property="fee"/>
+<result column="PEOPLE" property="pople"/>
+<result column="CHIEF" property="chief"/>
+<result column="STATUS" property="status"/>
+<result column="MA_DAY" property="maDay"/>
+</resultMap>
+
+
+<select id="checkMatching" resultType="_int">
+
+</select>
+
+
+
+</mapper>
