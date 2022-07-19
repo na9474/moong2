@@ -94,14 +94,15 @@
 	                    	<input type="email" id="email" name="email" required placeholder="이메일을 입력하세요" style="width:380px;">
 	                    </td>
 	                    <td>
-	                    	<button class="email_btn">인증번호 받기</button>
+	                    	<button type="button" class="email_btn" id="email-check">인증번호 받기</button>
 	                    </td>
 	                </tr>
-	                <tr>
-	                    <td><span class="must_icon">*</span> <label for="phone">휴대전화</label></td>
-	                    <td colspan="2">
-	                    	<input type="text" id="phone" name="phone" required placeholder="'-'를 제외한 숫자만 입력하세요" style="width:380px;">
-	                    </td>
+	                <tr id="chkArea4">
+	                	<td></td>
+	                	<td colspan="2">
+	                		<input type="text" id="auth" placeholder="인증번호 6자리를 입력해주세요" maxlength="6" disabled>
+	                		<div id="check4"></div>
+	                	</td>
 	                </tr>
 	                <tr>
 	                    <td><span class="must_icon">*</span> <label for="birth">생년월일</label></td>
@@ -126,7 +127,7 @@
 // 				$idchk.keyup(function(){
 // 					var idReg = /^(?=.*[a-z0-9])[a-z0-9]{5,20}$/;
 					
-// 					if($idchk.val().length >= 5){
+// 					if($idchk.val().length >= 1){
 // 						$.ajax({
 // 							url: "idCheck.me",
 // 							data: { 
@@ -143,9 +144,6 @@
 // 									$("#chkArea,#check").show();
 // 									$("#check").css("color", "rgb(251, 176, 76)").text("사용 가능한 아이디입니다.");
 // 								}
-// 							},
-// 							error: function(){
-// 								console.log("ajax 통신 실패");
 // 							}
 // 						});
 // 					} else {  // 입력한 아이디값의 길이가 5글자 미만일 때
@@ -162,10 +160,6 @@
 // 					var chkNum = pwd.search(/[0-9]/g);
 // 					var chkEng = pwd.search(/[a-z]/ig);
 					
-// 					// 비밀번호 입력란이 비어있을 때
-// 					if($("#pw").val().length == 0){
-// 						$("#chkArea2,#check2").hide();
-// 					}
 // 					// 비밀번호 정규식과 일치하지 않을 때
 // 					if(!pwdReg.test(pwd)){
 // 						$("#chkArea2,#check2").show();
@@ -186,6 +180,10 @@
 // 						$("#chkArea2,#check2").show();
 // 						$("#check2").css("color","red").text("비밀번호에 아이디를 포함할 수 없습니다.");
 // 					}
+// 					// 비밀번호 입력란이 비어있을 때
+// 					if($("#pw").val() == ""){
+// 						$("#chkArea2,#check2").hide();
+// 					}
 // 					// 비밀번호 정규식과 일치할 때
 // 					if(pwdReg.test(pwd)){
 // 						$("#chkArea2,#check2").hide();
@@ -202,97 +200,48 @@
 // 						} else {  // 각 값이 같을 때
 // 							$("#chkArea3,#check3").show();
 // 							$("#check3").css("color","rgb(251, 176, 76)").text("비밀번호가 일치합니다.");
-// 							$(".enroll_btn").prop("disabled",false);
 // 						}
 // 					} else {  // 입력한 비밀번호 재확인값의 길이가 8글자 미만일 때
 // 						$("#chkArea3").hide();
 // 					}
 // 				});
-// 			});
+				
+// 				// -------- 이메일 인증번호 보내기 -------- //
+// 				$("#email-check").click(function(){
+// 					$("#chkArea4").show();
+					
+// 					const emailv = $("#email").val(); // 이메일 주소값
+// 					console.log("이메일 오는지?"+emailv);
+// 					const inputMail = $("#auth"); // 인증번호 입력칸
+					
+// 					$.ajax({
+// 						type: "GET",
+// 						url: "<c:url value='mailCheck?email='/>"+emailv,
+// 						success: function(e){
+// 							console.log("e"+e);
+// 							inputMail.prop("disabled", false);
+// 							code = e;
+// 							alert("인증번호가 전송되었습니다.");
+// 						}
+// 					});
+// 				});
+				
+// 				// -------- 이메일 인증번호 비교 -------- //
+// 				$("#auth").blur(function(){
+// 					const inputNum = $(this).val();
+// 					const $resultMsg = $("#check4");
+					
+// 					if(inputNum === code) {
+// 						$resultMsg.css("color","rgb(251, 176, 76)").html("인증번호가 일치합니다.");
+// 						$("#email-check").prop("disabled", true);
+// 						$("#email").prop("readonly", true);
+// 						$(".enroll_btn").prop("disabled",false); // 회원가입 버튼 활성화
+// 					} else {
+// 						$resultMsg.css("color","red").html("인증번호가 일치하지 않습니다.");
+// 					}
+// 				});
+			});
 		</script>
-		
-		
-        <!-- <table class="table" style="width: 500px;">
-            <tbody>
-                <tr>
-                    <td><span class="must_icon">*</span> 최근 모의고사 성적</td>
-                    <td>
-                        <select>
-                            <option value="" selected>언어</option>
-                            <option value="1">1등급</option>
-                            <option value="2">2등급</option>
-                            <option value="3">3등급</option>
-                            <option value="4">4등급</option>
-                            <option value="5">5등급</option>
-                            <option value="6">6등급</option>
-                            <option value="7">7등급</option>
-                            <option value="8">8등급</option>
-                            <option value="9">9등급</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select required>
-                            <option value="" selected>수리</option>
-                            <option value="1">1등급</option>
-                            <option value="2">2등급</option>
-                            <option value="3">3등급</option>
-                            <option value="4">4등급</option>
-                            <option value="5">5등급</option>
-                            <option value="6">6등급</option>
-                            <option value="7">7등급</option>
-                            <option value="8">8등급</option>
-                            <option value="9">9등급</option>
-                        </select>
-                    </td>
-                    <td>
-                        <select required>
-                            <option value="" selected>외국어</option>
-                            <option value="1">1등급</option>
-                            <option value="2">2등급</option>
-                            <option value="3">3등급</option>
-                            <option value="4">4등급</option>
-                            <option value="5">5등급</option>
-                            <option value="6">6등급</option>
-                            <option value="7">7등급</option>
-                            <option value="8">8등급</option>
-                            <option value="9">9등급</option>
-                        </select>
-                    </td>
-                </tr> 
-            </tbody>
-        </table>
-            
-        <table class="table" style="width: 500px;">
-            <tbody>
-                <tr>
-                    <td><span class="must_icon">*</span> 성적표 첨부</td>
-                    <td style="width: 272px;"></td>
-                    <td></td>
-                    <td><button>파일첨부</button></td>
-                </tr>
-                <tr>
-                    <td><span class="must_icon">*</span> 학생증 첨부</td>
-                    <td></td>
-                    <td></td>
-                    <td><button>파일첨부</button></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="table" style="width: 500px;">
-            <tbody>
-                <tr>
-                    <td><span class="must_icon">*</span> 과외 가능 요일</td>
-                    <td><input type="checkbox" name="" value="">월</td>
-                    <td><input type="checkbox" name="" value="">화</td>
-                    <td><input type="checkbox" name="" value="">수</td>
-                    <td><input type="checkbox" name="" value="">목</td>
-                    <td><input type="checkbox" name="" value="">금</td>
-                    <td><input type="checkbox" name="" value="">토</td>
-                    <td><input type="checkbox" name="" value="">일</td>
-                </tr>
-            </tbody>
-        </table> -->
     </div>
 </body>
 </html>

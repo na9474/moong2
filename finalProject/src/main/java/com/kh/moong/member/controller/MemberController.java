@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.moong.member.model.service.MailSendService;
 import com.kh.moong.member.model.service.MemberService;
 import com.kh.moong.member.model.vo.Member;
 
@@ -17,9 +18,10 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	@Autowired
+	private MailSendService mailService;
 	
 	@RequestMapping("login.me")
 	public String login() {
@@ -89,5 +91,27 @@ public class MemberController {
 //		return (count > 0) ? "NOPE" : "YEAH";
 //	}
 	
-
+	// 아이디 | 비밀번호 찾기 포워딩
+	@RequestMapping("findIdPw.me")
+	public String findIdPw() {
+		return "member/memberIdPwFind";
+	}
+	
+	// 아이디 찾기
+//	@RequestMapping(value="findId.me", method=RequestMethod.POST)
+//	@ResponseBody
+//	public String findId(Member m, Model model) {
+//		Member id = memberService.selectFindId(m);
+//		
+//		return id;
+//	}
+	
+	// 이메일 인증
+//	@RequestMapping("mailCheck")
+//	@ResponseBody
+//	public String mailCheck(String email) {
+//		System.out.println("인증 이메일: "+email);
+//		
+//		return mailService.joinEmail(email);
+//	}
 }

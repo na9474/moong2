@@ -29,4 +29,10 @@ public class MemberDao {
 //	public int idCheck(SqlSessionTemplate sqlSession, String userId) {
 //		return sqlSession.selectOne("memberMapper.idOk",userId);
 //	}
+	
+	// 아이디 찾기
+//	public String selectFindId(SqlSessionTemplate sqlSession, String userName, String email) {
+//		return sqlSession.selectOne("memberMapper.selectFindId", userName, email);
+//	}
+	
 }

@@ -19,7 +19,7 @@
 <!--font Awesome-->
 <script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="${path}/resources/css/login.css">
+<link rel="stylesheet" href="${path}/resources/css/memberLogin.css">
 
 <title>로그인</title>
 
@@ -40,7 +40,7 @@
 	            <input type="password" class="box" name="userPwd" placeholder="비밀번호를 입력하세요" required> 
 	        </div>
 	        <div id="find">
-		        <a href="#" id="findIP">아이디/비밀번호 찾기</a>
+		        <a href="findIdPw.me" id="findIP">아이디/비밀번호 찾기</a>
 	        </div>
 	        <div style="text-align: center;">
 	            <button type="submit" class="login_btn">로그인</button>

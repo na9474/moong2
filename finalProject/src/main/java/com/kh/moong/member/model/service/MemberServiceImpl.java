@@ -37,4 +37,12 @@ public class MemberServiceImpl implements MemberService{
 //		
 //		return memberDao.idCheck(sqlSession,userId);
 //	}
+	
+	// 아이디 찾기
+//	@Override
+//	public Member selectFindId(Member m) {
+//		
+//		return null;
+//	}
+	
 }
