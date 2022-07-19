@@ -2,7 +2,10 @@ package com.kh.moong.solution.controller;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
+import com.kh.moong.member.model.vo.Member;
 import com.kh.moong.solution.model.service.SolutionService;
 import com.kh.moong.solution.model.vo.Solution;
 import com.kh.moong.solution.model.vo.SolutionCmt;
@@ -52,14 +57,14 @@ public class SolutionController {
 		return "solution/solutionList";
 	}
 	
-	//글 작성폼으로 이동
+	//게시글 작성폼으로 이동
 	@RequestMapping("writeForm.so")
 	public String insertSolution() {
 		
 		return "solution/solutionWrite";
 	}
 	
-	//글 작성
+	//게시글 작성
 	@RequestMapping("write.so")
 	public String insertSolution(Solution s) {
 		
@@ -79,6 +84,7 @@ public class SolutionController {
 		
 		return "solution/solutionWrite";
 	}
+	
 	
 //	@RequestMapping("uploadSummernoteImageFile")
 //	public String insertSolutionFiles(SolutionFiles sf
@@ -133,32 +139,41 @@ public class SolutionController {
 //		return sfSysName;
 //	}
 	
-	
+	//게시글 상세페이지
 	@RequestMapping("detail.so")
-	public ModelAndView selectSolution(int sno, ModelAndView mv) {
-		
-		//조회수 증가 
+	public ModelAndView selectSolution(int sno, ModelAndView mv, HttpServletRequest request) {
 		int result = solutionService.increaseCount(sno);
+				
+		int loginNo = 0;
+		if(request.getSession().getAttribute("loginUser") !=null) {
+			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+		}
+		int heartYn = solutionService.sHeartCheck(sno, loginNo);
 		
-		if(result > 0) { //성공적으로 조회수가 증가되었다면
-			
-			//상세보기할 정보를 select로 조회 해오기
-			Solution s = solutionService.selectSolution(sno);
-			
-			//메소드 체이닝 (단 view정보가 뒤에 와야함)
-			mv.addObject("s",s).setViewName("solution/solutionDetail");
+		if(heartYn>0) {
+			heartYn=1;
 		}else {
-			
-			mv.addObject("errorMsg","게시글 조회 실패").setViewName("common/errorPage");
+			heartYn=0;
 		}
 		
-//		int heartCount = solutionService.sHeartCount(solutionNo);
-//		
-//		mv.addObject("heartCount",heartCount).setViewName("solution/solutionDetail");
-		
+		if(result > 0) { 
+			
+			Solution s = solutionService.selectSolution(sno);
+			int heartCount = solutionService.sHeartCount(sno);
+			
+			//메소드 체이닝 (단 view정보가 뒤에 와야함)
+			mv.addObject("s",s);
+			mv.addObject("heartYn", heartYn);
+			mv.addObject("loginNo", loginNo);
+			mv.addObject("heartCount",heartCount).setViewName("solution/solutionDetail");
+
+		}else {
+			mv.addObject("errorMsg","게시글 조회 실패").setViewName("common/errorPage");
+		}
 		return mv;
 	}
 	
+	//게시글 삭제
 	@RequestMapping("delete.so")
 	public ModelAndView deleteSolution(ModelAndView mv,
 									int sno,
@@ -193,10 +208,14 @@ public class SolutionController {
 	//댓글작성
 	@RequestMapping(value="cmtInsert.so",produces="html/text; charset=UTF-8")
 	@ResponseBody
-	public String insertCmt(SolutionCmt sc) {
+	public String insertCmt(SolutionCmt sc, HttpServletRequest request) {
 		
-		int userNo=1;
-		sc.setUserNo(userNo);
+		int loginNo = 0;
+		if(request.getSession().getAttribute("loginUser") !=null) {
+			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+		}
+		
+		sc.setUserNo(loginNo);
 
 		int result = solutionService.insertCmt(sc);
 		
@@ -210,14 +229,108 @@ public class SolutionController {
 		return ans;
 	}
 	
+//	//댓글 파일첨부
+//	private String path="C:\\resources\\uploadFiles";
+//	
+//	@RequestMapping("result")
+//    public String insertSolCmtFiles(@RequestParam("file1") MultipartFile multi,HttpServletRequest request,HttpServletResponse response, Model model)
+//    {
+//        String url = null;
+//        
+//        try {
+// 
+//            String uploadpath = path;
+//            String scfOriginName = multi.getOriginalFilename();
+//            String scfSysName = scfOriginName.substring(scfOriginName.lastIndexOf("."),scfOriginName.length());
+//            long size = multi.getSize();
+//            String saveFileName = genSaveFileName(scfSysName);
+//            
+//            System.out.println("uploadpath : " + uploadpath);
+//            
+//            System.out.println("sfOriginName : " + scfOriginName);
+//            System.out.println("extensionName : " + scfSysName);
+//            System.out.println("size : " + size);
+//            System.out.println("saveFileName : " + saveFileName);
+//            
+//            if(!multi.isEmpty())
+//            {
+//                File file = new File(uploadpath, multi.getOriginalFilename());
+//                multi.transferTo(file);
+//                
+//                model.addAttribute("filename", multi.getOriginalFilename());
+//                model.addAttribute("uploadPath", file.getAbsolutePath());
+//                
+//                return "filelist";
+//            }
+//        }catch(Exception e)
+//        {
+//            System.out.println(e);
+//        }
+//        return "redirect:form";
+//    }
+//	
+//    // 현재 시간을 기준으로 파일 이름 생성
+//    private String genSaveFileName(String sfSysName) {
+//        String fileName = "";
+//        
+//        Calendar calendar = Calendar.getInstance();
+//        fileName += calendar.get(Calendar.YEAR);
+//        fileName += calendar.get(Calendar.MONTH);
+//        fileName += calendar.get(Calendar.DATE);
+//        fileName += calendar.get(Calendar.HOUR);
+//        fileName += calendar.get(Calendar.MINUTE);
+//        fileName += calendar.get(Calendar.SECOND);
+//        fileName += calendar.get(Calendar.MILLISECOND);
+//        fileName += sfSysName;
+//        
+//        return fileName;
+//    }
+	
+	
+	
+	
+	
+	
+	
+	//댓글삭제
+	@RequestMapping("cmtDelete.so")
+	public ModelAndView deleteCmt(ModelAndView mv,
+									int scNo,
+									int solutionNo,
+									String filePath,
+									HttpSession session) {
+		
+		System.out.println("cmtDelete 컨트롤러");
+		int result = solutionService.deleteCmt(scNo);
+		
+		if(result>0) { 
+//			if(!filePath.equals("")) {
+//				String realPath = session.getServletContext().getRealPath(filePath);
+//				new File(realPath).delete();
+//			}
+			session.setAttribute("alertMsg", "댓글 삭제 성공");
+			
+			mv.setViewName("redirect:detail.so?sno="+solutionNo);
+		}else {
+			mv.addObject("errorMsg", "댓글 삭제 실패").setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
 	//추천하기
-	@RequestMapping("heart.so")
-	public String sHeartInsert(int solutionNo) {
+	@RequestMapping(value="heart.so",produces="html/text; charset=UTF-8")
+	@ResponseBody
+	public String sHeartInsert(int solutionNo, HttpServletRequest request) {
 
 		SolutionHeart sh = new SolutionHeart();
-		sh.setUserNo(1);
-		sh.setSolutionNo(solutionNo);
+		int loginNo = 0;
+		if(request.getSession().getAttribute("loginUser") !=null) {
+			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+		}
 		
+		sh.setSolution_no(solutionNo);
+		sh.setUser_no(loginNo);
+	
 		int result = solutionService.sHeartInsert(sh);
 		
 		if(result>0) {
@@ -225,17 +338,22 @@ public class SolutionController {
 		}else { 
 			System.out.println("추천 실패");
 		}
-		
 		return "redirect:detail.so?sno="+solutionNo;
 	}
 	
 	//추천취소
-	@RequestMapping("heartDelete.so")
-	public String sHeartDelete(int solutionNo) {
+	@RequestMapping(value="heartDelete.so",produces="html/text; charset=UTF-8")
+	@ResponseBody
+	public String sHeartDelete(int solutionNo, HttpServletRequest request) {
 		
 		SolutionHeart sh = new SolutionHeart();
-		sh.setUserNo(1);
-		sh.setSolutionNo(solutionNo);
+		int loginNo = 0;
+		if(request.getSession().getAttribute("loginUser") !=null) {
+			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+		}
+		
+		sh.setSolution_no(solutionNo);
+		sh.setUser_no(loginNo);
 
 		int result = solutionService.sHeartDelete(sh);
 		

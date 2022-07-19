@@ -5,13 +5,13 @@ import java.sql.Date;
 import lombok.Data;
 
 @Data
-public class Police {
+public class PoliceCmt {
 		
-		private int p_No;
+		private int pc_No;
 		private int userNo;
 		private String reason;
 		private Date createDate;
-		private int solutionNo;
+		private int scNo;
 		private String reporter;
 		private String writer;
 }

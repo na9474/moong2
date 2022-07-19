@@ -15,21 +15,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="cmtListAll" resultMap="solutionCmtResultSet">
-        SELECT  USER_ID,
-                SOLUTION_CMT_CONTENTS,
-                TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS "CREATE_DATE"
-		FROM 
-            (SELECT SC.*, M.USER_ID
+        SELECT SC.*, M.USER_ID
             FROM SOLUTION_CMT SC
             JOIN MEMBER M ON SC.USER_NO=M.USER_NO
         WHERE SOLUTION_NO = #{solutionNo}
         AND SC.STATUS = 'Y'
-        ORDER BY CREATE_DATE DESC)
+        ORDER BY CREATE_DATE DESC
 	</select>
 	
 	<insert id="insertCmt" parameterType="solutionCmt">
 		INSERT INTO SOLUTION_CMT (SC_NO,SOLUTION_CMT_CONTENTS,SOLUTION_NO,USER_NO)
 		VALUES (SEQ_SCNO.NEXTVAL,#{solutionCmtContents},#{solutionNo},#{userNo})
 	</insert>
+	
+	<update id="deleteCmt" parameterType="_int">
+		UPDATE SOLUTION_CMT
+		SET STATUS='N'
+		WHERE SC_NO = #{scNo}
+	</update>
+	
+	<select id="cmtSelctSn" resultMap="solutionCmtResultSet">
+		SELECT SOLUTION_NO
+		FROM SOLUTION_CMT
+		WHERE SC_NO = #{scNo}
+	</select>
 	
 </mapper>

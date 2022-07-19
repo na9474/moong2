@@ -47,17 +47,24 @@
 
     /*메뉴바 백그라운드컬러*/
     #menubar{
-        background-color:  rgb(49, 48, 47);
-        
+        background-color:  rgb(49, 48, 47);    
     }
     /*메뉴바 글씨색*/
     .nav-link{
-        
         color: rgb(248, 238, 225);
     }
     .nav-link:hover{
-        
         color: rgb(254, 132, 114);
+        transition: 0.7s;
+    }
+    .dropdown-menu{
+    	background-color:  rgb(49, 48, 47);  
+    }
+    .dropdown-item{
+    	color: rgb(248, 238, 225);
+    }
+    .dropdown-item{
+    	
         transition: 0.7s;
     }
     #logo{
@@ -120,8 +127,15 @@ header nav ul li{
                   <li class="nav-item">
                     <a class="nav-link" href="#">자유 게시판</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="list.po">관리자 페이지</a>
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">관리자 페이지</a>
+                        <div class="dropdown-menu">
+					      <a class="dropdown-item" href="#">회원승인</a>
+					      <a class="dropdown-item" href="#">회원리스트</a>
+					      <a class="dropdown-item" href="list.po">신고리스트</a>
+					      <a class="dropdown-item" href="#">QnA</a>
+					      <a class="dropdown-item" href="#">차트</a>
+					    </div>
                   </li>
                 </ul>
                 
@@ -146,7 +160,7 @@ header nav ul li{
 		                    <ul class="navbar-nav">      
 		                     
 		                        <li class="nav-item">            
-		                            <a class="nav-link" href="#" style="pointer-events: none;">${loginUser.userName }님 환영합니다</a>     
+		                            <a class="nav-link" href="#" style="pointer-events: none;">${loginUser.userName}님 환영합니다</a>     
 		                       </li>            
 		                       <li class="nav-item">  
 		                            <!-- 체크할 메세지 or 알람이 있다면 fa-check 표시-->          

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.solution.model.vo.Solution;
 import com.kh.moong.solution.model.vo.SolutionCmt;
+import com.kh.moong.solution.model.vo.SolutionCmtFiles;
 import com.kh.moong.solution.model.vo.SolutionFiles;
 import com.kh.moong.solution.model.vo.SolutionHeart;
 
@@ -77,9 +78,24 @@ public class SolutionDao {
 		return sqlSession.insert("solutionCmtMapper.insertCmt",sc);
 	}
 	
+	//댓글 파일첨부
+	public int insertSolCmtFiles(SqlSessionTemplate sqlSession, SolutionCmtFiles scf) {
+		return sqlSession.insert("solutionCmtFilesMapper.insertSolCmtFiles",scf);
+	}
+	
+	//댓글 삭제
+	public int deleteCmt(SqlSessionTemplate sqlSession, int scNo) {
+		return sqlSession.update("solutionCmtMapper.deleteCmt",scNo);
+	}
+	
 	//추천하기
 	public int sHeartInsert(SqlSessionTemplate sqlSession, SolutionHeart sh) {
 		return sqlSession.insert("solutionHeartMapper.sHeartInsert", sh);
+	}
+	
+	//댓글 solutionNo뽑기
+	public int cmtSelctSn(SqlSessionTemplate sqlSession, int scNo) {
+		return sqlSession.selectOne("solutionHeartMapper.cmtSelctSn", scNo);
 	}
 	
 	//추천취소
@@ -88,13 +104,16 @@ public class SolutionDao {
 	}
 	
 	//추천수
-	public int sHeartCount(SqlSessionTemplate sqlSession, int solutionNo) {
-		return sqlSession.selectOne("solutionHeartMapper.sHeartCount", solutionNo);
+	public int sHeartCount(SqlSessionTemplate sqlSession, int solution_no) {
+		return sqlSession.selectOne("solutionHeartMapper.sHeartCount", solution_no);
 	}
 	
 	//user가 해당 게시물을 추천했는지 확인
-	public int sHeartCheck(SqlSessionTemplate sqlSession, SolutionHeart sh) {
-		return sqlSession.selectOne("solutionHeartMapper.sHeartCheck", sh);
+	public int sHeartCheck(SqlSessionTemplate sqlSession, int solution_no, int user_no) {
+		HashMap<String, Integer> param = new HashMap<String, Integer>();
+		param.put ( "solution_no" , solution_no);
+		param.put ( "user_no" , user_no);
+		return sqlSession.selectOne("solutionHeartMapper.sHeartCheck", param);
 	}
 	
 }

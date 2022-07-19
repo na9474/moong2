@@ -2,58 +2,58 @@
 <!DOCTYPE mapper 
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="policeMapper">
+<mapper namespace="policeCmtMapper">
 
-	<resultMap type="police" id="policeResultSet">
-		<result column="P_NO" property="p_No"/>
+	<resultMap type="policeCmt" id="policeCmtResultSet">
+		<result column="PC_NO" property="pc_No"/>
 		<result column="USER_NO" property="userNo"/>
 		<result column="REASON" property="reason"/>
 		<result column="CREATE_DATE" property="createDate"/>
-		<result column="SOLUTION_NO" property="solutionNo"/>
+		<result column="SC_NO" property="scNo"/>
 		
 	</resultMap>
 	
-	<!-- 게시글 신고 -->
-	<insert id="addPolice" parameterType="police">
-		INSERT INTO POLICE(
-						  P_NO
+	<!-- 댓글신고 -->
+	<insert id="addPoliceCmt" parameterType="policeCmt">
+		INSERT INTO POLICE_CMT(
+						  PC_NO
 						 ,USER_NO
 						 ,REASON
-						 ,SOLUTION_NO
+						 ,SC_NO
 						 )
 		VALUES(
-				SEQ_PNO.NEXTVAL
+				SEQ_PCNO.NEXTVAL
 				,#{userNo}
 				,#{reason}
-				,#{solutionNo}
+				,#{scNo}
 				)
 	</insert>
 	
 	<!-- 신고삭제 -->
-	<delete id="deletePolice">
+	<delete id="deletePoliceCmt">
 		DELETE
-		FROM POLICE
-		WHERE P_NO = #{p_No}	
+		FROM POLICE_CMT
+		WHERE PC_NO = #{pcNo}	
 	</delete>
 	
 	<!-- 신고리스트 -->
-	<select id="policeListCount" resultType="_int">
+	<select id="policeCmtListCount" resultType="_int">
 		SELECT COUNT(*)
-		FROM POLICE
+		FROM POLICE_CMT
 	</select>
 	
 	<!-- 신고리스트 -->
-	<select id="policeList" resultMap="policeResultSet">
+	<select id="policeCmtList" resultMap="policeCmtResultSet">
 	select l.*, m.user_id as "reporter", w.user_id as "writer"
 	from 
-    police l
+    police_cmt l
     join member m
     on l.user_no=m.user_no
     join
-        (select p.p_no, m.user_id
+        (select p.pc_no, m.user_id
         from 
-            police p 
-            join solution s on p.solution_no=s.solution_no
+            police_cmt p
+            join solution_cmt s on p.sc_no=s.sc_no
             join member m on s.user_no = m.user_no) w
     on l.p_no = w.p_no
     order by create_date DESC

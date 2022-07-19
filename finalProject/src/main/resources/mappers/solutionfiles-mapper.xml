@@ -13,7 +13,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<insert id="insertSolutionFiles" parameterType="solutionFiles">
-		INSERT INTO SOLUTION(
+		INSERT INTO SOLUTION_FILES(
 						  SF_NO
 						 ,SF_ORIGINNAME
 						 ,SF_SYSNAME

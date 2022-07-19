@@ -10,6 +10,7 @@ import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.solution.model.dao.SolutionDao;
 import com.kh.moong.solution.model.vo.Solution;
 import com.kh.moong.solution.model.vo.SolutionCmt;
+import com.kh.moong.solution.model.vo.SolutionCmtFiles;
 import com.kh.moong.solution.model.vo.SolutionFiles;
 import com.kh.moong.solution.model.vo.SolutionHeart;
 
@@ -73,9 +74,25 @@ public class SolutionServiceImpl implements SolutionService {
 	}
 	
 	@Override
+	public int insertSolCmtFiles(SolutionCmtFiles scf) {
+		return solutionDao.insertSolCmtFiles(sqlSession, scf);
+	}
+	
+	@Override
+	public int deleteCmt(int scNo) {
+		return solutionDao.deleteCmt(sqlSession, scNo);
+	}
+	
+	@Override
+	public int cmtSelctSn(int scNo) {
+		return solutionDao.cmtSelctSn(sqlSession,scNo);
+	}
+	
+	@Override
 	public int sHeartInsert(SolutionHeart sh) {
 		return solutionDao.sHeartInsert(sqlSession,sh);
 	}
+	
 
 	@Override
 	public int sHeartDelete(SolutionHeart sh) {
@@ -83,13 +100,13 @@ public class SolutionServiceImpl implements SolutionService {
 	}
 	
 	@Override
-	public int sHeartCount(int solutionNo) {
-		return solutionDao.sHeartCount(sqlSession,solutionNo);
+	public int sHeartCount(int solution_no) {
+		return solutionDao.sHeartCount(sqlSession,solution_no);
 	}
 	
 	@Override
-	public int sHeartCheck(SolutionHeart sh) {
-		return solutionDao.sHeartCheck(sqlSession,sh);
+	public int sHeartCheck(int solution_no, int user_no) {
+		return solutionDao.sHeartCheck(sqlSession, solution_no, user_no);
 	}
 	
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="solutionCmtFilesMapper">
+
+	<resultMap type="solutionCmtFiles" id="solutionCmtFilesResultSet">
+		<result column="SCF_NO" property="scfNo"/>
+		<result column="SCF_ORIGINNAME" property="scfOriginName"/>
+		<result column="SCF_SYSNAME" property="scfSysName"/>
+		<result column="STATUS" property="status"/>
+		<result column="SC_NO" property="scNo"/>
+	</resultMap>
+	
+	<insert id="insertSolCmtFiles" parameterType="SolutionCmtFiles">
+		INSERT INTO SOLUTION_CMT_FILES(
+						  SCF_NO
+						 ,SCF_ORIGINNAME
+						 ,SCF_SYSNAME
+						 ,SC_NO
+						 )
+		VALUES(
+				SEQ_SFNO.NEXTVAL
+				,#{scfOriginName}
+				,#{scfSysName}
+				,#{scNo}
+				)
+	</insert>
+
+</mapper>
