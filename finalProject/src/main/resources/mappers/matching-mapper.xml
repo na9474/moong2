@@ -2,28 +2,135 @@
 <!DOCTYPE mapper 
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="matchingmapper">
+<mapper namespace="MatchingMapper">
 
 
 <resultMap type="matching" id="matchingResultSet">
 <result column="MA_NO" property="maNo"/>
 <result column="USER_NO" property="userNo"/>
+<result column="GROUP_NO" property="groupNo"/>
 <result column="RANDOM" property="random"/>
 <result column="GENDER" property="gender"/>
 <result column="SUBJECT" property="subject"/>
 <result column="AREA" property="area"/>
 <result column="FEE" property="fee"/>
-<result column="PEOPLE" property="pople"/>
+<result column="PEOPLE" property="people"/>
 <result column="CHIEF" property="chief"/>
 <result column="STATUS" property="status"/>
 <result column="MA_DAY" property="maDay"/>
 </resultMap>
 
-
-<select id="checkMatching" resultType="_int">
-
+<!-- 같은 과목으로 매칭이 있는지 확인 -->
+<select id="checkSubject" resultType="_int">
+SELECT COUNT(*)
+FROM MATCHING
+WHERE USER_NO = #{userNo}
+AND SUBJECT = #{subject}
 </select>
 
+<!-- 동일한 조건으로 등록된 매칭이 있는지 확인 -->
+<select id="checkMatching" resultType="_int">
+SELECT M.GROUP_NO 
+FROM STUDENT S, 
+(SELECT USER_NO,GROUP_NO
+FROM MATCHING
+WHERE RANDOM = 'Y'
+<if test="#{gender} == 'S'">
+AND GENDER = #{gender}
+</if>
+AND SUBJECT = #{subject}
+AND AREA = #{area}
+AND MA_DAY LIKE '%'||#{maDay}||'%'
+AND FEE <![CDATA[ <= ]]> #{fee}+10000
+AND FEE <![CDATA[ >= ]]> #{fee}-10000
+AND PEOPLE <![CDATA[ > ]]> 0 
+) M
+WHERE S.USER_NO = M.USER_NO
+AND ${subject} = 1 <!-- 매칭을 누른 유저의 모든과목성적 + 학년정보가 필요 -->
+AND YEAR = 1
+</select>
+
+
+<!-- 매칭 등록 -->
+<insert id="insertMatching" parameterType="Matching">
+INSERT INTO MATCHING(
+					MA_NO,
+					GROUP_NO,
+					USER_NO,
+					RANDOM,
+					GENDER,
+					SUBJECT,
+					AREA,
+					FEE,
+					PEOPLE,
+					CHIEF,
+					MA_DAY,
+					STATUS
+					)
+			VALUES(
+			SEQ_MANO.NEXTVAL,
+			SEQ_MANO.CURRVAL,
+			#{userNo},
+			#{random},
+			#{gender},
+			#{subject},
+			#{area},
+			#{fee},
+			#{people},
+			'Y',
+			#{maDay},
+			'Y'
+			)
+</insert>
+
+
+<!-- 등록된 매칭에 조인 -->
+<insert id="joinMatching" parameterType="Matching">
+	INSERT INTO MATCHING(
+					MA_NO,
+					GROUP_NO,
+					USER_NO,
+					RANDOM,
+					GENDER,
+					SUBJECT,
+					AREA,
+					FEE,
+					PEOPLE,
+					CHIEF,
+					MA_DAY,
+					STATUS
+					)
+			VALUES(
+			SEQ_MANO.NEXTVAL,
+			#{groupNo},
+			#{userNo},
+			#{random},
+			#{gender},
+			#{subject},
+			#{area},
+			#{fee},
+			#{people},
+			'N',
+			#{maDay},
+			'Y'
+			)
+
+</insert>
+
+<!-- 매칭인원수 확인을 위한 카운팅 -->
+<select id="countMatching" resultType="_int">
+	SELECT COUNT(*)
+FROM MATCHING
+WHERE GROUP_NO = #{groupNo}
+</select>
+
+<select id="completeMatching" resultMap="matchingResultSet">
+SELECT USER_NO,GROUP_NO,SUBJECT,FEE,MA_DAY,AREA
+FROM MATCHING
+WHERE GROUP_NO = #{groupNo}
+ORDER BY CHIEF DESC
+
+</select>
 
 
 </mapper>
