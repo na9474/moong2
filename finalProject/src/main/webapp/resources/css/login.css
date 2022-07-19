@@ -1,0 +1,91 @@
+@charset "UTF-8";
+@font-face {
+    font-family: '양진체';
+    src: url('https://cdn.jsdelivr.net/gh/supernovice-lab/font@0.9/yangjin.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+* {
+    font-family: '양진체';
+}
+
+.title {
+    margin-top: 7%;
+    animation: fadein 2s;
+    -webkit-animation: fadein 2s; /* Safari and Chrome */
+}
+@keyframes fadein {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+@-webkit-keyframes fadein { /* Safari and Chrome */
+    from { opacity:0; }
+    to { opacity:1; }
+}
+
+h2 { /*제목*/
+	height: 50px;
+	text-align: center; 
+	background: linear-gradient(to right, black,rgb(252, 186, 99));
+    color: transparent;
+    -webkit-background-clip: text;
+}
+
+
+
+.find_wrap { /*전체 div*/
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+.find_wrap > h4 { /*아이디, 비밀번호*/
+    text-align: left;
+}
+
+*::placeholder { /*placeholder*/
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.329);
+}
+
+.box { /*아이디 입력창*/
+	width: 400px;
+    height: 60px;
+    border: 2px solid rgb(49, 48, 47);
+    border-radius: 5px;
+    text-align: center;
+}
+.box:hover {
+	border: 2px solid rgb(251, 176, 76);
+	transition: 0.3s;
+}
+
+#find { /*아디/비번 찾기*/
+    margin-top: 20px;
+    margin-left: 283px;
+}
+
+#findIP { 
+	text-decoration: none;
+    color: #767676;
+    font-size: 13px;
+}
+
+.login_btn { /*로그인 버튼*/
+    background-color: rgb(251, 176, 76);
+    color: white;
+    border: 2px solid rgb(251, 176, 76);
+    border-radius: 5px;
+    width: 400px;
+    height: 55px;
+    font-size: 20px;
+    margin-top: 20px;
+}
+.login_btn:hover {
+    color: rgb(248, 238, 225);
+	transition: 0.3s;
+}
+.login_btn:not(:hover) {
+	color: white;
+	transition: 0.3s;
+}
+
