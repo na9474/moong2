@@ -122,7 +122,7 @@ public class MatchingController {
 		 for(int i=0; i<list.size(); i++) {
 	     list.get(i).setPeople(ms.countMatching(list.get(i).getGroupNo())+"/"+ list.get(i).getPeople());
 		 }
-		 System.out.println(list);
+		 
 		 mv.addObject("list",list).setViewName("matching/matchingAlarm");
 		 
 		return mv;

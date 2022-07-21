@@ -64,6 +64,8 @@
 						GENDER,
 						EMAIL,
 						BIRTH,
+						TEACHER,
+						STUDENT,
 						STATUS
 					)
 				VALUES(
@@ -74,6 +76,8 @@
 					#{gender},
 					#{email},
 					#{birth},
+					'N',
+					'N',
 					'Y'
 				)
 	</insert>

@@ -119,7 +119,7 @@ header nav ul li{
                     <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">선생님 리스트</a>
+                    <a class="nav-link" href="tlist.le">선생님 리스트</a>
                   </li>
                   <c:choose>
                 	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">

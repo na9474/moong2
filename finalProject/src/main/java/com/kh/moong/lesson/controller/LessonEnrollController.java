@@ -12,9 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 
@@ -119,8 +122,26 @@ public class LessonEnrollController {
 		
 		
 		
-		
-		
+		//등록된 선생님 전체 리스트 조회 
+		@RequestMapping("tlist.le")
+		public ModelAndView teacherList(@RequestParam(value="cpage",defaultValue="1") int currentPage,
+				ModelAndView mv) {
+			
+			
+			int listCount = ls.selectAllLessonCount();
+			
+			
+			int pageLimit = 10;
+			int boardLimit = 20;
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			
+			
+			ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
+			
+			mv.addObject("pi",pi).addObject("list",list).setViewName("lesson/teacherLessonList");
+			return mv;
+		}
 		
 		
 		//모든 선생님 과외정보 페이지 공통

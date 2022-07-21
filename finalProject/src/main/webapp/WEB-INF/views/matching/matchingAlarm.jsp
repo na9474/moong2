@@ -78,48 +78,43 @@
                             <td>상태</td>
                         </tr>
                     </thead>
-                    <tbody >
-                    	
-                    <c:forEach var="m" items="${list}">
-                    <tr>
-                    	<c:choose>
-                    	<c:when test = "${fn:contains(m.subject,'KO')}">
-                    		<td>국어</td>
-                    	</c:when>
-                    	<c:when test = "${fn:contains(m.subject,'MATH')}">
-                    		<td>수학</td>
-                    	</c:when>
-                    	<c:otherwise>
-                    		<td>영어</td>
-                    	</c:otherwise>
-                    	</c:choose>
-                    	<td>${m.people}</td>
-                    	<td>4</td>
-                    	<td class="fee">${m.fee}</td>
-                    	<td>${m.enrollDate}</td>
-                    	<c:choose>
-                    	<c:otherwise>
-                    	</c:otherwise>
-                    	</c:choose>
-                    	
-                    	</tr>
-                    </c:forEach>
-                    	   <tr>
-                            <td>국어</td>
-                            <td>2명</td>
-                            <td>상관없음</td>
-                            <td>50,000원</td>
-                            <td>2022/06/22</td>
-                            <td><button onclick="" class="btn btn-primary">매칭완료</button></td>
-                        </tr>
-                        <tr>
-                            <td>영어</td>
-                            <td>2명</td>
-                            <td>남자</td>
-                            <td>20,000원</td>
-                            <td>2022/06/22</td>
-                            <td> <span style="color: red;">매칭대기중</span></td>
-                        </tr>
+                    <tbody>
+                	<c:choose>
+                		<c:when test ="${empty list}">
+	                		<tr>
+	                			<td colspan="6">매칭중인 과외가 없습니다.</td>
+	                		</tr>
+                		</c:when>
+                		<c:otherwise>
+		                		<c:forEach var="m" items="${list}">
+			                    	<tr>
+				                    	<c:choose>
+					                    	<c:when test = "${fn:contains(m.subject,'KO')}">
+					                    		<td>국어</td>
+					                    	</c:when>
+					                    	<c:when test = "${fn:contains(m.subject,'MATH')}">
+					                    		<td>수학</td>
+					                    	</c:when>
+					                    	<c:otherwise>
+					                    		<td>영어</td>
+					                    	</c:otherwise>
+				                    	</c:choose>
+			                    	<td>${m.people}</td>
+			                    	<td>4</td>
+			                    	<td class="fee">${m.fee}</td>
+			                    	<td>${m.enrollDate}</td>
+			                    		<c:choose>
+			                    			<c:when test = "${m.status eq 'C'}">
+			                    				<td><button onclick="" class="btn moong-yellow">매칭완료</button></td>
+			                    			</c:when>
+			                    			<c:otherwise>
+			                    				<td> <span style="color: red;">매칭대기중</span></td>
+			                    			</c:otherwise>
+			                    		</c:choose>
+			                    	</tr>
+		                    	</c:forEach>
+                		</c:otherwise>
+                	</c:choose>
                     </tbody>
                 </table>
         </div>

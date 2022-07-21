@@ -18,6 +18,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<result column="LE_ORIGINNAME" property="leOriginname"/>
 	<result column="LE_CHANGENAME" property="leChangename"/>
 	<result column="STATUS" property="status"/>
+	
+	<result column="USER_NAME" property="userName"/>
+	<result column="GENDER" property="gender"/>
+	<result column="RATING" property="rating"/>
+	
 </resultMap>
 
 <select id="selectList" resultMap="lessonEnrollResultSet">
@@ -75,5 +80,25 @@ WHERE L.STATUS = 'Y'
 AND M.STATUS = 'Y'
 AND L.USER_NO =#{userNo}
 
+</select>
+
+<select id="selectAllLesson" resultMap="lessonEnrollResultSet">
+SELECT USER_NAME,GENDER,RATING,SUBJECT,T_YEAR,LE_NO
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (L.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'L'
+ORDER BY T.RATING 
+</select>
+
+<select id="selectAllLessonCount" resultType="_int">
+SELECT COUNT(*)
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (L.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'L'
+ORDER BY T.RATING 
 </select>
 </mapper>

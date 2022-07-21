@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.dao.LessonEnrollDao;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 
@@ -41,5 +42,22 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 		
 		return lessonEnrollDao.selectLesson(sqlSession,leNo);
 	}
+
+	@Override
+	public int selectAllLessonCount() {
+		
+		return lessonEnrollDao.selectAllLessonCount(sqlSession);
+	}
+	
+	
+	@Override
+	public ArrayList<LessonEnroll> selectAllLesson(PageInfo pi) {
+		
+		return lessonEnrollDao.selectAllLesson(sqlSession,pi);
+	}
+
+
+
+	
 
 }
