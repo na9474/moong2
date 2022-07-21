@@ -40,9 +40,9 @@ public class MatchingServiceImpl implements MatchingService{
 
 
 	@Override
-	public int countMatching(Matching m) {
+	public int countMatching(int groupNo) {
 		
-		return matchingDao.countMatching(sqlSession,m);
+		return matchingDao.countMatching(sqlSession,groupNo);
 	}
 
 
@@ -54,9 +54,44 @@ public class MatchingServiceImpl implements MatchingService{
 
 
 	@Override
-	public ArrayList<Matching> completeMatching(Matching m) {
+	public ArrayList<Matching> completeMatchingList(int groupNo) {
 		
-		return matchingDao.completeMatching(sqlSession,m);
+		return matchingDao.completeMatchingList(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int completeMatching(int groupNo) {
+		
+		return matchingDao.completeMatching(sqlSession, groupNo);
+	}
+
+
+	@Override
+	public ArrayList<Matching> alarmList(int userNo) {
+
+		return matchingDao.alarmList(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int matchingAlarm(int userNo) {
+		
+		return matchingDao.matchingAlarm(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int matchingAlarm2(int userNo) {
+		
+		return matchingDao.matchingAlarm2(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int updateAlarm(int maNo) {
+		
+		return matchingDao.updateAlarm(sqlSession,maNo);
 	}
 
 }

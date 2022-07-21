@@ -6,10 +6,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+
 <meta charset="UTF-8">
 <title>Insert title here</title>
+
 <link rel="stylesheet" href="${path}/resources/css/jquery.fullpage.min.css">
-   
+   	
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <script src="${path}/resources/js/jquery.fullpage.min.js"></script>
     
@@ -103,7 +105,7 @@ header nav ul li{
 </c:if>
 
 <header>
-        <nav>
+      
             <nav class="navbar navbar-expand-sm" id="menubar">
                 <!-- Brand -->
                 <img src="${path}/resources/img/logo-dark.png" id="logo-img" > <a class="navbar-brand" href="${path}" id="logo">뭉과외</a>
@@ -117,11 +119,27 @@ header nav ul li{
                     <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="list.le?userNo=1">과외 등록</a>
+                    <a class="nav-link" href="#">선생님 리스트</a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">자유 게시판</a>
-                  </li>
+                  <c:choose>
+                	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">
+                			<li class="nav-item">
+		                    	<a class="nav-link" href="#">매칭 리스트</a>
+		                  	 </li>
+		                 	 <li class="nav-item">
+		                    	<a class="nav-link" href="#">자유 게시판</a>
+		                  	 </li>
+                	</c:when>
+                	<c:when test="${loginUser.teacher eq 'Y' || loginUser.userId eq 'admin' }">
+		                	 <li class="nav-item">
+		                    	<a class="nav-link" href="#">과외 등록</a>
+		                  	 </li>
+		                 	 <li class="nav-item">
+		                    	<a class="nav-link" href="#">자유 게시판</a>
+		                  	 </li>
+                	</c:when>
+                  </c:choose>
+                 
                 </ul>
                 
                 
@@ -149,7 +167,7 @@ header nav ul li{
 		                       </li>            
 		                       <li class="nav-item">  
 		                            <!-- 체크할 메세지 or 알람이 있다면 fa-check 표시-->          
-		                            <a class="nav-link" href="#"> <i class="fa-solid fa-check" style="color:red;">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림 </i>  </a>
+		                            <a class="nav-link" href="alarm.ma?uNo=${loginUser.userNo}"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkMatching">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림   </a>
 		                       </li>
 		                        <li class="nav-item">            
 		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
@@ -166,5 +184,82 @@ header nav ul li{
                 </c:choose>
         </nav>
     </header>
+    <c:if test="${not empty loginUser && loginUser.userId ne 'admin'}">
+    <script>
+    	var repeat1 = null;
+    	var repeat2 = null;
+    	var delay = 3000;
+    	
+    	$(function(){
+			checkMatching();
+			alertMatching();
+			repeat1 = setInterval(checkMatching, delay);
+			repeat2 = setInterval(alertMatching, delay);
+		})
+		
+		
+    
+	  function checkMatching(){ 
+			$.ajax({
+				url : "check.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+	 				if(result>0){ //완료된 매칭 O
+	 					
+	 					$('#alarmspan').css('visibility','visible');
+	 					$('#checkMatching').css('visibility','visible');
+	 					clearInterval(repeat);
+			
+				}else{ //완료된매칭이 X
+					
+				}
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+		}
+   
+   
+	  function alertMatching(){
+		   $.ajax({
+				url : "check2.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+					if(result>0){ //완료된 매칭 O
+						
+						alert("완료된매칭이있습니다.");
+						alertComplete(result);
+						clearInterval(repeat);
+				}else{	
+				}	
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+	   }
+	  
+	  
+	  function alertComplete(x){
+		  
+		  $.ajax({
+				url : "alertcp.ma",
+				data : {maNo : x },
+				success : function(){
+					if(result>0){
+					console.log("변경성공")		
+					}else{
+						console.log("변경실패")
+					}	
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+	  }
+   		
+    </script>
+    </c:if>
 </body>
 </html>

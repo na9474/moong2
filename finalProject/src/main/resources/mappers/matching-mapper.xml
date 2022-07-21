@@ -18,6 +18,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <result column="CHIEF" property="chief"/>
 <result column="STATUS" property="status"/>
 <result column="MA_DAY" property="maDay"/>
+<result column="ENROLLDATE" property="enrollDate"/>
+<result column="ALERT" property="alert" />
 </resultMap>
 
 <!-- 같은 과목으로 매칭이 있는지 확인 -->
@@ -26,33 +28,36 @@ SELECT COUNT(*)
 FROM MATCHING
 WHERE USER_NO = #{userNo}
 AND SUBJECT = #{subject}
+AND STATUS = 'Y'
 </select>
 
 <!-- 동일한 조건으로 등록된 매칭이 있는지 확인 -->
-<select id="checkMatching" resultType="_int">
+<select id="checkMatching"  resultType="_int">
 SELECT M.GROUP_NO 
 FROM STUDENT S, 
 (SELECT USER_NO,GROUP_NO
 FROM MATCHING
 WHERE RANDOM = 'Y'
-<if test="#{gender} == 'S'">
-AND GENDER = #{gender}
+<if test='#{gender}.equals("S")'>
+AND GENDER = #{sGender}
 </if>
 AND SUBJECT = #{subject}
 AND AREA = #{area}
+<if test='#{maDay}.equals("상관없음")'>
 AND MA_DAY LIKE '%'||#{maDay}||'%'
+</if>
 AND FEE <![CDATA[ <= ]]> #{fee}+10000
 AND FEE <![CDATA[ >= ]]> #{fee}-10000
-AND PEOPLE <![CDATA[ > ]]> 0 
+AND PEOPLE = #{people}
+AND CHIEF ='Y'
 ) M
 WHERE S.USER_NO = M.USER_NO
-AND ${subject} = 1 <!-- 매칭을 누른 유저의 모든과목성적 + 학년정보가 필요 -->
-AND YEAR = 1
+AND YEAR = #{sYear}
 </select>
 
 
 <!-- 매칭 등록 -->
-<insert id="insertMatching" parameterType="Matching">
+<insert id="insertMatching" parameterType="matching">
 INSERT INTO MATCHING(
 					MA_NO,
 					GROUP_NO,
@@ -65,6 +70,7 @@ INSERT INTO MATCHING(
 					PEOPLE,
 					CHIEF,
 					MA_DAY,
+					ALERT,
 					STATUS
 					)
 			VALUES(
@@ -72,6 +78,9 @@ INSERT INTO MATCHING(
 			SEQ_MANO.CURRVAL,
 			#{userNo},
 			#{random},
+			<if test='#{gender}.equals("S")'>
+			#{sGender},
+			</if>
 			#{gender},
 			#{subject},
 			#{area},
@@ -79,13 +88,14 @@ INSERT INTO MATCHING(
 			#{people},
 			'Y',
 			#{maDay},
+			'Y',
 			'Y'
 			)
 </insert>
 
 
 <!-- 등록된 매칭에 조인 -->
-<insert id="joinMatching" parameterType="Matching">
+<insert id="joinMatching" parameterType="matching">
 	INSERT INTO MATCHING(
 					MA_NO,
 					GROUP_NO,
@@ -98,6 +108,7 @@ INSERT INTO MATCHING(
 					PEOPLE,
 					CHIEF,
 					MA_DAY,
+					ALERT,
 					STATUS
 					)
 			VALUES(
@@ -105,6 +116,9 @@ INSERT INTO MATCHING(
 			#{groupNo},
 			#{userNo},
 			#{random},
+			<if test='#{gender}.equals("S")'>
+			#{sGender},
+			</if>
 			#{gender},
 			#{subject},
 			#{area},
@@ -112,6 +126,7 @@ INSERT INTO MATCHING(
 			#{people},
 			'N',
 			#{maDay},
+			'Y'
 			'Y'
 			)
 
@@ -124,13 +139,55 @@ FROM MATCHING
 WHERE GROUP_NO = #{groupNo}
 </select>
 
-<select id="completeMatching" resultMap="matchingResultSet">
+<!-- 매칭완료되면 status를 c로변경 -->
+<update id="completeMatching" parameterType="matching">
+	UPDATE MATCHING
+	SET STATUS ='C'
+	WHERE GROUP_NO =#{groupNo}
+</update>
+
+<!-- 매칭완료된 인원들의 리스트뽑기 -->
+<select id="completeMatchingList" resultMap="matchingResultSet">
 SELECT USER_NO,GROUP_NO,SUBJECT,FEE,MA_DAY,AREA
 FROM MATCHING
 WHERE GROUP_NO = #{groupNo}
 ORDER BY CHIEF DESC
-
 </select>
 
+<!-- 알람페이지에서 보여줄 리스트 -->
+<select id="alarmList" resultMap="matchingResultSet">
+SELECT MA_NO,GROUP_NO,SUBJECT,PEOPLE,GENDER,FEE,ENROLLDATE,STATUS
+FROM MATCHING
+WHERE USER_NO=#{userNo}
+</select>
 
+<!-- 알람을 위한 select -->
+<select id="matchingAlarm" resultType="_int">
+SELECT COUNT(*)
+FROM MATCHING
+WHERE USER_NO = #{userNo}
+AND STATUS = 'C' 
+AND RANDOM = 'Y'
+</select>
+
+<select id="matchingAlarm2" resultType="_int">
+SELECT MA_NO
+FROM(
+SELECT MA_NO
+FROM MATCHING
+WHERE USER_NO = #{userNo}
+AND STATUS = 'C'
+AND ALERT = 'Y'
+AND RANDOM = 'Y'
+ORDER BY ENROLLDATE
+)
+WHERE ROWNUM = 1
+</select>
+
+<update id="updateAlarm" parameterType="matching">
+	UPDATE MATCHING
+	SET ALERT ='Y'
+	WHERE MA_NO = #{maNo}
+
+</update>
 </mapper>

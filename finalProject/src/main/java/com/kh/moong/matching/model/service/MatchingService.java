@@ -12,10 +12,20 @@ public interface MatchingService {
 
 	int joinMatching(Matching m);
 
-	int countMatching(Matching m);
+	int countMatching(int groupNo);
 
 	int checkSubject(Matching m);
 
-	ArrayList<Matching> completeMatching(Matching m);
+	ArrayList<Matching> completeMatchingList(int groupNo);
+
+	int completeMatching(int groupNo);
+
+	ArrayList<Matching> alarmList(int userNo);
+
+	int matchingAlarm(int userNo);
+
+	int matchingAlarm2(int userNo);
+
+	int updateAlarm(int maNo);
 
 }

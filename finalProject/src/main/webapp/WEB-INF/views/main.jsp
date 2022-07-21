@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+
+<link rel="icon" type="image/png" href="/moong/resources/img/logo-dark.png"/>
 <meta charset="UTF-8">
 	<title>main</title>
 
@@ -65,7 +67,7 @@
 /*section2끝*/
 </style>
 <body>
-    <jsp:include page="common/header.jsp"/>
+<jsp:include page="common/header.jsp"/>
    <main id="fullpage">
         <section class="section">
             <div align="center" id="page1-1">과외로 뭉치자!</div>

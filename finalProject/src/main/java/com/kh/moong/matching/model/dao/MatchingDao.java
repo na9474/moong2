@@ -11,9 +11,13 @@ import com.kh.moong.matching.model.vo.Matching;
 public class MatchingDao {
 
 	public int checkMatching(SqlSessionTemplate sqlSession, Matching m) {
+		
+		
 		try{
-		return sqlSession.selectOne("MatchingMapper.checkMatching",m);
-	}catch (Exception e){
+			int result = sqlSession.selectOne("MatchingMapper.checkMatching",m);
+			System.out.println(result);
+		return result;
+	}catch (NullPointerException e){
 	    return 0;
 	}
 	}
@@ -27,9 +31,9 @@ public class MatchingDao {
 		return sqlSession.insert("MatchingMapper.joinMatching",m);
 	}
 
-	public int countMatching(SqlSessionTemplate sqlSession, Matching m) {
+	public int countMatching(SqlSessionTemplate sqlSession,int groupNo) {
 		
-		return sqlSession.selectOne("MatchingMapper.countMatching",m);
+		return sqlSession.selectOne("MatchingMapper.countMatching",groupNo);
 	}
 
 	public int checkSubject(SqlSessionTemplate sqlSession, Matching m) {
@@ -37,11 +41,40 @@ public class MatchingDao {
 		return sqlSession.selectOne("MatchingMapper.checkSubject",m);
 	}
 
-	public ArrayList<Matching> completeMatching(SqlSessionTemplate sqlSession, Matching m) {
+	public ArrayList<Matching> completeMatchingList(SqlSessionTemplate sqlSession, int groupNo) {
 		
-		return (ArrayList)sqlSession.selectList("MatchingMapper.completeMatching",m);
+		return (ArrayList)sqlSession.selectList("MatchingMapper.completeMatchingList",groupNo);
 	}
 
-	
+	public int completeMatching(SqlSessionTemplate sqlSession, int groupNo) {
+		
+		return sqlSession.update("MatchingMapper.completeMatching",groupNo);
+	}
+
+	public ArrayList<Matching> alarmList(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return (ArrayList)sqlSession.selectList("MatchingMapper.alarmList",userNo);
+	}
+
+	public int matchingAlarm(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("MatchingMapper.matchingAlarm",userNo);
+	}
+
+	public int matchingAlarm2(SqlSessionTemplate sqlSession, int userNo) {
+		
+		try{
+			int result = sqlSession.selectOne("MatchingMapper.matchingAlarm2",userNo);
+			
+		return result;
+	}catch (NullPointerException e){
+	    return 0;
+	}
+	}
+
+	public int updateAlarm(SqlSessionTemplate sqlSession, int maNo) {
+		
+		return sqlSession.update("MatchingMapper.updateAlarm",maNo);
+	}
 
 }

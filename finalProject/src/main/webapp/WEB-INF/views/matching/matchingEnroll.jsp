@@ -7,8 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-
+<link rel="icon" type="image/png" href="./resources/img/logo-dark.png"/>
 <style>
  /*영역지정*/
         #matching-outer {
@@ -234,15 +233,15 @@
         </div>
         <div id="select">
             <form method="post" action="insert.ma">
-                <input type="hidden" name="userNo" value="1">
+                <input type="hidden" name="userNo" value="${loginUser.userNo }">
                 <table  id="selectfrom-tb">
                     <tr>
                         <td>과목 선택</td>
                         <td style="width:350px;">
                             <select class="form-control" style="width: 100px; margin:auto;" name="subject" required>
-                                <option value="KO">국어</option>
-                                <option value="MATH">수학</option>
-                                <option value="ENG">영어</option>
+                                <option value="KO${s.ko}">국어</option>
+                                <option value="MATH${s.math}">수학</option>
+                                <option value="ENG${s.eng}">영어</option>
                               </select>
                         </td>
                     </tr>
@@ -266,6 +265,8 @@
                                 <option value="R">상관없음</option>
                                 
                             </select>
+                            <input type="hidden" name="sGender" value="${loginUser.gender }">
+                            <input type="hidden" name="sYear" value="${s.year}">
                         </td>
                     </tr>
                     <tr>
@@ -283,15 +284,7 @@
                     <tr>
                         <td>금액 입력</td>
                         <td><input type="text"  id="fee1" style="width: 300px; height: 35px; font-size:20px;"  onkeyup="numberWithCommas(this.value)" maxlength="7" required><input type="hidden"  id="fee2"  name="fee"></td>
-                         <script>
-                function numberWithCommas(x) {
-                 	x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
-                    x = x.replace(/,/g,'');          // ,값 공백처리
-                    $("#fee1").val(x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // 정규식을 이용해서 3자리 마다 , 추가 
-                    $('#fee2').val(x);
-                    
-                    }
-            </script>
+                        
                     </tr>
                     <tr>
                         <td colspan="2" class="footnote" >&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i> 입력하신 금액은 수업 시간당 금액입니다.</td>
@@ -328,7 +321,15 @@
             </form>
         </div>
     </div>
-
+ <script>
+                function numberWithCommas(x) {
+                 	x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
+                    x = x.replace(/,/g,'');          // ,값 공백처리
+                    $("#fee1").val(x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // 정규식을 이용해서 3자리 마다 , 추가 
+                    $('#fee2').val(x);
+                    
+                    }
+            </script>
 
 
     <script>
