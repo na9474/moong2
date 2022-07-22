@@ -52,6 +52,8 @@
         color: rgb(248, 238, 225);
     }
     /*리스트 부분 끝*/
+    #pagingArea {width:fit-content; margin:auto;}
+    
 </style>
 <body>
      <jsp:include page="../common/header.jsp"/>
@@ -101,7 +103,7 @@
                     							<td>영어</td>
                     						</c:otherwise>
                     					</c:choose>
-                    					
+                    					<td>${l.rating}</td>
 			                    		<td>${l.userName}</td>
 			                    		<c:choose>
 				                    		<c:when test="${l.gender eq 'M'}">
@@ -112,20 +114,20 @@
 				                    		</c:otherwise>
 			                    		</c:choose>
 			                    		<c:choose>
-			                    			<c:when test = "${l.tYear eq 1 }">
+			                    			<c:when test = "${l.tyear eq 1 }">
 			                    				<td>1학년</td>
 			                    			</c:when>
-			                    			<c:when test = "${l.tYear eq 2 }">
+			                    			<c:when test = "${l.tyear eq 2 }">
 			                    				<td>2학년</td>
 			                    			</c:when>
-			                    			<c:when test = "${l.tYear eq 3 }">
+			                    			<c:when test = "${l.tyear eq 3 }">
 			                    				<td>3학년</td>
 			                    			</c:when>
 			                    			<c:otherwise>
 			                    				<td>상관없음</td>
 			                    			</c:otherwise>
 			                     		</c:choose>
-			                    		<td><button class="btn btn-warning" style="margin:0px;" >상세보기</button></td>
+			                    		<td><button class="btn moong-yellow detailLe" style="margin:0px;" ">상세보기</button></td>
 			                    	</tr>
                     			</c:forEach>
                     	</c:otherwise>
@@ -134,8 +136,51 @@
                         
                     </tbody>
                 </table>
+                 <div id="pagingArea">
+                <ul class="pagination">
+                
+                	<c:choose>
+						<c:when test="${ pi.currentPage eq 1 }">
+	                    <li class="page-item "><button class=" btn moong-dark " disabled><</button></li>
+						</c:when>                
+						<c:otherwise>
+						<li class="page-item"><button  class="btn moong-dark" href="tlist.le?cpage=${pi.currentPage-1}"><</button ></li>
+						</c:otherwise>
+	                </c:choose>
+                
+					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
+											
+                    <li class="page-item"><button  class="btn moong-dark" href="tlist.le?cpage=${p }">${p}</button ></li>
+					
+					</c:forEach>
+                   
+
+                    <c:choose>
+                    	<c:when test="${pi.currentPage eq pi.maxPage || pi.maxPage eq 0}">
+		                    <li class="page-item "><button class="btn moong-dark"  disabled>></button ></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><button  class="btn moong-dark" href="tlist.le?cpage=${pi.currentPage+1}">></button ></li>
+                    	</c:otherwise>
+                    	
+                    
+                    </c:choose>
+                </ul>
+            </div>
         </div>
     </div>
     
+    
+   	 <script>
+   	 $(function(){
+   		 $('.detailLe').click(function(){
+   			location.href="detail.le?leNo="+$(this).parent().parent().children(".leNo").text();
+   			
+   		 })
+   		 
+   	 })
+   	 
+   	 
+   	 </script>
 </body>
 </html>

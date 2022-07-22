@@ -85,7 +85,18 @@
 				<c:forEach var="l" items="${list}">
 		 		<tr>
 		 					<td style="display: none;" class="leNo" >${l.leNo}</td>
-                            <td>${l.subject}</td>
+		 					<c:choose>
+			 					<c:when test="${l.subject eq 'KO' }">
+			 						<td>국어</td>
+			 					</c:when>
+			 					<c:when test="${l.subject eq 'MATH' }">
+			 						<td>수학</td>
+			 					</c:when>
+			 					<c:otherwise>
+			 						<td>영어</td>
+			 					</c:otherwise>
+		 					</c:choose>
+                            
                             <td>${l.fee}</td>
                             <td>${l.career}</td>
                             <c:choose>

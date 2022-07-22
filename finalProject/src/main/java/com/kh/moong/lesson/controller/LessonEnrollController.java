@@ -94,7 +94,7 @@ public class LessonEnrollController {
 					 
 					 
 				if(result>0) { //똑같은 과목으로 생성된 과외가 있음(과외등록불가능)
-					session.setAttribute("alertMsg", "등록된 같은 과목이 있습니다 ");
+					session.setAttribute("alertMsg", "이미 등록된 같은 과목이 있습니다 ");
 					mv.setViewName("lesson/lessonEnrollForm");
 				}else { //똑같은 과목으로 생성된 과외가 없음(과외등록가능) 
 					
@@ -139,7 +139,9 @@ public class LessonEnrollController {
 			
 			ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
 			
-			mv.addObject("pi",pi).addObject("list",list).setViewName("lesson/teacherLessonList");
+			mv.setViewName("lesson/teacherLessonList");
+			mv.addObject("pi",pi);
+			mv.addObject("list",list);
 			return mv;
 		}
 		
@@ -151,7 +153,6 @@ public class LessonEnrollController {
 					
 					LessonEnroll l = ls.selectLesson(leNo);
 					
-					
 					//조회성공
 					if(l.getLeNo()>0) {
 						mv.addObject("l",l).setViewName("lesson/lessonDetail");
@@ -160,6 +161,17 @@ public class LessonEnrollController {
 						mv.addObject("errorMsg","조회실패").setViewName("common/errorPage");
 					}
 					
+					return mv;
+				}
+				
+				
+	//등록한 과외정보 수정
+				@RequestMapping("updateForm.le")
+				public ModelAndView lessonEnrollUpdateForm(int leNo,ModelAndView mv) {
+					
+					LessonEnroll l = ls.selectLesson(leNo);
+					
+					mv.addObject("l",l).setViewName("lesson/lessonUpdateForm");
 					return mv;
 				}
 }

@@ -112,14 +112,16 @@ header nav ul li{
               
                 <!-- Links -->
                 <ul class="navbar-nav">
+                <c:if test="${not empty loginUser && loginUser.teacher ne 'Y' }">
                   <li class="nav-item">
                     <a class="nav-link" href="enroll.ma">과외 매칭</a>
                   </li>
+                  </c:if>
                   <li class="nav-item">
                     <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="tlist.le">선생님 리스트</a>
+                    <a class="nav-link" href="tlist.le?cpage=1">선생님 리스트</a>
                   </li>
                   <c:choose>
                 	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">
@@ -132,7 +134,7 @@ header nav ul li{
                 	</c:when>
                 	<c:when test="${loginUser.teacher eq 'Y' || loginUser.userId eq 'admin' }">
 		                	 <li class="nav-item">
-		                    	<a class="nav-link" href="#">과외 등록</a>
+		                    	<a class="nav-link" href="list.le?userNo=${loginUser.userNo}">과외 등록</a>
 		                  	 </li>
 		                 	 <li class="nav-item">
 		                    	<a class="nav-link" href="#">자유 게시판</a>
@@ -164,11 +166,14 @@ header nav ul li{
 		                     
 		                        <li class="nav-item">            
 		                            <a class="nav-link" href="#" style="pointer-events: none;">${loginUser.userName }님 환영합니다</a>     
-		                       </li>            
+		                       </li>        
+		                       <c:if test="${loginUser.student eq 'Y'}">
+		                           
 		                       <li class="nav-item">  
 		                            <!-- 체크할 메세지 or 알람이 있다면 fa-check 표시-->          
 		                            <a class="nav-link" href="alarm.ma?uNo=${loginUser.userNo}"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkMatching">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림   </a>
 		                       </li>
+		                       </c:if>
 		                        <li class="nav-item">            
 		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
 		                       </li>
@@ -184,7 +189,7 @@ header nav ul li{
                 </c:choose>
         </nav>
     </header>
-    <c:if test="${not empty loginUser && loginUser.userId ne 'admin'}">
+    <c:if test="${not empty loginUser && loginUser.userId ne 'admin' && loginUser.student eq 'Y'}">
     <script>
     	var repeat1 = null;
     	var repeat2 = null;

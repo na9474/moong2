@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>lessonEnrollForm</title>
+<title>lessonEnrollUpdateForm</title>
 <style>
 /*영역잡기*/
     #lesson-outer{
@@ -86,9 +86,9 @@
      <jsp:include page="../common/header.jsp"/>
     <div id="lesson-outer">
         <div id="subtit">
-            과외 등록
+            과외 정보 수정
         </div>
-        <form method="post" action="insert.le" enctype="multipart/form-data">
+        <form method="post" action="update.le" enctype="multipart/form-data">
             <input type="hidden" name="userNo" value="${loginUser.userNo }">
         <table border="1" id="lessonEnrollTb">
             <tr>
@@ -100,6 +100,8 @@
                     <option value="ENG">영어</option>
                     </select>
                 </td>
+
+               
             </tr>
             <tr>
                 <td class="td-r">학년</td>
@@ -131,6 +133,12 @@
 
            
             <script>
+            	//업데이트시 불러오기
+            	
+            		
+            
+            
+            
                 //지역선택 스크립트문
                 function handleOnChange(e) {
                     
@@ -322,19 +330,19 @@
                 <td>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="teachingStyle1" onclick="ts1();" checked>
-                        <label class="form-check-label" for="teachingStyle1">
+                        <label class="form-check-label" for="teachingStyle1" value="상관없음">
                           상관없음
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" onclick="ts2();"  id="teachingStyle2">
-                        <label class="form-check-label" for="teachingStyle2">
+                        <label class="form-check-label" for="teachingStyle2" value="온라인">
                            온라인
                         </label>
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" onclick="ts3();" id="teachingStyle3">
-                        <label class="form-check-label" for="teachingStyle4">
+                        <label class="form-check-label" for="teachingStyle4" value="오프라인">
                             오프라인
                         </label>
                     </div>
@@ -370,7 +378,48 @@
             function areaReset(){
                 $('.resultIn').remove();
                 $('.resultDayIn').remove();
-            }
+            } 
+            
+            $(function(){
+            	//등록된 값들 불러오기
+            	
+                $("option[value=${l.subject}]").attr("selected",true);
+                $("#tyear").children("option[value=${l.tyear}]").attr("selected",true);
+                $('#area').val("${l.area}");
+                //지역 span만들기 
+                var area = "${l.area}";
+                
+                var Aarr = area.split(",");
+                
+                for(var i=0;i<Aarr.length;i++){
+                	document.getElementById('result').innerHTML += '<span class="resultIn">'+Aarr[i]+"x"+"</span>";// 추가   
+                }
+                
+                
+                
+                $("#career").val(${l.career});
+                $("#fee1").val(${l.fee});
+                $("#fee2").val(${l.fee});
+                $("#leStyle").val(${l.leStyle});
+                $("#leDay").val("${l.leDay}");
+              //요일 span만들기 
+                var leDay = "${l.leDay}";
+                var Larr = leDay.split(",");
+                var a = ""
+                
+                for(var i=0;i<Larr.length;i++){
+                	a=Larr[i]
+                	if(a != ""){
+                	document.getElementById('resultDay').innerHTML += '<span class="resultIn">'+Larr[i]+"x"+"</span>";// 추가   
+                	}
+                }  
+              
+              
+              
+                $("#teachingStyle").val("${l.teachingStyle}")
+                $(".form-check").children("input[value=${l.teachingStyle}]").prop("checked",true);
+        	})
+    
         </script>
         </div>
 </body>
