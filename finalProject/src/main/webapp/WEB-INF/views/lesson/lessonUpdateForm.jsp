@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -118,11 +119,9 @@
                 <td class="td-r" >과외 가능 지역</td>
                 <td><select class="form-control" onchange="handleOnChange(this)" name="select-area">
                     <option value="">--5개까지 선택이 가능합니다--</option>
-                    <option value="Jongno-gu">종로구</option>
-                    <option value="Jung-gu">중구</option>
-                    <option value="Jung-gu">광진구</option>
-                    <option value="Jung-gu">마포구</option>
-                    <option value="Jung-gu">중랑구</option>
+                 	<c:forEach var="d" items="${d}">
+                    	<option value="${d.dno}">${d.area}</option>
+                    </c:forEach>
 
                   </select>
                   <div id='result'></div>
@@ -222,7 +221,7 @@
             </tr>
             <tr>
                 <td class="td-r">과외 경력</td>
-                <td><input type="text" name="career" id="" required></td>
+                <td><input type="text" name="career" id="career" required></td>
             </tr>
             <tr>
                 <td class="td-r" >과외 가능 요일</td>
@@ -329,19 +328,19 @@
                 <td class="td-r">선호 수업 방식</td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="teachingStyle1" onclick="ts1();" checked>
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="상관없음" id="teachingStyle1" onclick="ts1();" checked>
                         <label class="form-check-label" for="teachingStyle1" value="상관없음">
                           상관없음
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" onclick="ts2();"  id="teachingStyle2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="온라인" onclick="ts2();"  id="teachingStyle2">
                         <label class="form-check-label" for="teachingStyle2" value="온라인">
                            온라인
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" onclick="ts3();" id="teachingStyle3">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="오프라인" onclick="ts3();" id="teachingStyle3">
                         <label class="form-check-label" for="teachingStyle4" value="오프라인">
                             오프라인
                         </label>
@@ -365,16 +364,38 @@
             </script>
             <tr>
             	<th class="td-r">첨부파일</th>
-                <td><input type="file" id="upfile"  name="upfile" accept="video/*" ></td>
+                <td><input type="file" id="upfile"  name="upfile" accept="video/*" >
+                	 <c:if test="${not empty l.leOriginname }">
+                                  	   <br>현재 업로드된 파일 : 
+	                            <a href="${l.leChangename }" download="${l.leOriginname }">${l.leOriginname }</a>
+	                            <input type="hidden" name=originName value="${b.originname }">
+	            				<input type="hidden" name=changeName value="${b.changename }">
+	            		</c:if>
+                </td>
             </tr>
           
           
         </table>
         <div id="btfm">
-        <button type="reset" onclick="areaReset();" class="btn moong-dark">취소</button> <button type="submit" style="float: right;" class="btn moong-yellow">입력</button>
+        <button type="reset" onclick="areaReset();" class="btn moong-dark">취소</button> 
+        <button type="submit" style="float: right; margin-left:5px;" class="btn moong-yellow">수정</button>
+        <button type="button" style="float: right;"class="btn btn-danger" id="del">삭제</button>
         </div>
-    </form>
+        </form> 
+        </div>
+    
         <script>
+        	$(function(){
+        			$("#del").click(function(){
+        				if(confirm("정말로 삭제 하시겠습니까?")){
+        					location.href ="delete.le?leNo="+${l.leNo}+"&&userNo="+${loginUser.userNo};
+        				}
+        				
+        			})
+        			
+        			
+        	})
+        
             function areaReset(){
                 $('.resultIn').remove();
                 $('.resultDayIn').remove();
@@ -392,15 +413,18 @@
                 var Aarr = area.split(",");
                 
                 for(var i=0;i<Aarr.length;i++){
-                	document.getElementById('result').innerHTML += '<span class="resultIn">'+Aarr[i]+"x"+"</span>";// 추가   
+                	if(Aarr[i] != ""){
+                		document.getElementById('result').innerHTML += '<span class="resultIn">'+Aarr[i]+"x"+"</span>";// 추가   
+                	}
+                	
                 }
                 
                 
                 
-                $("#career").val(${l.career});
+                $("#career").val("${l.career}");
                 $("#fee1").val(${l.fee});
                 $("#fee2").val(${l.fee});
-                $("#leStyle").val(${l.leStyle});
+                $("#leStyle").val("${l.leStyle}");
                 $("#leDay").val("${l.leDay}");
               //요일 span만들기 
                 var leDay = "${l.leDay}";
@@ -415,10 +439,10 @@
                 }  
               
               
-              
+				console.log("${l.teachingStyle}");           
                 $("#teachingStyle").val("${l.teachingStyle}")
-                $(".form-check").children("input[value=${l.teachingStyle}]").prop("checked",true);
-        	})
+                $(".form-check").children("input[value='${l.teachingStyle}']").prop("checked",true);
+        	});
     
         </script>
         </div>

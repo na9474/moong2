@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
+import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 
 @Controller
@@ -79,9 +80,13 @@ public class LessonEnrollController {
 		
 		//과외등록 페이지로 이동
 		@RequestMapping("enrollFrom.le")
-		public String lessonEnrollForm() {
+		public ModelAndView lessonEnrollForm(ModelAndView mv) {
 			
-			return "lesson/lessonEnrollForm";
+			ArrayList<Districts> d = ls.selectDistrictsList();
+			
+			mv.addObject("d",d).setViewName("lesson/lessonEnrollForm");
+			
+			return mv;
 		}
 		
 		
@@ -165,15 +170,73 @@ public class LessonEnrollController {
 				}
 				
 				
-	//등록한 과외정보 수정
+	//등록한 과외정보 수정 페이지 이동
 				@RequestMapping("updateForm.le")
 				public ModelAndView lessonEnrollUpdateForm(int leNo,ModelAndView mv) {
 					
 					LessonEnroll l = ls.selectLesson(leNo);
+					ArrayList<Districts> d = ls.selectDistrictsList();
 					
-					mv.addObject("l",l).setViewName("lesson/lessonUpdateForm");
+					mv.addObject("l",l).addObject("d",d).setViewName("lesson/lessonUpdateForm");
 					return mv;
 				}
+				
+				
+	//등록한 과외정보 삭제
+				@RequestMapping("delete.le")
+				public ModelAndView lessonEnrollDelete(int leNo,int userNo,ModelAndView mv,HttpSession session) {
+					
+					int result = ls.deleteLesson(leNo);
+					
+					if(result>0) {
+						session.setAttribute("alertMsg", "선택한 과외등록이 삭제되었습니다.");
+						mv.setViewName("redirect:list.le?userNo="+userNo);
+					}else {
+						mv.addObject("errorMsg","삭제실패").setViewName("common/errorPage");
+					}
+					return mv;
+				}
+				
+	//등록한 과외정보 수정
+			@RequestMapping("update.le")
+			public ModelAndView lessonUpdate(LessonEnroll le,ModelAndView mv,HttpSession session,MultipartFile upfile){
+				
+				int check  = ls.lessonInsertCheck(le);
+				
+				if(check>0) {
+					session.setAttribute("alertMsg", "같은과목으로 등록된 과외가 있습니다.");	
+					mv.setViewName("redirect:updateForm.le?leNo="+le.getLeNo());
+				}else {
+				
+				if(!upfile.getOriginalFilename().contentEquals("")) {
+
+					
+					if(le.getLeOriginname().equals("")) {
+						
+						new File(session.getServletContext().getRealPath(le.getLeChangename())).delete();
+					}
+					
+					
+					String changeName = saveFile(upfile,session);
+					le.setLeChangename("resources/lesson_video/"+changeName);
+					
+					le.setLeOriginname(upfile.getOriginalFilename());
+					
+					
+				}
+				
+				int result = ls.updateLesson(le);
+
+				if(result>0) {
+					session.setAttribute("alertMsg", "과외등록정보 수정 성공");	
+					mv.setViewName("redirect:detail.le?leNo="+le.getLeNo());
+				}else {
+					mv.addObject("errorMsg","수정 실패").setViewName("common/errorPage");
+				}
+				}
+				
+				return mv;
+			}
 }
 
 

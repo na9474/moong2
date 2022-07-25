@@ -76,18 +76,20 @@
                             <td>금액</td>
                             <td>매칭일</td>
                             <td>상태</td>
+                            <td style="width:10%;">매칭취소</td>
                         </tr>
                     </thead>
                     <tbody>
                 	<c:choose>
                 		<c:when test ="${empty list}">
 	                		<tr>
-	                			<td colspan="6">매칭중인 과외가 없습니다.</td>
+	                			<td colspan="7">매칭중인 과외가 없습니다.</td>
 	                		</tr>
                 		</c:when>
                 		<c:otherwise>
 		                		<c:forEach var="m" items="${list}">
 			                    	<tr>
+			                    		<td style="display: none;" class="maNo">${m.maNo}</td>
 				                    	<c:choose>
 					                    	<c:when test = "${fn:contains(m.subject,'KO')}">
 					                    		<td>국어</td>
@@ -111,6 +113,7 @@
 			                    				<td> <span style="color: red;">매칭대기중</span></td>
 			                    			</c:otherwise>
 			                    		</c:choose>
+			                    		<td><button class="btn btn-danger" > x </button> </td>
 			                    	</tr>
 		                    	</c:forEach>
                 		</c:otherwise>
@@ -122,6 +125,13 @@
     <script>
     $(function(){
     	checkAlarm();
+    })
+    
+    $(function(){
+    	$('.btn-danger').click(function(){
+    		  location.href="delete.ma?maNo="+$(this).parent().parent().children(".maNo").text()+"&&userNo=${loginUser.userNo}";
+    		
+    	})
     })
     
 

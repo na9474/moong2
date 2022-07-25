@@ -128,6 +128,22 @@ public class MatchingController {
 		return mv;
 	}
 	
+	//매칭 삭제
+	@RequestMapping("delete.ma")
+	public ModelAndView deleteMatching(int maNo,int userNo,ModelAndView mv,HttpSession session) {
+		
+		int result = ms.deleteMatching(maNo);
+		if(result>0) {
+			session.setAttribute("alertMsg", "매칭이 취소되었습니다.");
+			mv.setViewName("redirect:alarm.ma?uNo="+userNo);
+		}else {
+			mv.addObject("errorMsg","매칭삭제실패").setViewName("common/errorPage");
+		}
+		return mv;
+		
+	}
+	
+	
 	//매칭완료 표시
 	@ResponseBody
 	@RequestMapping(value ="check.ma",produces="application/json; charset=UTF-8")

@@ -28,4 +28,6 @@ public interface MatchingService {
 
 	int updateAlarm(int maNo);
 
+	int deleteMatching(int maNo);
+
 }

@@ -190,4 +190,10 @@ WHERE ROWNUM = 1
 	WHERE MA_NO = #{maNo}
 
 </update>
+
+
+<delete id="deleteMatching" parameterType="matching"> 
+		DELETE FROM MATCHING
+		WHERE MA_NO = #{maNo}	
+</delete>
 </mapper>

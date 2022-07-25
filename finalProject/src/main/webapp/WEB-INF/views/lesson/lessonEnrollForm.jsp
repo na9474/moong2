@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+
 <title>lessonEnrollForm</title>
 <style>
 /*영역잡기*/
@@ -116,11 +117,10 @@
                 <td class="td-r" >과외 가능 지역</td>
                 <td><select class="form-control" onchange="handleOnChange(this)" name="select-area">
                     <option value="">--5개까지 선택이 가능합니다--</option>
-                    <option value="Jongno-gu">종로구</option>
-                    <option value="Jung-gu">중구</option>
-                    <option value="Jung-gu">광진구</option>
-                    <option value="Jung-gu">마포구</option>
-                    <option value="Jung-gu">중랑구</option>
+                    <c:forEach var="d" items="${d}">
+                    	<option value="${d.dno}">${d.area}</option>
+                    </c:forEach>
+              
 
                   </select>
                   <div id='result'></div>
@@ -367,11 +367,12 @@
         </div>
     </form>
         <script>
-            function areaReset(){
+            function  areaReset(){
                 $('.resultIn').remove();
                 $('.resultDayIn').remove();
             }
         </script>
         </div>
+       
 </body>
 </html>

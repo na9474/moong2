@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.moong.matching.model.vo.Matching;
 
+import oracle.net.aso.s;
+
 @Repository
 public class MatchingDao {
 
@@ -73,8 +75,15 @@ public class MatchingDao {
 	}
 
 	public int updateAlarm(SqlSessionTemplate sqlSession, int maNo) {
-		
+			   
 		return sqlSession.update("MatchingMapper.updateAlarm",maNo);
 	}
+
+	public int deleteMatching(SqlSessionTemplate sqlSession, int maNo) {
+		
+		return sqlSession.delete("MatchingMapper.deleteMatching",maNo);
+	}
+	
+	
 
 }
