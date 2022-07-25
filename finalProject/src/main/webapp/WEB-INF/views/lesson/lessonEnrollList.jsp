@@ -13,7 +13,9 @@
         width: 1000px;
         display: block;
         margin-top:100px;
+       
     }
+   
     /*영역잡기 끝*/
 
     /*페이지 제목*/
@@ -55,6 +57,7 @@
 </style>
 <body>
     <jsp:include page="../common/header.jsp"/>
+    <div id="wrapper">
     <div id="alarm-outer">
         <div id="subtit">
             과외 등록
@@ -85,7 +88,18 @@
 				<c:forEach var="l" items="${list}">
 		 		<tr>
 		 					<td style="display: none;" class="leNo" >${l.leNo}</td>
-                            <td>${l.subject}</td>
+		 					<c:choose>
+			 					<c:when test="${l.subject eq 'KO' }">
+			 						<td>국어</td>
+			 					</c:when>
+			 					<c:when test="${l.subject eq 'MATH' }">
+			 						<td>수학</td>
+			 					</c:when>
+			 					<c:otherwise>
+			 						<td>영어</td>
+			 					</c:otherwise>
+		 					</c:choose>
+                            
                             <td>${l.fee}</td>
                             <td>${l.career}</td>
                             <c:choose>
@@ -114,8 +128,39 @@
                     location.href="detail.le?leNo="+$(this).parent().parent().children(".leNo").text();
             });
         });
+           
+           
+           $(function(){
+        	   function alertComplete(x){
+          		  
+          		  $.ajax({
+          				url : "alertcp.ma",
+          				data : {maNo : x },
+          				success : function(){
+          					if(result>0){
+          					console.log("변경성공")		
+          					}else{
+          						console.log("변경실패")
+          					}	
+          				},
+          				error : function(){
+          					console.log("통신실패");
+          				}
+          			})
+          	  }
+           })
+           
+           
+           
+           
+           
      </script>
-        </div>
-    </div>
     
+        </div>
+    
+    
+     </div>
+     
+    
+     
 </body>

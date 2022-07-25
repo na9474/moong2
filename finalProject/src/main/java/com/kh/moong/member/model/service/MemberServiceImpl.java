@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.kh.moong.member.model.dao.MemberDao;
 import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.member.model.vo.Student;
+import com.kh.moong.member.model.vo.Teacher;
 
 @Service
 public class MemberServiceImpl implements MemberService{
@@ -30,6 +32,7 @@ public class MemberServiceImpl implements MemberService{
 		
 		return result;
 	}
+
 	
 	// 아이디 유효성 검사
 //	@Override
@@ -37,4 +40,17 @@ public class MemberServiceImpl implements MemberService{
 //		
 //		return memberDao.idCheck(sqlSession,userId);
 //	}
+	
+	
+	
+	
+	//로그인한 학생/선생정보 가져오기 
+	@Override
+	public Student loginStudentInfo(int userNo) {
+		return memberDao.loginStudentInfo(sqlSession,userNo);
+	}
+	@Override
+	public Teacher loginTeacherInfo(int userNo) {
+		return memberDao.loginTeacherInfo(sqlSession,userNo);
+	}
 }

@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="icon" type="image/png" href="/moong/resources/img/logo-dark.png"/>
 <meta charset="UTF-8">
 <title>lessonDetail</title>
 <style>
@@ -16,7 +18,7 @@
     #teacher-detail{
         margin: auto;
         width: 900px;
-        height: 2000px;
+        height: 1400px;
     }
     #teacher-reply{
         
@@ -48,8 +50,8 @@
         height: 400px;
         margin:auto;
         margin-bottom: 10px;
-        /*공란색칠*/
-        background-color: orange;
+       
+       
     }
     /*영역잡기 끝*/
 
@@ -190,15 +192,26 @@
   
                     <tr>
                         <td>과외 가능 지역 : </td>
-                        <td style="float: left;">${l.area}</td>
+                        <td style="float: left;" class="changeArea">${l.area}</td>
                     </tr>
                     <tr>
                         <td>과&nbsp;&nbsp;외&nbsp;&nbsp;&nbsp;&nbsp;과&nbsp;&nbsp;목 :  </td>
-                        <td style="float: left;">${l.subject}</td>
+                        <c:choose>
+                        <c:when test = "${l.subject eq 'KO'}">
+                        <td style="float: left;">국어</td>
+                        </c:when>
+                        <c:when test = "${l.subject eq 'MATH'}">
+                        <td style="float: left;">수학</td>
+                        </c:when>
+                        <c:otherwise>
+                        <td style="float: left;">영어</td>
+                        </c:otherwise>
+                        </c:choose>
+                        
                     </tr>
                     <tr>
                         <td>과외 가능 요일 : </td>
-                        <td style="float: left;">${l.leDay}</td>
+                        <td style="float: left;" class="changeDay">${l.leDay}</td>
                     </tr>
                     <tr>
                         <td>경&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;력 : </td>
@@ -214,25 +227,25 @@
                     </tr>
                 </table>
 
-                <div class="line"></div>
-
-                <div style="margin:auto; height: 800px;">
-                    <div class="mid">재학 증명서</div>
-                    <div id="idc"></div>
-                    <div>첨부파일 : </div>
-                </div>
+             
 
                 <div class="line"></div>
 
                 <div style="margin:auto; height: 500px;">
-                    <div class="mid">어필 영상</div>
-                    <div id="vi"></div>
+                    <div class="mid" >어필 영상</div>
+                    <video controls  id="vi" src="${l.leChangename}" style="margin-left:100px;"></video>
                     <div>첨부파일 : </div>
 
                 </div>
 
                 <div class="line"></div>
 
+				<div id="btnArea" style="width:fit-content; margin:auto;"><button class="btn moong-yellow" onclick="location.href='tlist.le?cpage=1'">목록으로</button> 
+				<c:if test="${loginUser.userNo eq l.userNo }">
+				<button class="btn moong-dark" id="updateLe">수정하기</button>
+				</c:if>
+				</div>
+				
         </div>
         
         <div id="teacher-reply">
@@ -280,6 +293,23 @@
         $('#reply').click(function(){
             $(this).text("");
         })
+        
+        $(function(){
+        	$("#updateLe").click(function(){
+        		location.href="updateForm.le?leNo=${l.leNo}"
+        	})
+        	
+        })
+        
+        $(function(){
+        	var changeText1 = $('.changeArea').text();
+        	var changeText2 = $('.changeDay').text();
+        	$('.changeArea').text(changeText1.replaceAll(",",""));
+        	$('.changeDay').text(changeText2.replaceAll(",",""));
+        })
+        
+        
+       
     </script>
 </body>
 </html>
