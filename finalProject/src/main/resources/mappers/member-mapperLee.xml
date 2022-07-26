@@ -4,18 +4,74 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="memberMapperLee">
 	
+	<resultMap type="student" id="studentResultSet">
+		<result column="USER_NO" property="userNo"/>
+		<result column="YEAR" property="year"/>
+		<result column="KO" property="ko"/>
+		<result column="MATH" property="math"/>
+		<result column="ENG" property="eng"/>
+	</resultMap>
+	
+	<resultMap type="idPicture" id="idPictureResultSet">
+		<result column="IP_NO" property="ipNo"/>
+		<result column="IP_ORIGINNAME" property="ipOriginName"/>
+		<result column="IP_SYSNAME" property="ipSysName"/>
+		<result column="STATUS" property="status"/>
+		<result column="USER_NO" property="userNo"/>
+	</resultMap>
+	
+	<resultMap type="member" id="memberResultSet">
+		<result column="USER_NO" property="userNo"/>
+		<result column="STUDENT" property="student"/>
+		<result column="TEACHER" property="teacher"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="USER_PWD" property="userPwd"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="GENDER" property="gender"/>
+		<result column="EMAIL" property="email"/>
+		<result column="BIRTH" property="birth"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="MODIFIY_DATE" property="modifyDate"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+	
+	<resultMap type="reportCard" id="reportCardResultSet">
+		<result column="RC_NO" property="rcNo"/>
+		<result column="RC_ORIGINNAME" property="rcOriginName"/>
+		<result column="RC_SYSNAME" property="rcSysName"/>
+		<result column="STATUS" property="status"/>
+		<result column="USER_NO" property="userNo"/>
+	</resultMap>
+	
+	<resultMap type="teacher" id="teacherResultSet">
+		<result column="USER_NO" property="userNo"/>
+		<result column="SELF_INTRODUCTION" property="selfIntroduction"/>
+		<result column="SCHOOL_INFO" property="schoolInfo"/>
+		<result column="RATING" property="rating"/>
+	</resultMap>
+	
+	<resultMap type="idCard" id="idCardResultSet">
+		<result column="IC_NO" property="icNo"/>
+		<result column="IC_ORIGINNAME" property="icOriginName"/>
+		<result column="IC_SYSNAME" property="icSysName"/>
+		<result column="STATUS" property="status"/>
+		<result column="USER_NO" property="userNo"/>
+	</resultMap>	
+	
+	
+	
 	<!-- 선생님 등록 하기 -->
 	<insert id="teaEnroll" parameterType="teacher">
 	INSERT INTO TEACHER(
 						USER_NO,
 						SELF_INTRODUCTION,
-						SCHOOL_INFO,
-						RATING)
+						SCHOOL_INFO
+						)
 				VALUES(
 						#{userNo},
 						#{selfIntroduction},
-						#{schoolInfo},
-						#{rating})
+						#{schoolInfo}
+						)
 	
 	</insert>
 
@@ -35,6 +91,52 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						#{eng})
 						
 	</insert>
+	
+	<!--idPicture 넣기  -->
+	<insert id="insertIdP" parameterType="idPicture">
+	INSERT INTO ID_PICTURE(
+							IP_NO,
+							IP_ORIGINNAME,
+							IP_SYSNAME,
+							STATUS,
+							USER_NO
+							)
+				VALUES(
+						SEQ_IPNO.NEXTVAL,
+						#{ipOriginName},
+						#{ipSysName},
+						'Y',
+						#{userNo}
+						)
+	</insert>
+	
+	<!-- 성적표 넣기 -->
+	<insert id="insertRc">
+	INSERT INTO REPORT_CARD(
+							RC_NO,
+							RC_ORIGINNAME,
+							RC_SYSNAME,
+							STATUS,
+							USER_NO
+	
+							)
+				VALUES(
+						SEQ_RCNO.NEXTVAL,
+						#{rcOriginName},
+						#{rcSysName},
+						'Y',
+						#{userNo}
+						)
+	
+	</insert>
+	
+	<!-- 학생으로 등록 -->
+	<update id="memberStudent">
+	UPDATE MEMBER 
+	SET STUDENT = 'Y',
+		TEACHER = 'N'
+	WHERE USER_NO = #{userNo}
+	</update>
 	
 	<!-- 학생 정보 수정 -->
 	<update id="myPageUpdate">
@@ -61,7 +163,171 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 학생 탈퇴 -->
 	<update id="stuDelete">
 	UPDATE MEMBER
-	SET STATUS = 'Y'
+	SET STATUS = 'N'
 	WHERE USER_NO = #{userNo}
 	</update>
+	
+	<!-- 학생 정보 -->
+<!-- 	<select id="studentInfo" resultMap="studentResultSet">
+	SELECT USER_NO
+			,YEAR
+			,KO
+			,MATH
+			,ENG
+	FROM STUDENT
+	WHERE USER_NO = #{userNo}
+	</select> -->
+	
+	<!-- 학생 마이페이지 -->
+	<select id="stuMyPage" resultMap="studentResultSet">
+	SELECT USER_NO
+			,YEAR
+			,KO
+			,MATH
+			,ENG
+	FROM STUDENT
+	WHERE USER_NO = #{userNo}
+	</select>
+	
+	<!-- 증명 사진 가져오기 -->
+	<select id="selectIp" resultMap="idPictureResultSet">
+	SELECT IP_NO,
+			IP_ORIGINNAME,
+			IP_SYSNAME
+	FROM ID_PICTURE
+	WHERE USER_NO = #{userNo}
+	AND STATUS = 'Y'
+	</select>
+	
+	
+
+	<!-- 학생 개인 정보 수정 -->
+	<update id="stuUpdateForm">
+	UPDATE MEMBER
+	SET EMAIL = #{email},
+		MODIFY_DATE = SYSDATE
+	
+	WHERE USER_NO = #{userNo}
+	</update>
+
+	<!-- 로그인 정보 가져오기 -->
+	<select id="loginMember" resultMap="memberResultSet">
+		SELECT USER_NO
+				,STUDENT
+				,TEACHER
+				,USER_ID
+				,USER_PWD
+				,USER_NAME
+				,GENDER
+				,EMAIL
+				,BIRTH
+				,ENROLL_DATE
+				,MODIFY_DATE
+				,STATUS
+			FROM MEMBER
+			WHERE USER_NO = #{userNo}
+			AND STATUS = 'Y'
+	</select>
+	
+	<!-- 증명사진 삭제 -->
+	<update id="deleteIp">
+	UPDATE ID_PICTURE
+	SET STATUS = 'N'
+	WHERE USER_NO = #{userNo}
+	
+	</update>
+
+	<!-- 성적표 가져오기 -->
+	<select id="selectRc" resultMap="reportCardResultSet">
+	SELECT RC_NO,
+			RC_ORIGINNAME,
+			RC_SYSNAME,
+			USER_NO
+	FROM REPORT_CARD
+	WHERE USER_NO = #{userNo}
+	AND STATUS = 'Y'
+	</select>
+	
+	<!-- 성적표 삭제 -->
+	<update id="deleteRc">
+	UPDATE REPORT_CARD
+	SET STATUS = 'N'
+	WHERE USER_NO = #{userNo}
+	</update>
+
+	<!-- 학생 성적 수정 -->
+	<update id="stuGradeUpdate">
+	UPDATE STUDENT
+	SET KO = #{ko},
+		MATH = #{math},
+		ENG = #{eng}
+	WHERE USER_NO = #{userNo}
+	
+	</update>
+
+	<!-- 재학증명서 등록 -->
+	<insert id="insertIc">
+	INSERT INTO ID_CARD(
+							IC_NO,
+							IC_ORIGINNAME,
+							IC_SYSNAME,
+							STATUS,
+							USER_NO
+	
+							)
+				VALUES(
+						SEQ_ICNO.NEXTVAL,
+						#{icOriginName},
+						#{icSysName},
+						'Y',
+						#{userNo}
+						)
+	</insert>
+
+	<!-- 선생님으로 등록 -->
+	<update id="memberTeacher">
+	UPDATE MEMBER 
+	SET TEACHER = 'Y',
+		STUDENT = 'N'
+	WHERE USER_NO = #{userNo}
+	</update>
+
+	<!-- 선생님 마이페이지 정보 -->
+	<select id="teaMyPage" resultMap="teacherResultSet">
+	SELECT USER_NO
+			,SELF_INTRODUCTION
+			,SCHOOL_INFO
+			,RATING
+	FROM TEACHER
+	WHERE USER_NO = #{userNo}
+	</select>
+
+	<!-- 재학증명서 가져오기 -->
+	<select id="selectIc" resultMap="idCardResultSet">
+	SELECT IC_NO,
+			IC_ORIGINNAME,
+			IC_SYSNAME,
+			STATUS
+	FROM ID_CARD
+	WHERE USER_NO = #{userNo}
+	AND STATUS = 'Y'
+	</select>
+	
+	<!-- 재학증명서 삭제 -->	
+	<update id="deleteIc">
+	UPDATE ID_CARD
+	SET STATUS = 'N'
+	WHERE USER_NO = #{userNo}
+	</update>
+	
+	<!-- 선생님 정보 수정 -->
+	<update id="teaUpdate">
+	UPDATE TEACHER
+	SET SELF_INTRODUCTION = #{selfIntroduction},
+		SCHOOL_INFO = #{schoolInfo}
+	WHERE USER_NO = #{userNo}
+	
+	</update>
+
+
 </mapper>

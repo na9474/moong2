@@ -21,7 +21,7 @@
 	
 	<!-- 로그인 -->
 	<select id="loginMember" resultMap="memberResultSet">
-		SELECT SEQ_MNO.NEXTVAL
+		SELECT USER_NO
 				,STUDENT
 				,TEACHER
 				,USER_ID

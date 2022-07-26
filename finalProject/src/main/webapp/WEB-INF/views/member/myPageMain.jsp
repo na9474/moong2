@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -111,9 +112,10 @@
 	<jsp:include page="../common/header.jsp"/>
 	<jsp:include page="../common/myPageNavi.jsp"/>
 	
+	<br><br>
 	 <div id="alarm-outer">
         <div id="subtit">
-            MyPage
+            MyPage 
         </div>
         
         <div id="teacher-detail">
@@ -121,19 +123,19 @@
                     <tr>
                         <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
                         <td>이름 : </td>
-                        <td>나회원</td>
+                        <td>${loginUser.userName }</td>
                     </tr>
                     <tr>
                         <td>나이 : </td>
-                        <td>20</td>
+                        <td>${loginUser.birth }</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
-                        <td>남</td>
+                        <td>${loginUser.gender }</td>
                     </tr>
                     <tr>
                         <td>이메일 : </td>
-                        <td>tjdtossla12@gmail.com</td>
+                        <td>${loginUser.email}</td>
                     </tr>
                    
                 </table>

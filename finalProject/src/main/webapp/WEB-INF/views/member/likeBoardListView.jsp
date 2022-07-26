@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,48 +102,78 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
+
 	<jsp:include page="../common/myPageNavi.jsp"/>
 	
  <div class="outer" align="center">
-        <br><br>
+        <br><br><br><br>
         <div>
         <h4><b>좋아요 게시글 목록</b></h4>
         <br><br>
-         <table align="center" class="table table-hover">
+		<ul class="nav nav-tabs">
+		  <li class="nav-item">
+		    <a class="nav-link active" href="likeBoardListView.me">자유게시판</a>
+		  </li>
+		  <li class="nav-item">
+		    <a class="nav-link" href="likeSolutionListView.me">문제풀이게시판</a>
+		  </li>
+
+		</ul>
+		<br>
+         <table align="center" class="table table-hover" >
             <thead>
                 <tr align="center">
-                  <th style="width:10% ;">No</th>
-                  <th style="width:40% ;">제목</th>
+                  <th style="width:15% ;">카테고리</th>
+                  <th style="width:30% ;">제목</th>
                   <th style="width:20% ;">작성자</th>
+                  <th style="width:15% ;">조회수</th>
                   <th style="width:20% ;">작성일</th>
                 </tr>
             </thead>
             <tbody>
-                <tr align="center">
-                    <td>1</td>
-                    <td align="left">질문제목</td>
-                    <td>user01</td>
-                    <td>2022-03-23</td>
-                </tr>
-                <tr align="center">
-                    <td>2</td>
-                    <td align="left">질문</td>
-                    <td>선생님</td>
-                    <td>2022-02-13</td>
-                </tr>
-               
+            
+            	
+                <c:forEach var="b" items="${blist }">
+                	<tr align="center">
+                		<td>${b.categoryName }</td>
+                		<td align="left">${b.title }</td>
+                		<td>${loginUser.userName }</td>
+                		<td>${b.count }</td>
+                		<td>${b.enrollDate }</td>
+                	</tr>
+                </c:forEach>
+            	
+            
             </tbody>
           </table>
         </div>
     <br><br>
      
      <!--페이징-->
-     <div class="paging-area" align="center">
-        <button>이전</button>
-        <button>1</button>
-        <button>2</button>
-        <button>3</button>
-        <button>다음</button>
+ 	<div id="pagingArea">
+                <ul class="pagination">
+                	<c:choose>
+                	<c:when test="${pi.currentPage eq 1 }">
+                    <li class="page-item disabled"><a class="btn moong-dark" href="#"><</a></li>
+                    </c:when>
+                    <c:otherwise>
+                    <li class="page-item"><a class="btn moong-dark" href="likeBoardListView.me?cpage=${pi.currentPage - 1 }"><</a></li>
+                    </c:otherwise>
+                    </c:choose>
+                    
+                    <c:forEach var="p" begin="${pi.startPage }" end="${pi.endPage }" step="1"> 
+                    <li class="page-item"><a class="btn moong-dark" href="likeBoardListView.me?cpage=${p }">${p }</a></li>
+                    </c:forEach>
+                    
+                    <c:choose>
+                    <c:when test="${pi.currentPage eq pi.maxPage }">
+                    <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
+					</c:when>
+					<c:otherwise>
+					<li class="page-item"><a class="btn moong-dark" href="likeBoardListView.me?cpage=${pi.currentPage + 1 }">></a></li>
+					</c:otherwise>
+					</c:choose>        
+                </ul>
      </div>
     
     </div>

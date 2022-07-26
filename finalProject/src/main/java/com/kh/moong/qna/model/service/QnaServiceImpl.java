@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.qna.model.dao.QnaDao;
 import com.kh.moong.qna.model.vo.QnaAnswer;
+import com.kh.moong.qna.model.vo.QnaFile;
 import com.kh.moong.qna.model.vo.QnaQuestion;
 import com.kh.moong.qna.model.vo.QnaType;
 
@@ -22,13 +23,13 @@ public class QnaServiceImpl implements QnaService {
 	private SqlSessionTemplate sqlSession;
 	
 	@Override
-	public int selectQnaListCount() {
-		return qnaDao.selectQnaListCount(sqlSession);
+	public int selectQnaListCount(int userNo) {
+		return qnaDao.selectQnaListCount(sqlSession,userNo);
 	}
 
 	@Override
-	public ArrayList<QnaQuestion> selectList(PageInfo pi) {
-		return qnaDao.selectList(sqlSession,pi);
+	public ArrayList<QnaQuestion> selectList(PageInfo pi,int userNo) {
+		return qnaDao.selectList(sqlSession,pi,userNo);
 	}
 
 	@Override
@@ -63,12 +64,24 @@ public class QnaServiceImpl implements QnaService {
 
 	@Override
 	public int insertAnswer(QnaAnswer qa) {
-		return qnaDao.selectAnswer(sqlSession,qa);
+		return qnaDao.insertAnswer(sqlSession,qa);
 	}
 
 	@Override
 	public ArrayList<QnaType> selectQnaType() {
 		return qnaDao.selectQnaType(sqlSession);
+	}
+
+	//첨부파일 이름 db저장
+	@Override
+	public int insertQf(QnaFile qf) {
+		return qnaDao.insertQf(sqlSession,qf);
+	}
+
+	//첨부파일의 qnaNo넣어주기
+	@Override
+	public int updateQfQnaNo(QnaQuestion qq) {
+		return qnaDao.updateQfQnaNo(sqlSession,qq);
 	}
 
 }
