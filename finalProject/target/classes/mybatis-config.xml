@@ -30,6 +30,9 @@
 		<typeAlias type="com.kh.moong.myBoard.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.moong.myLesson.model.vo.Lesson" alias="lesson"/>
 		<typeAlias type="com.kh.moong.matching.model.vo.Matching" alias="matching"/>
+		<typeAlias type="com.kh.moong.police.model.vo.Police" alias="police"/>
+		<typeAlias type="com.kh.moong.police.model.vo.PoliceCmt" alias="policeCmt"/>
+		<typeAlias type="com.kh.moong.charts.model.vo.Chart" alias="chart"/>
 	</typeAliases>	
 
 	<mappers>
@@ -45,6 +48,9 @@
 		<mapper resource="/mappers/myboard-mapper.xml"/>
 		<mapper resource="/mappers/myLesson-mapper.xml"/>
 		<mapper resource="/mappers/matching-mapper.xml"/>
+		<mapper resource="/mappers/police-mapper.xml"/>
+		<mapper resource="/mappers/policecmt-mapper.xml"/>
+		<mapper resource="/mappers/chart-mapper.xml"/>
 	</mappers>
 
 </configuration>

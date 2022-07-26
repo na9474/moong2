@@ -8,6 +8,6 @@ import lombok.Data;
 public class SolutionHeart {
 		
 		private int shNo;
-		private int userNo;
-		private int solutionNo;
+		private int user_no;
+		private int solution_no;
 }
