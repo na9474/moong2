@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	<mapper namespace="chartMapper">
+	
+	<!-- 회원수 -->
+	<select id="allMemCount" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+	</select>
+	
+	<!-- 선생수 -->
+	<select id="allTeaCount" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE TEACHER='Y'
+	</select>
+	
+	<!-- 학생수 -->
+	<select id="allStuCount" resultType="int">
+		SELECT COUNT(*)
+		FROM MEMBER
+		WHERE STUDENT='Y'
+	</select>
+	
+	<!-- 선생 성별 -->
+	<select id="teaGender" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT GENDER "LABEL",
+       COUNT(*) "COUNTS"
+       FROM (SELECT * FROM MEMBER WHERE TEACHER='Y')
+       GROUP BY GENDER 
+       ORDER BY 2 DESC
+    </select>
+    
+    <!-- 학생 성별 -->
+	<select id="stuGender" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT GENDER "LABEL",
+       COUNT(*) "COUNTS"
+       FROM (SELECT * FROM MEMBER WHERE STUDENT='Y')
+       GROUP BY GENDER 
+       ORDER BY 2 DESC
+    </select>
+    
+    <!-- 월별 가입자수 -->
+	<select id="monthMem" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT * 
+       FROM (
+       SELECT
+       ROW_NUMBER() OVER(ORDER BY
+       SUBSTR(TO_CHAR(ENROLL_DATE),1,5)) RNUM,
+       SUBSTR(TO_CHAR(ENROLL_DATE),1,5)
+       "LABEL", COUNT(*) "COUNTS"
+       FROM MEMBER
+       GROUP BY
+       SUBSTR(TO_CHAR(ENROLL_DATE),1,5)
+       )
+       WHERE RNUM BETWEEN
+       1 AND 12
+    </select>
+    
+   	<!-- 매칭수 -->
+	<select id="matchCount" resultType="int">
+       SELECT COUNT(DISTINCT GROUP_NO)
+	   FROM MATCHING
+	</select>
+	
+	<!-- 매칭완료수 -->
+	<select id="matchComCount" resultType="int">
+       SELECT COUNT(L_NO)
+	   FROM LESSON
+	</select>
+	
+	<!-- 월별 매칭수 -->
+	<select id="monthMatch" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT * 
+       FROM (
+       SELECT
+       ROW_NUMBER() OVER(ORDER BY
+       SUBSTR(TO_CHAR(START_DATE),1,5)) RNUM,
+       SUBSTR(TO_CHAR(START_DATE),1,5)
+       "LABEL", COUNT(*) "COUNTS"
+       FROM LESSON
+       GROUP BY
+       SUBSTR(TO_CHAR(START_DATE),1,5)
+       )
+       WHERE RNUM BETWEEN
+       1 AND 12
+    </select>
+    
+    <!-- 국어등급 -->
+    <select id="koGrade" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT KO "LABEL",
+       COUNT(*) "COUNTS"
+       FROM STUDENT
+       GROUP BY KO
+       ORDER BY LABEL
+    </select>
+    
+    <!-- 영어등급 -->
+    <select id="engGrade" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT ENG "LABEL",
+       COUNT(*) "COUNTS"
+       FROM STUDENT
+       GROUP BY ENG
+       ORDER BY LABEL
+    </select>
+    
+    <!-- 수학등급 -->
+    <select id="mathGrade" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT MATH "LABEL",
+       COUNT(*) "COUNTS"
+       FROM STUDENT
+       GROUP BY MATH
+       ORDER BY LABEL
+    </select>
+    
+    <!-- 과목별 선생수 -->
+    <select id="subjectTeacher" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT SUBJECT "LABEL",
+       COUNT(*) "COUNTS"
+       FROM LESSON_ENROLL
+       GROUP BY SUBJECT
+    </select>
+    
+    <!-- 선생 과외스타일 -->
+    <select id="styleTeacher" resultType="com.kh.moong.charts.model.vo.Chart">
+       SELECT LE_STYLE "LABEL",
+       COUNT(*) "COUNTS"
+       FROM LESSON_ENROLL
+       GROUP BY LE_STYLE
+    </select>
+
+</mapper>

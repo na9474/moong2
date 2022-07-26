@@ -12,24 +12,50 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="STATUS" property="status"/>
 		<result column="SOLUTION_NO" property="solutionNo"/>
 		<result column="USER_ID" property="userId"/>
+		<result column="SCF_NO" property="scfNo"/>
+		<result column="SCF_ORIGINNAME" property="scfOriginName"/>
+		<result column="SCF_SYSNAME" property="scfSysName"/>
 	</resultMap>
 	
+	<select id="getScNo" resultType="_int">
+		SELECT MAX(SC_NO)+1 AS SC_NO FROM SOLUTION_CMT
+	</select>
+	
 	<select id="cmtListAll" resultMap="solutionCmtResultSet">
-        SELECT  USER_ID,
-                SOLUTION_CMT_CONTENTS,
-                TO_CHAR(CREATE_DATE, 'YYYY-MM-DD') AS "CREATE_DATE"
-		FROM 
-            (SELECT SC.*, M.USER_ID
+        SELECT SC.*, M.USER_ID
             FROM SOLUTION_CMT SC
             JOIN MEMBER M ON SC.USER_NO=M.USER_NO
         WHERE SOLUTION_NO = #{solutionNo}
         AND SC.STATUS = 'Y'
-        ORDER BY CREATE_DATE DESC)
+        ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<select id="listAll" resultMap="solutionCmtResultSet">
+		SELECT SC.*, M.USER_ID, CF.SCF_NO, CF.SCF_ORIGINNAME, CF.SCF_SYSNAME
+            FROM SOLUTION_CMT SC
+            JOIN MEMBER M ON SC.USER_NO=M.USER_NO
+            LEFT JOIN SOLUTION_CMT_FILES CF ON SC.SC_NO=CF.SC_NO
+        WHERE SOLUTION_NO = #{solutionNo}
+        AND SC.STATUS = 'Y'
+        ORDER BY CREATE_DATE DESC
 	</select>
 	
 	<insert id="insertCmt" parameterType="solutionCmt">
 		INSERT INTO SOLUTION_CMT (SC_NO,SOLUTION_CMT_CONTENTS,SOLUTION_NO,USER_NO)
 		VALUES (SEQ_SCNO.NEXTVAL,#{solutionCmtContents},#{solutionNo},#{userNo})
 	</insert>
+	
+	<update id="deleteCmt" parameterType="_int">
+		UPDATE SOLUTION_CMT
+		SET STATUS='N'
+		WHERE SC_NO = #{scNo}
+	</update>
+	
+	<select id="cmtSelctSn" resultMap="solutionCmtResultSet">
+		SELECT s.*, m.USER_ID
+		FROM SOLUTION_CMT s
+    	JOIN MEMBER m ON s.user_no = m.user_no
+		WHERE SC_NO = #{scNo}
+	</select>
 	
 </mapper>
