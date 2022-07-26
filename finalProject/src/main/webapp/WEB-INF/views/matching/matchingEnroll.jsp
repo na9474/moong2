@@ -5,10 +5,11 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
+<meta charset="UTF-8">
 <meta charset="UTF-8">
 <title>Insert title here</title>
-
-
+<link rel="icon" type="image/png" href="./resources/img/logo-dark.png"/>
 <style>
  /*영역지정*/
         #matching-outer {
@@ -233,67 +234,81 @@
             </svg>
         </div>
         <div id="select">
-            <form action="">
+            <form method="post" action="insert.ma" id="MatchingEnrollForm" onsubmit="return checkForm()">
+                <input type="hidden" name="userNo" value="${loginUser.userNo }">
                 <table  id="selectfrom-tb">
                     <tr>
                         <td>과목 선택</td>
                         <td style="width:350px;">
-                            <select class="form-control" style="width: 100px; margin:auto;">
-                                <option value="ko">국어</option>
-                                <option value="eng">수학</option>
-                                <option value="math">영어</option>
+                            <select class="form-control" style="width: 100px; margin:auto;" name="subject" required>
+                                <option value="KO${s.ko}">국어</option>
+                                <option value="MATH${s.math}">수학</option>
+                                <option value="ENG${s.eng}">영어</option>
                               </select>
                         </td>
                     </tr>
                     <tr>
                         <td>랜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;덤</td>
-                        <td><input type="checkbox"></td>
+                        <td>
+                            <select class="form-control" name="random" id="random" required>
+                                <option value="Y">랜덤O</option>
+                                <option value="N">랜덤X</option>
+                            </select>
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="footnote">&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i> 랜덤선택시 비슷한 성적의 학생과 랜덤으로 매칭됩니다.</td>
                     </tr> 
                     <tr>
                         <td>성&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;별</td>
-                        <td style="font-size:20px;">남 <input type="checkbox" >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 여 <input type="checkbox"></td>
+                        <td style="font-size:20px;">
+                        <select class="form-control" name="gender" id="gender" >
+                                <option value="S">동일</option>
+                                <option value="R">상관없음</option>
+                                
+                            </select>
+                            <input type="hidden" name="sGender" value="${loginUser.gender }">
+                            <input type="hidden" name="sYear" value="${s.year}">
+                        </td>
                     </tr>
                     <tr>
                         <td colspan="2" class="footnote">&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i> 선택하지 않을 시 무작위 성별의 학생과 매칭됩니다.</td>
                     </tr>
                     <tr>
                         <td>인원 선택</td>
-                        <td><select name="" id="" class="form-control" style="width: 100px; margin:auto;">
-                            <option value="ko">1명</option>
-                            <option value="eng">2명</option>
-                            <option value="math">3명</option>
-                            <option value="math">4명</option>
+                        <td><select name="people" id="" class="form-control" style="width: 100px; margin:auto;">
+                            <option value="1">1명</option>
+                            <option value="2">2명</option>
+                            <option value="3">3명</option>
+                            <option value="4">4명</option>
                         </select></td>
                     </tr>
                     <tr>
                         <td>금액 입력</td>
-                        <td><input type="text" id="fee" style="width: 300px; height: 35px; font-size:20px;" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" required></td>
+                        <td><input type="text"  id="fee1" style="width: 300px; height: 35px; font-size:20px;"  onkeyup="numberWithCommas(this.value)" maxlength="7" required><input type="hidden"  id="fee2"  name="fee"></td>
                         
                     </tr>
                     <tr>
                         <td colspan="2" class="footnote" >&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i> 입력하신 금액은 수업 시간당 금액입니다.</td>
                     </tr>
                     <tr style="display: none;">
-                            <input type="hidden" id="area" name="area" required>
+                        	 <td><input type="hidden" id="area" name="area" required></td>   
                     </tr>
                     <tr>
                         <td>요일선택</td>
                         <td>
                         <select class="form-control" onchange="handleOnChange2(this)">
                             <option value="">--선택--</option>
-                            <option value="">상관없음</option>
-                            <option value="">월</option>
-                            <option value="">화</option>
-                            <option value="">수</option>
-                            <option value="">목</option>
-                            <option value="">금</option>
-                            <option value="">주말</option>
+                            <option value="7">상관없음</option>
+                            <option value="1">월</option>
+                            <option value="2">화</option>
+                            <option value="3">수</option>
+                            <option value="4">목</option>
+                            <option value="5">금</option>
+                            <option value="6">주말</option>
                             </select>
                             <div id="resultDay"></div>
-                            <input type="hidden" id="day" required>
+                            <input type="hidden" id="day"  name="maDay" required>
                         </td>
                     <tr>
 					<tr>
@@ -303,12 +318,40 @@
                
                 <div id="form-btn">
                 <button type="reset" style="float: left; " class="btn moong-dark" >초기화</button>
-                <button type="submit" style="float: right;" class="btn moong-yellow">매칭 시작</button>
+                <button type="submit" style="float: right;" id="ok" class="btn moong-yellow" >매칭시작</button>
                 </div>
             </form>
         </div>
     </div>
-
+    	<script>
+    		function checkForm(){
+    			if($('#area').val() == ""){
+    				alert("지역을 선택해주세요")
+    				return false;
+    			}else if($('#day').val() == ""){
+    				alert("요일을 선택해주세요")
+    				return false;
+    			}
+    			
+    			
+    		}
+    		
+    	
+    	</script>
+    
+    
+    
+    
+    
+ 		<script>
+                function numberWithCommas(x) {
+                 	x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
+                    x = x.replace(/,/g,'');          // ,값 공백처리
+                    $("#fee1").val(x.replace(/\B(?=(\d{3})+(?!\d))/g, ",")); // 정규식을 이용해서 3자리 마다 , 추가 
+                    $('#fee2').val(x);
+                    
+                    }
+            </script>
 
 
     <script>
@@ -327,7 +370,8 @@
     
 
                 const text = e.options[e.selectedIndex].text;
-               
+                
+
                // 선택한 텍스트 출력
                if(text!="--선택--"){
                 if($('#result').children().length<=1){
@@ -365,16 +409,27 @@
 
     </script>
      <script>
+
+                    const dayArr = new Array("","","","","","");
+
                     function handleOnChange2(e) {
                         
+
+
                         const text = e.options[e.selectedIndex].text;// 선택된 데이터의 텍스트값 가져오기
+                        const val = e.options[e.selectedIndex].value;
+                      
                         
+                    
+                   
+                    
                         if(text!="--3개까지 선택이 가능합니다--"){
                             
                             let resultLength = $('#resultDay').children().length;
                             if(text =="상관없음"){
                                 document.getElementById('resultDay').innerHTML = '<span class="resultDayIn">'+text+"x"+"</span>";
-                                $('#day').val(text);
+                                dayArr[e.options[e.selectedIndex].value -1] = text;
+                                $('#day').val(dayArr);
                                 
                             }else if(text != "상관없음" && ($('.resultDayIn').text()).replaceAll("x","") != "상관없음"){
     
@@ -383,9 +438,9 @@
                             
                             if(resultLength == 0) {
                                
-                                document.getElementById('resultDay').innerHTML += '<span class="resultDayIn">'+text+"x"+"</span>";// 추가
-                              
-                                $('#day').val(text);
+                                document.getElementById('resultDay').innerHTML += '<span class="resultDayIn" data-value='+val+'>'+text+"x"+"</span>";// 추가
+                                 dayArr[val -1] = text;
+                                $('#day').val(dayArr);
                                     
                             }
                                 
@@ -418,26 +473,31 @@
                                 }
     
                                 if(!flag)
-                                    document.getElementById('resultDay').innerHTML += '<span class="resultDayIn">'+text+"x"+"</span>";// 추가   
-                                    $('#day').val(($('.resultDayIn').text()).replaceAll("x",""));
+                                    document.getElementById('resultDay').innerHTML += '<span class="resultDayIn" data-value='+val+'>'+text+"x"+"</span>";// 추가   
                                     
-                                    
+                                   
+                                    dayArr[val-1] =text;
+                                    $('#day').val(dayArr);
                             }
                             else {
                                 alert("3개까지만 선택이 가능합니다.");
                             }
                         }
                     }
-                }
-                 //선택한  요일 클릭시 취소
-                   $(function(){
+                     //선택한  요일 클릭시 취소
+                  
                     $("#resultDay").on("click","span",function(){
                         $(this).remove();
                         $('#day').val(($('.resultDayIn').text()).replaceAll("x",""));
-                                    
-                       
+                            dayArr[$(this).data('value')-1] = "";   
+                           
                          })
-                   })
+                    
+                }
+                
+                   
+
+                   
                  </script>
 </body>
 </html>

@@ -12,10 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
+import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 
 @Controller
@@ -28,27 +32,26 @@ public class LessonEnrollController {
 	
 	public String saveFile(MultipartFile upfile,HttpSession session) {
 		
-		//1.원본파일명 뽑기
-		String originName =upfile.getOriginalFilename(); 
 		
-		//2.시간 형식을 문자열로 뽑아오기
+		String originName =upfile.getOriginalFilename(); 
+			
+		
 		String currentTime = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
 		
-		//3.뒤에 붙을 5자리 랜덤값
+		
 		int ranNum =(int)(Math.random() * 90000 +10000); //5자리 랜덤값
 		
-		//4.원본 파일명으로부터 확장자명 뽑기
-		//.jpg
+		
+		
 		String ext = originName.substring(originName.lastIndexOf("."));
 		
-		//5.다 이어붙이기
+		
 		String changeName = currentTime+ranNum+ext;
 		
 		
-		//6.업로드 하고자하는 물리적인 위치 알아내기(경로)
+		
 		String savePath = session.getServletContext().getRealPath("/resources/lesson_video/");
 		
-		//7. 경로와 수정파일명을 합쳐서 업로드 하기 
 		try {
 			upfile.transferTo(new File(savePath+changeName));
 		} catch (IllegalStateException e) {
@@ -77,9 +80,13 @@ public class LessonEnrollController {
 		
 		//과외등록 페이지로 이동
 		@RequestMapping("enrollFrom.le")
-		public String lessonEnrollForm() {
+		public ModelAndView lessonEnrollForm(ModelAndView mv) {
 			
-			return "lesson/lessonEnrollForm";
+			ArrayList<Districts> d = ls.selectDistrictsList();
+			
+			mv.addObject("d",d).setViewName("lesson/lessonEnrollForm");
+			
+			return mv;
 		}
 		
 		
@@ -90,24 +97,22 @@ public class LessonEnrollController {
 			//똑같은 과목으로 등록된 과외가 있는지 확인
 			int result  = ls.lessonInsertCheck(le);
 					 
-			
-			
-				
+					 
 				if(result>0) { //똑같은 과목으로 생성된 과외가 있음(과외등록불가능)
-					session.setAttribute("alertMsg", "등록된 같은 과목이 있습니다 ");
+					session.setAttribute("alertMsg", "이미 등록된 같은 과목이 있습니다 ");
 					mv.setViewName("lesson/lessonEnrollForm");
 				}else { //똑같은 과목으로 생성된 과외가 없음(과외등록가능) 
 					
-					//첨부파일이있다면
-					if(!upfile.getOriginalFilename().equals("")) {
+						
 						
 						String changeName = saveFile(upfile,session);
 						
 						le.setLeOriginname(upfile.getOriginalFilename());
 						le.setLeChangename("resources/lesson_video/"+changeName);
-						}
+						
 					
 					int result2 = ls.lessonInsert(le);
+					
 					if(result2>0) { //과외등록 성공
 						session.setAttribute("alertMsg", "과외등록성공");
 						mv.setViewName("redirect:list.le?userNo="+le.getUserNo());
@@ -122,8 +127,28 @@ public class LessonEnrollController {
 		
 		
 		
-		
-		
+		//등록된 선생님 전체 리스트 조회 
+		@RequestMapping("tlist.le")
+		public ModelAndView teacherList(@RequestParam(value="cpage",defaultValue="1") int currentPage,
+				ModelAndView mv) {
+			
+			
+			int listCount = ls.selectAllLessonCount();
+			
+			
+			int pageLimit = 10;
+			int boardLimit = 20;
+			
+			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+			
+			
+			ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
+			
+			mv.setViewName("lesson/teacherLessonList");
+			mv.addObject("pi",pi);
+			mv.addObject("list",list);
+			return mv;
+		}
 		
 		
 		//모든 선생님 과외정보 페이지 공통
@@ -132,7 +157,6 @@ public class LessonEnrollController {
 				public ModelAndView selectLesson(int leNo,ModelAndView mv) {
 					
 					LessonEnroll l = ls.selectLesson(leNo);
-					
 					
 					//조회성공
 					if(l.getLeNo()>0) {
@@ -144,6 +168,75 @@ public class LessonEnrollController {
 					
 					return mv;
 				}
+				
+				
+	//등록한 과외정보 수정 페이지 이동
+				@RequestMapping("updateForm.le")
+				public ModelAndView lessonEnrollUpdateForm(int leNo,ModelAndView mv) {
+					
+					LessonEnroll l = ls.selectLesson(leNo);
+					ArrayList<Districts> d = ls.selectDistrictsList();
+					
+					mv.addObject("l",l).addObject("d",d).setViewName("lesson/lessonUpdateForm");
+					return mv;
+				}
+				
+				
+	//등록한 과외정보 삭제
+				@RequestMapping("delete.le")
+				public ModelAndView lessonEnrollDelete(int leNo,int userNo,ModelAndView mv,HttpSession session) {
+					
+					int result = ls.deleteLesson(leNo);
+					
+					if(result>0) {
+						session.setAttribute("alertMsg", "선택한 과외등록이 삭제되었습니다.");
+						mv.setViewName("redirect:list.le?userNo="+userNo);
+					}else {
+						mv.addObject("errorMsg","삭제실패").setViewName("common/errorPage");
+					}
+					return mv;
+				}
+				
+	//등록한 과외정보 수정
+			@RequestMapping("update.le")
+			public ModelAndView lessonUpdate(LessonEnroll le,ModelAndView mv,HttpSession session,MultipartFile upfile){
+				
+				int check  = ls.lessonInsertCheck(le);
+				
+				if(check>0) {
+					session.setAttribute("alertMsg", "같은과목으로 등록된 과외가 있습니다.");	
+					mv.setViewName("redirect:updateForm.le?leNo="+le.getLeNo());
+				}else {
+				
+				if(!upfile.getOriginalFilename().contentEquals("")) {
+
+					
+					if(le.getLeOriginname().equals("")) {
+						
+						new File(session.getServletContext().getRealPath(le.getLeChangename())).delete();
+					}
+					
+					
+					String changeName = saveFile(upfile,session);
+					le.setLeChangename("resources/lesson_video/"+changeName);
+					
+					le.setLeOriginname(upfile.getOriginalFilename());
+					
+					
+				}
+				
+				int result = ls.updateLesson(le);
+
+				if(result>0) {
+					session.setAttribute("alertMsg", "과외등록정보 수정 성공");	
+					mv.setViewName("redirect:detail.le?leNo="+le.getLeNo());
+				}else {
+					mv.addObject("errorMsg","수정 실패").setViewName("common/errorPage");
+				}
+				}
+				
+				return mv;
+			}
 }
 
 

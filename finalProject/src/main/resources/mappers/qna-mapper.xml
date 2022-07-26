@@ -6,36 +6,63 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<resultMap type="qnaQuestion" id="qnaQuestionResultSet">
 		<result column="QNA_NO" property="qnaNo"/>
-		<result column="UESR_NO" property="userNo"/>
+		<result column="USER_NO" property="userNo"/>
 		<result column="TYPE_NO" property="typeNo"/>
 		<result column="TITLE" property="title"/>
 		<result column="QUESTION_CONTENT" property="questionContent"/>
 		<result column="QUESTION_DATE" property="questionDate"/>
 		<result column="QUESTION_STATUS" property="questionStatus"/>
+		
+		<result column="TYPE_NAME" property="typeName"/>
+		<result column="A_NO" property="qaNo"/>
+		<result column="USER_NAME" property="userName"/>
+		<result column="ROWNUM" property="rownum"/>
 	</resultMap>
 
 	<resultMap type="qnaType" id="qnaTypeResultSet">
 		<result column="TYPE_NO" property="typeNo"/>
 		<result column="TYPE_NAME" property="typeName"/>
 	</resultMap>
+	
+	<resultMap type="qnaAnswer" id="qnaAnswerResultSet">
+		<result column="QNA_NO" property="qnaNo"/>
+		<result column="ANSWER_CONTENT" property="answerContent"/>
+		<result column="ANSWER_DATE" property="answerDate"/>
+		<result column="ANSWER_STATUS" property="answerStatus"/>
+	
+	</resultMap>
+
 
 	<!-- QnA 수 구하기 -->
-	<!-- 로그인 후 내가 작성한 게시글 조건 추가 -->
 	<select id="selectQnaListCount" resultType="int">
 	SELECT COUNT(*)
 	FROM QNA_QUESTION
+	WHERE QUESTION_STATUS = 'Y'
+	<if test="userNo != 1">
+	AND USER_NO = #{userNo}
+	</if>
 	</select>
 
 	<!-- QnA 목록 -->
 	<select id="selectList" resultMap="qnaQuestionResultSet">
-	SELECT *
-	FROM 
-		(SELECT Q.*, M.USER_ID
+			SELECT ROWNUM, B.*
+		FROM( 
+		SELECT DISTINCT Q.QNA_NO, TITLE,QUESTION_CONTENT,QUESTION_DATE, Q.QUESTION_STATUS,Q.USER_NO, QT.TYPE_NAME, QA.QNA_NO AS "A_NO"
 		FROM QNA_QUESTION Q
-			JOIN MEMBER M ON Q.USER_NO = M.USER_NO
+		JOIN MEMBER M ON Q.USER_NO = M.USER_NO
 		WHERE Q.QUESTION_STATUS = 'Y'
 		ORDER BY QUESTION_DATE DESC
 		)
+		<if test="userNo != 1">
+        JOIN MEMBER M ON (Q.USER_NO = M.USER_NO)
+		</if>
+		JOIN QNA_TYPE QT ON (Q.TYPE_NO = QT.TYPE_NO)
+		LEFT JOIN QNA_ANSWER QA ON (Q.QNA_NO = QA.QNA_NO)
+        WHERE Q.QUESTION_STATUS = 'Y'
+        <if test="userNo != 1">
+        AND Q.USER_NO = #{userNo}
+		</if>
+		ORDER BY QUESTION_DATE DESC) B
 	</select>
 	
 	<!-- QnA Type -->
@@ -59,9 +86,98 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			#{typeNo},
 			#{title},
 			#{questionContent}
+
 	)
 	
-	
-	
 	</insert>	
+	
+	<!-- 조회수 증가 -->
+	<update id="increaseCount">
+	UPDATE QNA_QUESTION
+	SET COUNT = COUNT + 1
+	WHERE QUESTION_STATUS = 'Y'
+	AND QNA_NO = #{qnaNo}
+	</update>
+
+	<!-- 상세보기 -->
+	<select id="selectQuestion" resultMap="qnaQuestionResultSet">
+	SELECT Q.QNA_NO, TITLE,QUESTION_CONTENT,QUESTION_DATE, Q.QUESTION_STATUS, QT.TYPE_NAME,M.USER_NAME
+	FROM QNA_QUESTION Q
+    JOIN QNA_TYPE QT ON (Q.TYPE_NO = QT.TYPE_NO)
+    JOIN MEMBER M ON (Q.USER_NO = M.USER_NO)
+    WHERE Q.QUESTION_STATUS = 'Y'
+	AND Q.QNA_NO = #{qnaNo}
+	</select>
+	
+	<!-- 삭제하기 -->
+	<update id="deleteQna">
+	UPDATE QNA_QUESTION
+	SET QUESTION_STATUS = 'N'
+	WHERE QNA_NO = #{qnaNo}
+	</update>
+
+	<!-- 수정하기 -->
+	<update id="updateQna">
+	UPDATE QNA_QUESTION
+	SET TITLE = #{title},	
+		QUESTION_CONTENT = #{questionContent},
+		TYPE_NO = #{typeNo}
+	WHERE QNA_NO = #{qnaNo}
+	</update>
+	
+	<!-- 댓글 목록 -->
+	<select id="selectAnswerList" resultMap="qnaAnswerResultSet">
+	SELECT ANSWER_CONTENT,
+			ANSWER_DATE
+	FROM QNA_ANSWER
+	WHERE QNA_NO = #{qnaNo}
+	ORDER BY ANSWER_DATE DESC
+	</select>
+
+	<!-- 댓글 작성 -->
+	<insert id="insertAnswer">
+	INSERT INTO QNA_ANSWER(
+							QNA_NO,
+							ANSWER_CONTENT,
+							ANSWER_STATUS
+							)
+			VALUES(
+					#{qnaNo},
+					#{answerContent},
+					'Y'
+					
+					)
+	
+	</insert>
+
+
+	<!-- 첨부파일 이름 db저장  -->
+	<insert id="insertQf">
+	INSERT INTO QNA_FILE(
+						QF_NO,
+						QNA_NO,
+						QF_ORIGINNAME,
+						QF_SYSNAME,
+						STATUS
+							)
+				VALUES(
+						SEQ_QFNO.NEXTVAL,
+						0,
+						#{qfOriginName},
+						#{qfSysName},
+						'Y'
+						)	
+	</insert>
+
+	<!-- 첨부파일의 qnaNo 넣어주기 -->
+	<update id="updateQfQnaNo">
+	UPDATE QNA_FILE
+	SET QNA_NO = #{qnaNo}
+	WHERE QF_SYSNAME = #{qfSysName}
+	
+	
+	</update>
+
+
+
 </mapper>

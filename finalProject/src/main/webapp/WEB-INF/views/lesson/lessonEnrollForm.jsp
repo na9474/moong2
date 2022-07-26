@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
+
 <title>lessonEnrollForm</title>
 <style>
 /*영역잡기*/
@@ -88,16 +89,16 @@
         <div id="subtit">
             과외 등록
         </div>
-        <form metod="post" action="insert.le" enctype="multipart/form-data">
-            <input type="hidden" name="userNo" value="1">
+        <form method="post" action="insert.le" enctype="multipart/form-data">
+            <input type="hidden" name="userNo" value="${loginUser.userNo }">
         <table border="1" id="lessonEnrollTb">
             <tr>
                 <td class="td-r">과목</td>
                 <td>
                     <select class="form-control" name="subject" id="subject">
-                    <option value="국어">국어</option>
-                    <option value="수학">수학</option>
-                    <option value="영어">영어</option>
+                    <option value="KO">국어</option>
+                    <option value="MATH">수학</option>
+                    <option value="ENG">영어</option>
                     </select>
                 </td>
             </tr>
@@ -108,6 +109,7 @@
                         <option value="1">1학년</option>
                         <option value="2">2학년</option>
                         <option value="3">3학년</option>
+                        <option value="4">상관없음</option>
                         </select>
                 </td>
             </tr>
@@ -115,15 +117,14 @@
                 <td class="td-r" >과외 가능 지역</td>
                 <td><select class="form-control" onchange="handleOnChange(this)" name="select-area">
                     <option value="">--5개까지 선택이 가능합니다--</option>
-                    <option value="Jongno-gu">종로구</option>
-                    <option value="Jung-gu">중구</option>
-                    <option value="Jung-gu">광진구</option>
-                    <option value="Jung-gu">마포구</option>
-                    <option value="Jung-gu">중랑구</option>
+                    <c:forEach var="d" items="${d}">
+                    	<option value="${d.dno}">${d.area}</option>
+                    </c:forEach>
+              
 
                   </select>
                   <div id='result'></div>
-                  <input type="hidden" id="area" name="area" >
+                  <input type="hidden" id="area" name="area" required>
                 </td>
     
             </tr>
@@ -220,13 +221,13 @@
                 <td>
                     <select class="form-control" onchange="handleOnChange2(this)">
                         <option value="">--3개까지 선택이 가능합니다--</option>
-                        <option value="">상관없음</option>
-                        <option value="">월</option>
-                        <option value="">화</option>
-                        <option value="">수</option>
-                        <option value="">목</option>
-                        <option value="">금</option>
-                        <option value="">주말</option>
+                        <option value="7">상관없음</option>
+                        <option value="1">월</option>
+                        <option value="2">화</option>
+                        <option value="3">수</option>
+                        <option value="4">목</option>
+                        <option value="5">금</option>
+                        <option value="6">주말</option>
                         </select>
                         <div id="resultDay"></div>
                         <input type="hidden" name="leDay" id="leDay" required>
@@ -235,16 +236,21 @@
             </tr>
 
             <script>
+            
+            const dayArr = new Array("","","","","","");
+            
                 function handleOnChange2(e) {
                     
                     const text = e.options[e.selectedIndex].text;// 선택된 데이터의 텍스트값 가져오기
+                    const val = e.options[e.selectedIndex].value;
                     
                     if(text!="--3개까지 선택이 가능합니다--"){
                         
                         let resultLength = $('#resultDay').children().length;
                         if(text =="상관없음"){
                             document.getElementById('resultDay').innerHTML = '<span class="resultDayIn">'+text+"x"+"</span>";
-                            $('#leDay').val(text);
+                            dayArr[val -1] = text;
+                            $('#leDay').val(dayArr);
                            
                         }else if(text != "상관없음" && ($('.resultDayIn').text()).replaceAll("x","") != "상관없음"){
 
@@ -254,7 +260,7 @@
                         if(resultLength == 0) {
                            
                             document.getElementById('resultDay').innerHTML += '<span class="resultDayIn">'+text+"x"+"</span>";// 추가
-                          
+                            dayArr[val -1] = text;
                             $('#leDay').val(text);
                                 
                         }
@@ -289,7 +295,8 @@
 
                             if(!flag)
                                 document.getElementById('resultDay').innerHTML += '<span class="resultDayIn">'+text+"x"+"</span>";// 추가   
-                                $('#leDay').val(($('.resultDayIn').text()).replaceAll("x",","));
+                            dayArr[val-1] =text;
+                            $('#leDay').val(dayArr);
                             
                                 
                         }
@@ -304,7 +311,7 @@
                 $("#resultDay").on("click","span",function(){
                     $(this).remove();
                     $('#leDay').val(($('.resultDayIn').text()).replaceAll("x",","));
-                              
+                    dayArr[$(this).data('value')-1] = "";    
                    
                      })
                })
@@ -332,7 +339,7 @@
                         </label>
                     </div>
                 </td>
-                <input type="hidden" id="teachingStyle" value="1" name="teachingStyle">
+                <input type="hidden" id="teachingStyle" value="상관없음" name="teachingStyle">
             </tr>
               <script>
                     function ts1(){
@@ -350,7 +357,7 @@
             </script>
             <tr>
             	<th class="td-r">첨부파일</th>
-                <td><input type="file" id="upfile"  name="upfile" accept="video/*" required></td>
+                <td><input type="file" id="upfile"  name="upfile" accept="video/*" ></td>
             </tr>
           
           
@@ -360,11 +367,12 @@
         </div>
     </form>
         <script>
-            function areaReset(){
+            function  areaReset(){
                 $('.resultIn').remove();
                 $('.resultDayIn').remove();
             }
         </script>
         </div>
+       
 </body>
 </html>

@@ -17,4 +17,10 @@ private String teachingStyle;	//	TEACHINGSTYLE	VARCHAR2(1 BYTE)
 private String leOriginname;
 private String leChangename;
 private String status;			//	STATUS	VARCHAR2(1 BYTE)
+
+
+//리스트용 추가
+private String userName;
+private String gender;
+private String rating;
 }
