@@ -76,18 +76,20 @@
                             <td>금액</td>
                             <td>매칭일</td>
                             <td>상태</td>
+                            <td style="width:10%;">매칭취소</td>
                         </tr>
                     </thead>
                     <tbody>
                 	<c:choose>
                 		<c:when test ="${empty list}">
 	                		<tr>
-	                			<td colspan="6">매칭중인 과외가 없습니다.</td>
+	                			<td colspan="7">매칭중인 과외가 없습니다.</td>
 	                		</tr>
                 		</c:when>
                 		<c:otherwise>
 		                		<c:forEach var="m" items="${list}">
 			                    	<tr>
+			                    		<td style="display: none;" class="maNo">${m.maNo}</td>
 				                    	<c:choose>
 					                    	<c:when test = "${fn:contains(m.subject,'KO')}">
 					                    		<td>국어</td>
@@ -100,7 +102,19 @@
 					                    	</c:otherwise>
 				                    	</c:choose>
 			                    	<td>${m.people}</td>
-			                    	<td>4</td>
+			                    	<c:choose>
+			                    	<c:when test="${m.gender eq 'M' }">
+			                    	<td>남자</td>
+			                    	</c:when>
+			                    	<c:when test="${m.gender eq 'F' }">
+			                    	<td>여자</td>
+			                    	</c:when>
+			                    	<c:otherwise>
+			                    	 <td>상관없음</td>
+			                    	
+			                    	</c:otherwise>
+			                    	</c:choose>
+			                    	
 			                    	<td class="fee">${m.fee}</td>
 			                    	<td>${m.enrollDate}</td>
 			                    		<c:choose>
@@ -111,6 +125,15 @@
 			                    				<td> <span style="color: red;">매칭대기중</span></td>
 			                    			</c:otherwise>
 			                    		</c:choose>
+			                    		<c:choose>
+			                    		<c:when test="${m.status eq 'C'}">
+			                    		<td><button class="btn btn-danger" disabled > x </button> </td>
+			                    		</c:when>
+			                    		<c:otherwise>
+			                    		<td><button class="btn btn-danger" > x </button> </td>
+			                    		</c:otherwise>
+			                    		</c:choose>
+			                    		
 			                    	</tr>
 		                    	</c:forEach>
                 		</c:otherwise>
@@ -122,6 +145,19 @@
     <script>
     $(function(){
     	checkAlarm();
+    })
+    
+    $(function(){
+    	$('.btn-danger').click(function(){
+    		
+    		if (!confirm("정말로 매칭을 취소하시겠습니까?")) {
+    	        
+    	    } else {
+    	    	location.href="delete.ma?maNo="+$(this).parent().parent().children(".maNo").text()+"&&userNo=${loginUser.userNo}";
+    	    }
+    		  
+    		
+    	})
     })
     
 

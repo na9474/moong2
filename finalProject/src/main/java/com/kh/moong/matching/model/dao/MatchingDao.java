@@ -87,4 +87,10 @@ public class MatchingDao {
 		return sqlSession.selectOne("MatchingMapper.selectComparison",userNo);
 	}
 
+public int deleteMatching(SqlSessionTemplate sqlSession, int maNo) {
+		
+		return sqlSession.delete("MatchingMapper.deleteMatching",maNo);
+	}
+
+
 }

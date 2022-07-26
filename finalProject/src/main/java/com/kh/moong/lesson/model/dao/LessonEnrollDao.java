@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 
 @Repository
@@ -46,6 +47,21 @@ public class LessonEnrollDao {
 	public int selectAllLessonCount(SqlSessionTemplate sqlSession) {
 		
 		return sqlSession.selectOne("lessonEnrollMapper.selectAllLessonCount");
+	}
+
+	public int deleteLesson(SqlSessionTemplate sqlSession, int leNo) {
+		
+		return sqlSession.update("lessonEnrollMapper.deleteLesson",leNo);
+	}
+
+	public int updateLesson(SqlSessionTemplate sqlSession, LessonEnroll le) {
+		
+		return sqlSession.update("lessonEnrollMapper.updateLesson",le);
+	}
+
+	public ArrayList selectDistrictsList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectDistrictsList");
 	}
 
 	

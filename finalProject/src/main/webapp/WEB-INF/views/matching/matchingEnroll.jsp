@@ -5,6 +5,8 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
+<meta charset="UTF-8">
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="icon" type="image/png" href="./resources/img/logo-dark.png"/>
@@ -232,7 +234,7 @@
             </svg>
         </div>
         <div id="select">
-            <form method="post" action="insert.ma">
+            <form method="post" action="insert.ma" id="MatchingEnrollForm" onsubmit="return checkForm()">
                 <input type="hidden" name="userNo" value="${loginUser.userNo }">
                 <table  id="selectfrom-tb">
                     <tr>
@@ -290,7 +292,7 @@
                         <td colspan="2" class="footnote" >&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i> 입력하신 금액은 수업 시간당 금액입니다.</td>
                     </tr>
                     <tr style="display: none;">
-                            <input type="hidden" id="area" name="area" required>
+                        	 <td><input type="hidden" id="area" name="area" required></td>   
                     </tr>
                     <tr>
                         <td>요일선택</td>
@@ -316,12 +318,32 @@
                
                 <div id="form-btn">
                 <button type="reset" style="float: left; " class="btn moong-dark" >초기화</button>
-                <button type="submit" style="float: right;" class="btn moong-yellow">매칭 시작</button>
+                <button type="submit" style="float: right;" id="ok" class="btn moong-yellow" >매칭시작</button>
                 </div>
             </form>
         </div>
     </div>
- <script>
+    	<script>
+    		function checkForm(){
+    			if($('#area').val() == ""){
+    				alert("지역을 선택해주세요")
+    				return false;
+    			}else if($('#day').val() == ""){
+    				alert("요일을 선택해주세요")
+    				return false;
+    			}
+    			
+    			
+    		}
+    		
+    	
+    	</script>
+    
+    
+    
+    
+    
+ 		<script>
                 function numberWithCommas(x) {
                  	x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
                     x = x.replace(/,/g,'');          // ,값 공백처리

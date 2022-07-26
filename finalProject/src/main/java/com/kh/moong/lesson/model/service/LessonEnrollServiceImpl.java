@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.dao.LessonEnrollDao;
+import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 
 @Service
@@ -54,6 +55,24 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 	public ArrayList<LessonEnroll> selectAllLesson(PageInfo pi) {
 		
 		return lessonEnrollDao.selectAllLesson(sqlSession,pi);
+	}
+
+	@Override
+	public int deleteLesson(int leNo) {
+		
+		return lessonEnrollDao.deleteLesson(sqlSession,leNo);
+	}
+
+	@Override
+	public int updateLesson(LessonEnroll le) {
+		
+		return lessonEnrollDao.updateLesson(sqlSession,le);
+	}
+
+	@Override
+	public ArrayList selectDistrictsList() {
+		
+		return lessonEnrollDao.selectDistrictsList(sqlSession);
 	}
 
 	

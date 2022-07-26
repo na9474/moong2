@@ -63,12 +63,15 @@
         </div>
         <div id="alarm-select">
             <div >
-            <select name="" id="" style="height: 30px; width:70px;">
-                    <option value="">이름</option>
-                    <option value="">등급</option>
-                    <option value="">과목</option>
+            <form method="get" action="search.le">
+            <select name="searchCat" id="" style="height: 30px; width:70px;">
+                    <option value="USER_NAME">이름</option>
+                    <option value="RATING">등급</option>
+                    <option value="SUBJECT">과목</option>
             </select>
-            <input type="text" style="width:200px;">
+            <input type="text"  name="searchText" style="width:200px;" onKeypress="javascript:if(event.keyCode==13) {search_onclick_submit}"
+>
+            </form>
         </div>
                 <table  class="table table-hover">
                     <thead>

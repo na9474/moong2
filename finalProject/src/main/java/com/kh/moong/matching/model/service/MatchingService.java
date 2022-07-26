@@ -34,4 +34,8 @@ public interface MatchingService {
 
 	
 
+	int deleteMatching(int maNo);
+
+	
+
 }

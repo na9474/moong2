@@ -108,4 +108,20 @@ public class MatchingServiceImpl implements MatchingService{
 		return matchingDao.selectComparison(sqlSession,userNo);
 	}
 
+	@Override
+	public int deleteMatching(int maNo) {
+		
+		return matchingDao.deleteMatching(sqlSession,maNo);
+	}
+
+
+
+	
+
+
+	
+
+
+
+
 }

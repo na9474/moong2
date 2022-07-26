@@ -22,5 +22,6 @@ private String sYear;
 private String sGender;
 private String alert;
 private Date enrollDate;
+private String url;
 
 }

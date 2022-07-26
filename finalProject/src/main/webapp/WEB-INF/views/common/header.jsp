@@ -36,7 +36,7 @@
 	<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> 
   	<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
   	<script src=" https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/lang/summernote-ko-KR.min.js"></script> 
-    
+  
     <style>
      @font-face {
     font-family: '양진체';
@@ -126,16 +126,16 @@ header nav ul li{
                   </li>
                   
                   <script>
-                  $(function(){
+               /*    $(function(){
                       $("#tlist").click(function(){
                          	if("${loginUser.student}" == 'Y'){
                          		location.href="tlist.le?cpage=1&&userNo=${loginUser.userNo}"
                          	}else{
-                         		location.href="tlist.le?cpage=1"
+                         		location.href="tlist.le?cpage=1&&"
                          	}
                               
                       });
-                  });
+                  }); */
                   </script>
                   
                   
@@ -230,7 +230,7 @@ header nav ul li{
 	 					
 	 					$('#alarmspan').css('visibility','visible');
 	 					$('#checkMatching').css('visibility','visible');
-	 					clearInterval(repeat);
+	 					clearInterval(repeat1);
 			
 				}else{ //완료된매칭이 X
 					
@@ -252,7 +252,7 @@ header nav ul li{
 						
 						alert("완료된매칭이있습니다.");
 						alertComplete(result);
-						clearInterval(repeat);
+						clearInterval(repeat2);
 				}else{	
 				}	
 				},

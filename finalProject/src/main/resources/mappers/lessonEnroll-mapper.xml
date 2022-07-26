@@ -25,11 +25,26 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 </resultMap>
 
+ <resultMap type="districts" id="districtsResultSet">
+ 	<result column="D_NO" property="dno"/>
+ 	<result column="AREA" property="area"/>
+ </resultMap>
+
+
+
+<select id="selectDistrictsList" resultMap="districtsResultSet">
+	SELECT D_NO,AREA
+	FROM DISTRICTS
+</select>
+
+
+
 <select id="selectList" resultMap="lessonEnrollResultSet">
 	SELECT 
 SUBJECT, FEE, CAREER, STATUS,T_YEAR,LE_NO
 FROM LESSON_ENROLL
 WHERE USER_NO = #{userNo}
+AND STATUS = 'Y'
 </select>
 
 
@@ -103,5 +118,26 @@ ORDER BY T.RATING
 </select>
 
 
+<update id="deleteLesson" parameterType="lessonEnroll">
+UPDATE LESSON_ENROLL
+SET STATUS = 'N'
+WHERE LE_NO =#{leNo}
+
+</update>
+
+<update id="updateLesson" parameterType="lessonEnroll">
+UPDATE LESSON_ENROLL
+SET SUBJECT = #{subject},
+	FEE = #{fee},
+	LE_STYLE = #{leStyle},
+	T_YEAR = #{tyear},
+	AREA = #{area},
+	CAREER = #{career},
+	LE_DAY = #{leDay},
+	TEACHINGSTYLE =#{teachingStyle},
+	LE_ORIGINNAME =#{leOriginname},
+	LE_CHANGENAME = #{leChangename}
+WHERE LE_NO =#{leNo}
+</update>
 
 </mapper>

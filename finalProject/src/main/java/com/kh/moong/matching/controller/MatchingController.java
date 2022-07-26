@@ -45,11 +45,11 @@ public class MatchingController {
 			 m.setMaDay(maDay);
 			 
 			if (m.getRandom().equals("N")) {// 매칭이 랜덤이 아니라면 매칭 등록하고 바로 과외선생님과연결
-
+			
 				int result = ms.insertMatching(m);
 				if(result>0) {//매칭등록 성공
-					session.setAttribute("alertMsg", "등록이 완료되었습니다.");
 					
+					session.setAttribute("alertMsg", "등록이 완료되었습니다.");
 					mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());
 				}else {//매칭등록 실패
 					mv.addObject("errorMsg","신규매칭등록실패").setViewName("common/errorPage");
@@ -124,13 +124,34 @@ public class MatchingController {
 		 ArrayList<Matching> list = ms.alarmList(uNo);
 		
 		 for(int i=0; i<list.size(); i++) {
-	     list.get(i).setPeople(ms.countMatching(list.get(i).getGroupNo())+"/"+ list.get(i).getPeople());
+		if(list.get(i).getRandom().equals("Y")) {
+			list.get(i).setPeople(ms.countMatching(list.get(i).getGroupNo())+"/"+ list.get(i).getPeople());
+		}
+				 
+			 
+	     
 		 }
 		 
 		 mv.addObject("list",list).setViewName("matching/matchingAlarm");
 		 
 		return mv;
 	}
+	
+	//매칭 삭제
+	@RequestMapping("delete.ma")
+	public ModelAndView deleteMatching(int maNo,int userNo,ModelAndView mv,HttpSession session) {
+		
+		int result = ms.deleteMatching(maNo);
+		if(result>0) {
+			session.setAttribute("alertMsg", "매칭이 취소되었습니다.");
+			mv.setViewName("redirect:alarm.ma?uNo="+userNo);
+		}else {
+			mv.addObject("errorMsg","매칭삭제실패").setViewName("common/errorPage");
+		}
+		return mv;
+		
+	}
+	
 	
 	//매칭완료 표시
 	@ResponseBody

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
+import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.matching.model.service.MatchingService;
 import com.kh.moong.matching.model.vo.Matching;
@@ -84,9 +85,13 @@ public class LessonEnrollController {
 		
 		//과외등록 페이지로 이동
 		@RequestMapping("enrollFrom.le")
-		public String lessonEnrollForm() {
+		public ModelAndView lessonEnrollForm(ModelAndView mv) {
 			
-			return "lesson/lessonEnrollForm";
+			ArrayList<Districts> d = ls.selectDistrictsList();
+			
+			mv.addObject("d",d).setViewName("lesson/lessonEnrollForm");
+			
+			return mv;
 		}
 		
 		
@@ -129,39 +134,40 @@ public class LessonEnrollController {
 		
 		//등록된 선생님 전체 리스트 조회 
 		@RequestMapping("tlist.le")
-		public ModelAndView teacherList(@RequestParam(value="cpage",defaultValue="1") int currentPage,int userNo, ModelAndView mv) {
+		public ModelAndView teacherList(
+				@RequestParam(value = "cpage", defaultValue = "1") int currentPage/* ,int userNo */, ModelAndView mv) {
 			
-			System.out.println(userNo);
 			
-			if(userNo != 0) { //학생회원
-				
-				//등록된 매칭중에 매칭상태가 C인 매칭이 있는지 과목,학년,지역,요금은 평균치
-				int result = ms.tlistCheck(userNo);
-				
-				if(result>0) { //해당학생이 매칭이 완료되서 선생님을 찾고 있음
-					
-					//해당학생의 매칭이 완료된 과외정보를 불러옴 
-					Matching matching = ms.selectcomparison(userNo);
-								
-				}else { // 학생이 매칭을 등록하지 않았거나 매칭이 완료되지 않음 
-					int listCount = ls.selectAllLessonCount();
-					
-					
-					int pageLimit = 10;
-					int boardLimit = 20;
-					
-					PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-					
-					
-					ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
-					
-					mv.setViewName("lesson/teacherLessonList");
-					mv.addObject("pi",pi);
-					mv.addObject("list",list);
-				}
-				
-				
-			}else { //userNo가 0이면 학생회원이 아님
+			
+//			if(userNo != 0) { //학생회원
+//				
+//				//등록된 매칭중에 매칭상태가 C인 매칭이 있는지 과목,학년,지역,요금은 평균치
+//				int result = ms.tlistCheck(userNo);
+//				
+//				if(result>0) { //해당학생이 매칭이 완료되서 선생님을 찾고 있음
+//					
+//					//해당학생의 매칭이 완료된 과외정보를 불러옴 
+//					Matching matching = ms.selectcomparison(userNo);
+//								
+//				}else { // 학생이 매칭을 등록하지 않았거나 매칭이 완료되지 않음 
+//					int listCount = ls.selectAllLessonCount();
+//					
+//					
+//					int pageLimit = 10;
+//					int boardLimit = 20;
+//					
+//					PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+//					
+//					
+//					ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
+//					
+//					mv.setViewName("lesson/teacherLessonList");
+//					mv.addObject("pi",pi);
+//					mv.addObject("list",list);
+//				}
+//				
+//				
+//			}else { //userNo가 0이면 학생회원이 아님
 				
 				
 				int listCount = ls.selectAllLessonCount();
@@ -180,7 +186,7 @@ public class LessonEnrollController {
 				mv.addObject("list",list);
 				
 				
-			}
+//			}
 			
 			
 			
@@ -207,15 +213,85 @@ public class LessonEnrollController {
 				}
 				
 				
-	//등록한 과외정보 수정
+	//등록한 과외정보 수정 페이지 이동
 				@RequestMapping("updateForm.le")
 				public ModelAndView lessonEnrollUpdateForm(int leNo,ModelAndView mv) {
 					
 					LessonEnroll l = ls.selectLesson(leNo);
+					ArrayList<Districts> d = ls.selectDistrictsList();
 					
-					mv.addObject("l",l).setViewName("lesson/lessonUpdateForm");
+					mv.addObject("l",l).addObject("d",d).setViewName("lesson/lessonUpdateForm");
 					return mv;
 				}
+				
+				
+	//등록한 과외정보 삭제
+				@RequestMapping("delete.le")
+				public ModelAndView lessonEnrollDelete(int leNo,int userNo,ModelAndView mv,HttpSession session) {
+					
+					int result = ls.deleteLesson(leNo);
+					
+					if(result>0) {
+						session.setAttribute("alertMsg", "선택한 과외등록이 삭제되었습니다.");
+						mv.setViewName("redirect:list.le?userNo="+userNo);
+					}else {
+						mv.addObject("errorMsg","삭제실패").setViewName("common/errorPage");
+					}
+					return mv;
+				}
+				
+	//등록한 과외정보 수정
+			@RequestMapping("update.le")
+			public ModelAndView lessonUpdate(LessonEnroll le,ModelAndView mv,HttpSession session,MultipartFile upfile){
+				
+				int check  = ls.lessonInsertCheck(le);
+				
+				if(check>0) {
+					session.setAttribute("alertMsg", "같은과목으로 등록된 과외가 있습니다.");	
+					mv.setViewName("redirect:updateForm.le?leNo="+le.getLeNo());
+				}else {
+				
+				if(!upfile.getOriginalFilename().contentEquals("")) {
+
+					
+					if(le.getLeOriginname().equals("")) {
+						
+						new File(session.getServletContext().getRealPath(le.getLeChangename())).delete();
+					}
+					
+					
+					String changeName = saveFile(upfile,session);
+					le.setLeChangename("resources/lesson_video/"+changeName);
+					
+					le.setLeOriginname(upfile.getOriginalFilename());
+					
+					
+				}
+				
+				int result = ls.updateLesson(le);
+
+				if(result>0) {
+					session.setAttribute("alertMsg", "과외등록정보 수정 성공");	
+					mv.setViewName("redirect:detail.le?leNo="+le.getLeNo());
+				}else {
+					mv.addObject("errorMsg","수정 실패").setViewName("common/errorPage");
+				}
+				}
+				
+				return mv;
+			}
+			
+			
+			@RequestMapping("search.le")
+			public ModelAndView SearchLessonEnroll(String searchCat,String searchText,ModelAndView mv) {
+				System.out.println(searchCat);
+				System.out.println(searchText);
+				
+				
+				return null;
+			}
+			
+			
 }
 
 

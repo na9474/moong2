@@ -13,7 +13,9 @@
         width: 1000px;
         display: block;
         margin-top:100px;
+       
     }
+   
     /*영역잡기 끝*/
 
     /*페이지 제목*/
@@ -55,6 +57,7 @@
 </style>
 <body>
     <jsp:include page="../common/header.jsp"/>
+    <div id="wrapper">
     <div id="alarm-outer">
         <div id="subtit">
             과외 등록
@@ -125,8 +128,39 @@
                     location.href="detail.le?leNo="+$(this).parent().parent().children(".leNo").text();
             });
         });
+           
+           
+           $(function(){
+        	   function alertComplete(x){
+          		  
+          		  $.ajax({
+          				url : "alertcp.ma",
+          				data : {maNo : x },
+          				success : function(){
+          					if(result>0){
+          					console.log("변경성공")		
+          					}else{
+          						console.log("변경실패")
+          					}	
+          				},
+          				error : function(){
+          					console.log("통신실패");
+          				}
+          			})
+          	  }
+           })
+           
+           
+           
+           
+           
      </script>
-        </div>
-    </div>
     
+        </div>
+    
+    
+     </div>
+     
+    
+     
 </body>
