@@ -44,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 신고리스트 -->
 	<select id="policeCmtList" resultMap="policeCmtResultSet">
-	select l.*, m.user_id as "reporter", w.user_id as "writer"
+    select l.*, m.user_id as "reporter", w.user_id as "writer"
 	from 
     police_cmt l
     join member m
@@ -55,7 +55,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             police_cmt p
             join solution_cmt s on p.sc_no=s.sc_no
             join member m on s.user_no = m.user_no) w
-    on l.p_no = w.p_no
+    on l.pc_no = w.pc_no
     order by create_date DESC
 	</select>
 	

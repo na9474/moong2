@@ -36,7 +36,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		WHERE P_NO = #{p_No}	
 	</delete>
 	
-	<!-- 신고리스트 -->
+	<!-- 전체 신고수 -->
 	<select id="policeListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM POLICE

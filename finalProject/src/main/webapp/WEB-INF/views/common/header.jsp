@@ -134,7 +134,7 @@ header nav ul li{
 					      <a class="dropdown-item" href="#">회원리스트</a>
 					      <a class="dropdown-item" href="list.po">신고리스트</a>
 					      <a class="dropdown-item" href="#">QnA</a>
-					      <a class="dropdown-item" href="#">차트</a>
+					      <a class="dropdown-item" href="chart.ch">차트</a>
 					    </div>
                   </li>
                 </ul>

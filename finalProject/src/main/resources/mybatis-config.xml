@@ -26,6 +26,7 @@
 		<typeAlias type="com.kh.moong.member.model.vo.Student" alias="student"/>
 		<typeAlias type="com.kh.moong.police.model.vo.Police" alias="police"/>
 		<typeAlias type="com.kh.moong.police.model.vo.PoliceCmt" alias="policeCmt"/>
+		<typeAlias type="com.kh.moong.charts.model.vo.Chart" alias="chart"/>
 
 	</typeAliases>	
 
@@ -42,6 +43,7 @@
 		<mapper resource="/mappers/member-mapperLee.xml"/>
 		<mapper resource="/mappers/police-mapper.xml"/>
 		<mapper resource="/mappers/policecmt-mapper.xml"/>
+		<mapper resource="/mappers/chart-mapper.xml"/>
 	</mappers>
 
 </configuration>

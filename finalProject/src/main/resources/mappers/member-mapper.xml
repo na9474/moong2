@@ -17,6 +17,7 @@
 		<result column="ENROLL_DATE" property="enrollDate"/>
 		<result column="MODIFIY_DATE" property="modifyDate"/>
 		<result column="STATUS" property="status"/>
+		<result column="GENDER_TOTAL" property="gender_total"/>
 	</resultMap>
 	
 	<!-- 로그인 -->
@@ -68,4 +69,6 @@
 <!-- 	  	FROM MEMBER -->
 <!-- 	  	WHERE USER_ID = #{userId} -->
 <!-- 	</select> -->
+	
+
 </mapper>

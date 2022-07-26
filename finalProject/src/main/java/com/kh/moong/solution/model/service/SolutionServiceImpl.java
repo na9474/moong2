@@ -84,7 +84,7 @@ public class SolutionServiceImpl implements SolutionService {
 	}
 	
 	@Override
-	public int cmtSelctSn(int scNo) {
+	public SolutionCmt cmtSelctSn(int scNo) {
 		return solutionDao.cmtSelctSn(sqlSession,scNo);
 	}
 	
@@ -107,6 +107,11 @@ public class SolutionServiceImpl implements SolutionService {
 	@Override
 	public int sHeartCheck(int solution_no, int user_no) {
 		return solutionDao.sHeartCheck(sqlSession, solution_no, user_no);
+	}
+	
+	@Override
+	public int getScNo() {
+		return solutionDao.getScNo(sqlSession);
 	}
 	
 }

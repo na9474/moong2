@@ -49,7 +49,7 @@ public interface SolutionService {
 	public abstract int deleteCmt(int scNo);
 	
 	//댓글 solutionNo뽑기
-	int cmtSelctSn(int scNo);
+	SolutionCmt cmtSelctSn(int scNo);
 	
 	//추천하기
 	int sHeartInsert(SolutionHeart sh);
@@ -63,4 +63,6 @@ public interface SolutionService {
 	//user가 해당 게시물을 추천했는지 확인
 	int sHeartCheck(int solution_no, int user_no);
 
+	//댓글 scNo뽑기
+	int getScNo();
 }

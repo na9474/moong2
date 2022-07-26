@@ -9,13 +9,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.member.model.vo.Member;
 import com.kh.moong.police.model.service.PoliceService;
 import com.kh.moong.police.model.vo.Police;
 import com.kh.moong.police.model.vo.PoliceCmt;
+import com.kh.moong.solution.model.service.SolutionService;
+import com.kh.moong.solution.model.vo.SolutionCmt;
 
 @Controller
 public class PoliceController {
@@ -23,13 +28,21 @@ public class PoliceController {
 	@Autowired
 	private PoliceService policeService;
 	
+	@Autowired
+	private SolutionService solutionService;
+	
+	
 	//게시글 신고하기
 	@RequestMapping("report.so")
-	public String addPolice(Police p, int solutionNo) {
+	public String addPolice(Police p, int solutionNo, HttpServletRequest request) {
 
-		int userNo=1;
-		p.setUserNo(userNo);
+		int loginNo = 0;
+		if(request.getSession().getAttribute("loginUser") !=null) {
+			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+		}
+
 		p.setSolutionNo(solutionNo);
+		p.setUserNo(loginNo);
 		
 		int result = policeService.addPolice(p);
 		
@@ -80,13 +93,13 @@ public class PoliceController {
 	
 	//댓글 신고하기
 	@RequestMapping("cmtReport.so")
-	public String addPoliceCmt(HttpServletRequest request, int scNo, PoliceCmt pc) {
-
+	public String addPoliceCmt(HttpServletRequest request, int scNo, PoliceCmt pc, int solutionNo) {
+		
 		int loginNo = 0;
 		if(request.getSession().getAttribute("loginUser") !=null) {
 			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
 		}
-
+		
 		pc.setUserNo(loginNo);
 		pc.setScNo(scNo);
 		
@@ -98,7 +111,7 @@ public class PoliceController {
 			System.out.println("신고 실패");
 		}
 		
-		return "redirect:detail.so?sno="+scNo;
+		return "redirect:detail.so?sno="+solutionNo;
 	}
 	
 	//댓글 신고삭제
@@ -112,15 +125,14 @@ public class PoliceController {
 		}else {
 			System.out.println("삭제 실패");
 		}
-		return "redirect:list.po";
+		return "redirect:cmtList.po";
 	}
 	
 	//댓글 신고리스트
 	@RequestMapping("cmtList.po")
 	public String policeCmtList(
 					@RequestParam(value="cpage",defaultValue="1") int currentPage,
-					Model model
-							) {
+					Model model) {
 		
 		int listCount = policeService.policeCmtListCount();
 		
@@ -130,12 +142,33 @@ public class PoliceController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 		
 		ArrayList<PoliceCmt> list = policeService.policeCmtList(pi);
+
 		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
-		
-		return "admin/police";
+
+		return "admin/policeCmt";
 	}
 	
+	// ajax  이름은 cmtCon.po
+	@RequestMapping(value="cmtCon.po",produces="application/json; charset=utf8")
+	@ResponseBody
+	public String policeCmtCon(int scNo) {
+		
+		JsonObject jsonObject = new JsonObject();
+		SolutionCmt cmtCon = solutionService.cmtSelctSn(scNo);
+		
+//		jsonObject.addProperty("scNo", cmtCon.getScNo());
+//		jsonObject.addProperty("userNo", cmtCon.getUserNo());
+//		jsonObject.addProperty("userId", cmtCon.getUserId());
+//		jsonObject.addProperty("solutionCmtContents", cmtCon.getSolutionCmtContents());
+//		jsonObject.addProperty("createDate", cmtCon.getCreateDate());
+//		jsonObject.addProperty("solutonNo", cmtCon.getSolutionNo());
+//		
+//		String cmtData = jsonObject.toString();
+		return new Gson().toJson(cmtCon);
+		
+		
+	}
 
 }
