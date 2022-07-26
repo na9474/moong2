@@ -177,9 +177,23 @@ header nav ul li{
 		                        <li class="nav-item">            
 		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
 		                       </li>
-		                       <li class="nav-item">            
-		                        <a class="nav-link" href="myPageMain.me">마이페이지</a>
-		                   </li> 
+		                       <c:choose>
+		                       <c:when test="${loginUser.teacher eq 'Y' }">            
+		                   		<li class="nav-item">
+		                        	<a class="nav-link" href="teaMyPage.me">마이페이지</a>
+			                   	</li> 
+		                   		</c:when>
+		                   		<c:when test="${loginUser.student eq 'Y' }">
+		                   		<li class="nav-item">
+		                        	<a class="nav-link" href="stuMyPage.me">마이페이지</a>
+			                   	</li> 
+		                   		</c:when>
+		                   		<c:otherwise>
+		                       	<li class="nav-item">
+		                        	<a class="nav-link" href="myPageMain.me">마이페이지</a>
+			                   	</li> 
+		                   		</c:otherwise>
+		                   		</c:choose>
 		                   <li class="nav-item">            
 		                        <a class="nav-link" href="logout.me">로그아웃</a>
 		                   </li>          

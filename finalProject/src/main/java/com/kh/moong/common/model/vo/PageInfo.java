@@ -1,8 +1,6 @@
 package com.kh.moong.common.model.vo;
 
-import java.util.ArrayList;
-
-import com.kh.moong.solution.model.vo.Solution;
+import lombok.Data;
 
 public class PageInfo {
 
@@ -14,7 +12,6 @@ public class PageInfo {
 	private int maxPage;
 	private int startPage;
 	private int endPage;
-	
 	
 	public PageInfo() {
 		super();

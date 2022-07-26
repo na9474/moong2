@@ -108,26 +108,32 @@
         <br><br><br><br>
         <div>
         <h4><b>QnA 목록</b></h4>
-        <button onclick="location.href='qnaEnrollForm.qu' " style="float: right; margin:auto">QnA등록</button>
+        <button onclick="location.href='qnaEnrollForm.qu' " class="moong-yellow" style="float: right; margin:auto">QnA작성</button>
         <br><br>
-         <table align="center" class="table table-hover">
+         <table align="center" class="table table-hover" id="boardList">
             <thead>
                 <tr align="center">
                   <th style="width:10% ;">No</th>
+                  <th>유형</th>
                   <th style="width:40% ;">제목</th>
                   <th style="width:20% ;">등록일</th>
-                  <th style="width:20% ;">답변일</th>
                   <th style="width:10% ;">상태</th>
                 </tr>
             </thead>
             <tbody>
                 <c:forEach var="q" items="${list }">
                 <tr align="center">
-                    <td id="qno">${q.qnaNo }</td>
+                    <td id="qnaNo">${q.qnaNo }</td>
+                    <td>${q.typeName }</td>
                     <td align="left">${q.title }</td>
                     <td>${q.questionDate }</td>
-                    <td></td>
-                    <td>${q.questionStatus }</td>
+                 
+                  	<c:if test="${q.qaNo eq 0 }">
+                    <td> 답변 중 </td>
+                    </c:if>
+                    <c:if test="${q.qaNo ne 0 }">
+                    <td>답변 완료</td>
+                    </c:if> 
                 </tr>
                 </c:forEach>
             </tbody>
@@ -146,12 +152,12 @@
 	                    <li class="page-item disabled"><a class="btn moong-dark" href="#"><</a></li>
 						</c:when>                
 						<c:otherwise>
-						<li class="page-item"><a class="btn moong-dark" href="list.so?cpage=${pi.currentPage-1}"><</a></li>
+						<li class="page-item"><a class="btn moong-dark" href="qnaListView.qu?cpage=${pi.currentPage-1}"><</a></li>
 						</c:otherwise>
 	                </c:choose>
                 
-					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">					
-                    	<li class="page-item"><a class="btn moong-dark" href="list.so?cpage=${p}">${p}</a></li>
+					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}" step="1">					
+                    	<li class="page-item"><a class="btn moong-dark" href="qnaListView.qu?cpage=${p}">${p}</a></li>
 					</c:forEach>
                    
                     <c:choose>
@@ -159,7 +165,7 @@
 		                    <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><a class="btn moong-dark" href="list.so?cpage=${pi.currentPage+1}">></a></li>
+                    		<li class="page-item"><a class="btn moong-dark" href="qnaListView.qu?cpage=${pi.currentPage+1}">></a></li>
                     	</c:otherwise>
                     </c:choose>
                 </ul>
@@ -173,7 +179,13 @@
 	</div>
 	</div>
 
-
+			<script>
+            	$(function(){
+            		$("#boardList>tbody>tr").click(function(){
+            			location.href = 'qnaDetailView.qu?qnaNo=' + $(this).children("#qnaNo").text();
+            		})
+            	})
+            </script>
 
 </body>
 </html>

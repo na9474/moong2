@@ -24,8 +24,12 @@
 		<typeAlias type="com.kh.moong.member.model.vo.Member" alias="member"/>
 		<typeAlias type="com.kh.moong.member.model.vo.Teacher" alias="teacher"/>
 		<typeAlias type="com.kh.moong.member.model.vo.Student" alias="student"/>
+		<typeAlias type="com.kh.moong.member.model.vo.IdPicture" alias="idPicture"/>
+		<typeAlias type="com.kh.moong.member.model.vo.ReportCard" alias="reportCard"/>
+		<typeAlias type="com.kh.moong.member.model.vo.IdCard" alias="idCard"/>
+		<typeAlias type="com.kh.moong.myBoard.model.vo.Board" alias="board"/>
+		<typeAlias type="com.kh.moong.myLesson.model.vo.Lesson" alias="lesson"/>
 		<typeAlias type="com.kh.moong.matching.model.vo.Matching" alias="matching"/>
-		
 	</typeAliases>	
 
 	<mappers>
@@ -38,6 +42,8 @@
 		<mapper resource="/mappers/qna-mapper.xml"/>
 		<mapper resource="/mappers/member-mapper.xml"/>
 		<mapper resource="/mappers/member-mapperLee.xml"/>
+		<mapper resource="/mappers/myboard-mapper.xml"/>
+		<mapper resource="/mappers/myLesson-mapper.xml"/>
 		<mapper resource="/mappers/matching-mapper.xml"/>
 	</mappers>
 
