@@ -103,15 +103,15 @@
 	        </div>
 	        <div class="row student">
 	            <div class="col-4 polar">
-	                <canvas id="koGrade" height="350" style="display: inline-block;"></canvas>
+	                <canvas id="koGrade" height="380" style="display: inline-block;"></canvas>
 	            </div>
 	            
 	            <div class="col-4 polar">
-	                <canvas id="engGrade" height="350" style="display: inline-block;"></canvas>
+	                <canvas id="engGrade" height="380" style="display: inline-block;"></canvas>
 	            </div>
 	            
 	          	<div class="col-4 polar">
-	                <canvas id="mathGrade" height="350" style="display: inline-block;"></canvas>
+	                <canvas id="mathGrade" height="380" style="display: inline-block;"></canvas>
 	            </div>
 	        </div>
 	        

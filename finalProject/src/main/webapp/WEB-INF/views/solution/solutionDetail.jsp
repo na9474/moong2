@@ -92,13 +92,17 @@
   			text-align: center;
   		}
   		
+  		#cmthead{
+  			text-align: center;
+  			border: none;
+  		}
+  		
   		#numbers {
     		width:100%;
       		display: flex;
       		justify-content: center;
     	}
-    
-	
+ 
 	</style>
 	
 </head>
@@ -234,10 +238,10 @@
 	       		<c:choose> 
          		<c:when test="${ not empty loginUser }"> 
          		<form id="addCmtForm" role="form" method="post" enctype="multipart/form-data" action="cmtInsert.so">
-	 		            <div class="col-4" id="cmtfi">	 		            		
+	 		            <div class="col-3" id="cmtfi">	 		            		
 	 		            	<input type="file" id="file" name="file"> 		
 	 		            </div>
-	 		            <div class="col-7" id="textBox">
+	 		            <div class="col-8" id="textBox">
 	 		                <input type="text" class="form-control" id="content" name="solutionCmtContents">
 	 		                <input type="hidden" name="solutionNo" value="${s.solutionNo}">
 	 		            </div>
@@ -264,7 +268,15 @@
 			<thead>
 				<br>
 			</thead>
-			
+				<div class="cmt-head">
+					<thead>
+						<th id="cmthead">아이디</th>
+						<th id="cmthead">내용</th>
+						<th id="cmthead">첨부파일</th>
+						<th id="cmthead">작성일</th>
+						<th id="cmthead">조치</th>	
+					</thead>
+				</div>
 				<div class="cmt-view">
 					<tbody id="cmtListAll">
 				
