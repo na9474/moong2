@@ -45,7 +45,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- QnA 목록 -->
 	<select id="selectList" resultMap="qnaQuestionResultSet">
-			SELECT ROWNUM, B.*
+		SELECT ROWNUM, B.*
 		FROM( 
 		SELECT DISTINCT Q.QNA_NO, TITLE,QUESTION_CONTENT,QUESTION_DATE, Q.QUESTION_STATUS,Q.USER_NO, QT.TYPE_NAME, QA.QNA_NO AS "A_NO"
 		FROM QNA_QUESTION Q
@@ -59,6 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND Q.USER_NO = #{userNo}
 		</if>
 		ORDER BY QUESTION_DATE DESC) B
+		ORDER BY ROWNUM DESC
 	</select>
 	
 	<!-- QnA Type -->

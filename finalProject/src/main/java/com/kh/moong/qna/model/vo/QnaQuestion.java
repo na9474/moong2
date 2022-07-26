@@ -23,4 +23,5 @@ public class QnaQuestion {
 	private int qaNo;
 	private String qfSysName;
 	private String userName;
+	private int rownum;
 }

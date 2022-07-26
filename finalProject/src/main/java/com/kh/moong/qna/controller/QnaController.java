@@ -56,7 +56,7 @@ public class QnaController {
 		PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
 
 		ArrayList<QnaQuestion> list = qnaService.selectList(pi,userNo);
-		
+
 		model.addAttribute("list",list);
 		model.addAttribute("pi",pi);
 

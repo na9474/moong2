@@ -123,7 +123,7 @@
             <tbody>
                 <c:forEach var="q" items="${list }">
                 <tr align="center">
-                    <td id="qnaNo">${q.qnaNo }</td>
+                    <td>${q.rownum }</td>
                     <td>${q.typeName }</td>
                     <td align="left">${q.title }</td>
                     <td>${q.questionDate }</td>
@@ -134,6 +134,7 @@
                     <c:if test="${q.qaNo ne 0 }">
                     <td>답변 완료</td>
                     </c:if> 
+                    <td style="display:none;" id="qnaNo">${q.qnaNo }</td>
                 </tr>
                 </c:forEach>
             </tbody>
