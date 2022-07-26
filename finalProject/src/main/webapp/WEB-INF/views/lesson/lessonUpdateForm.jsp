@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+     <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>lessonEnrollForm</title>
+<meta charset="UTF-8">
+<title>lessonEnrollUpdateForm</title>
 <style>
 /*영역잡기*/
     #lesson-outer{
@@ -87,9 +87,9 @@
      <jsp:include page="../common/header.jsp"/>
     <div id="lesson-outer">
         <div id="subtit">
-            과외 등록
+            과외 정보 수정
         </div>
-        <form method="post" action="insert.le" enctype="multipart/form-data">
+        <form method="post" action="update.le" enctype="multipart/form-data">
             <input type="hidden" name="userNo" value="${loginUser.userNo }">
         <table border="1" id="lessonEnrollTb">
             <tr>
@@ -101,6 +101,8 @@
                     <option value="ENG">영어</option>
                     </select>
                 </td>
+
+               
             </tr>
             <tr>
                 <td class="td-r">학년</td>
@@ -117,10 +119,9 @@
                 <td class="td-r" >과외 가능 지역</td>
                 <td><select class="form-control" onchange="handleOnChange(this)" name="select-area">
                     <option value="">--5개까지 선택이 가능합니다--</option>
-                    <c:forEach var="d" items="${d}">
+                 	<c:forEach var="d" items="${d}">
                     	<option value="${d.dno}">${d.area}</option>
                     </c:forEach>
-              
 
                   </select>
                   <div id='result'></div>
@@ -131,6 +132,12 @@
 
            
             <script>
+            	//업데이트시 불러오기
+            	
+            		
+            
+            
+            
                 //지역선택 스크립트문
                 function handleOnChange(e) {
                     
@@ -214,7 +221,7 @@
             </tr>
             <tr>
                 <td class="td-r">과외 경력</td>
-                <td><input type="text" name="career" id="" required></td>
+                <td><input type="text" name="career" id="career" required></td>
             </tr>
             <tr>
                 <td class="td-r" >과외 가능 요일</td>
@@ -321,20 +328,20 @@
                 <td class="td-r">선호 수업 방식</td>
                 <td>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="teachingStyle1" onclick="ts1();" checked>
-                        <label class="form-check-label" for="teachingStyle1">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="상관없음" id="teachingStyle1" onclick="ts1();" checked>
+                        <label class="form-check-label" for="teachingStyle1" value="상관없음">
                           상관없음
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" onclick="ts2();"  id="teachingStyle2">
-                        <label class="form-check-label" for="teachingStyle2">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="온라인" onclick="ts2();"  id="teachingStyle2">
+                        <label class="form-check-label" for="teachingStyle2" value="온라인">
                            온라인
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" onclick="ts3();" id="teachingStyle3">
-                        <label class="form-check-label" for="teachingStyle4">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" value="오프라인" onclick="ts3();" id="teachingStyle3">
+                        <label class="form-check-label" for="teachingStyle4" value="오프라인">
                             오프라인
                         </label>
                     </div>
@@ -357,22 +364,87 @@
             </script>
             <tr>
             	<th class="td-r">첨부파일</th>
-                <td><input type="file" id="upfile"  name="upfile" accept="video/*" ></td>
+                <td><input type="file" id="upfile"  name="upfile" accept="video/*" >
+                	 <c:if test="${not empty l.leOriginname }">
+                                  	   <br>현재 업로드된 파일 : 
+	                            <a href="${l.leChangename }" download="${l.leOriginname }">${l.leOriginname }</a>
+	                            <input type="hidden" name=originName value="${b.originname }">
+	            				<input type="hidden" name=changeName value="${b.changename }">
+	            		</c:if>
+                </td>
             </tr>
           
           
         </table>
         <div id="btfm">
-        <button type="reset" onclick="areaReset();" class="btn moong-dark">취소</button> <button type="submit" style="float: right;" class="btn moong-yellow">입력</button>
+        <button type="reset" onclick="areaReset();" class="btn moong-dark">취소</button> 
+        <button type="submit" style="float: right; margin-left:5px;" class="btn moong-yellow">수정</button>
+        <button type="button" style="float: right;"class="btn btn-danger" id="del">삭제</button>
         </div>
-    </form>
+        </form> 
+        </div>
+    
         <script>
-            function  areaReset(){
+        	$(function(){
+        			$("#del").click(function(){
+        				if(confirm("정말로 삭제 하시겠습니까?")){
+        					location.href ="delete.le?leNo="+${l.leNo}+"&&userNo="+${loginUser.userNo};
+        				}
+        				
+        			})
+        			
+        			
+        	})
+        
+            function areaReset(){
                 $('.resultIn').remove();
                 $('.resultDayIn').remove();
-            }
+            } 
+            
+            $(function(){
+            	//등록된 값들 불러오기
+            	
+                $("option[value=${l.subject}]").attr("selected",true);
+                $("#tyear").children("option[value=${l.tyear}]").attr("selected",true);
+                $('#area').val("${l.area}");
+                //지역 span만들기 
+                var area = "${l.area}";
+                
+                var Aarr = area.split(",");
+                
+                for(var i=0;i<Aarr.length;i++){
+                	if(Aarr[i] != ""){
+                		document.getElementById('result').innerHTML += '<span class="resultIn">'+Aarr[i]+"x"+"</span>";// 추가   
+                	}
+                	
+                }
+                
+                
+                
+                $("#career").val("${l.career}");
+                $("#fee1").val(${l.fee});
+                $("#fee2").val(${l.fee});
+                $("#leStyle").val("${l.leStyle}");
+                $("#leDay").val("${l.leDay}");
+              //요일 span만들기 
+                var leDay = "${l.leDay}";
+                var Larr = leDay.split(",");
+                var a = ""
+                
+                for(var i=0;i<Larr.length;i++){
+                	a=Larr[i]
+                	if(a != ""){
+                	document.getElementById('resultDay').innerHTML += '<span class="resultIn">'+Larr[i]+"x"+"</span>";// 추가   
+                	}
+                }  
+              
+              
+				console.log("${l.teachingStyle}");           
+                $("#teachingStyle").val("${l.teachingStyle}")
+                $(".form-check").children("input[value='${l.teachingStyle}']").prop("checked",true);
+        	});
+    
         </script>
         </div>
-       
 </body>
 </html>

@@ -19,9 +19,25 @@
 		<result column="STATUS" property="status"/>
 	</resultMap>
 	
+	
+	<resultMap type="student" id="studentResultSet">
+		<result column="USER_NO" property="userNo"/>
+		<result column="YEAR" property="year"/>
+		<result column="KO" property="ko"/>
+		<result column="MATH" property="math"/>
+		<result column="ENG" property="eng"/>
+	</resultMap>
+	
+	<resultMap type="teacher" id="teacherResultSet">
+	<result column="USER_NO" property="userNo"/>
+	<result column="USER" property="userNo"/>
+	<result column="USER_NO" property="userNo"/>
+	<result column="USER_NO" property="userNo"/>
+	</resultMap>
+	
 	<!-- 로그인 -->
 	<select id="loginMember" resultMap="memberResultSet">
-		SELECT USER_NO
+		SELECT   USER_NO
 				,STUDENT
 				,TEACHER
 				,USER_ID
@@ -48,6 +64,8 @@
 						GENDER,
 						EMAIL,
 						BIRTH,
+						TEACHER,
+						STUDENT,
 						STATUS
 					)
 				VALUES(
@@ -58,6 +76,8 @@
 					#{gender},
 					#{email},
 					#{birth},
+					'N',
+					'N',
 					'Y'
 				)
 	</insert>
@@ -68,4 +88,21 @@
 <!-- 	  	FROM MEMBER -->
 <!-- 	  	WHERE USER_ID = #{userId} -->
 <!-- 	</select> -->
+
+
+
+
+<!-- 로그인 학생정보 받아오기 -->
+<select id="loginStudentInfo" resultMap="studentResultSet">
+	SELECT YEAR,KO,MATH,ENG
+	FROM STUDENT
+	WHERE USER_NO = #{userNo}
+</select>
+
+<!-- 로그인 선생정보 받아오기 -->
+<select id="loginTeacherInfo" resultMap="teacherResultSet">
+	SELECT SELF_INTRODUCTION,SCHOOL_INFO,RATING
+	FROM TEACHER
+	WHERE USER_NO = #{userNo}
+</select>
 </mapper>

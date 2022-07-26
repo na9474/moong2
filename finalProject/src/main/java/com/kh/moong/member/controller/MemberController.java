@@ -7,10 +7,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.kh.moong.member.model.service.MemberService;
 import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.member.model.vo.Student;
+import com.kh.moong.member.model.vo.Teacher;
 
 @Controller
 public class MemberController {
@@ -57,13 +58,27 @@ public class MemberController {
 	public String loginMember(Member m
 								,HttpSession session
 								,Model model) {
-//		System.out.println(m);
+
 		Member loginUser = memberService.loginMember(m);
-//		System.out.println(loginUser);
+
+		
+		
 		if(loginUser == null) {
 			model.addAttribute("errorMsg", "로그인에 실패하였습니다.");
 			return "common/errorPage";
 		}else {
+			if(loginUser.getStudent().equals("Y")) {//로그인한 회원이 학생회원이면 학생정보 보냄
+				
+				Student student = memberService.loginStudentInfo(loginUser.getUserNo());
+				session.setAttribute("s", student);
+				
+			}
+				
+			if(loginUser.getTeacher().equals("Y")) {//로그인한 회원이 선생회원이면 선생정보 보냄
+				Teacher teacher = memberService.loginTeacherInfo(loginUser.getUserNo());
+				session.setAttribute("t", teacher);
+			}
+			
 			session.setAttribute("loginUser", loginUser);
 			return "redirect:/";
 		}

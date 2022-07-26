@@ -2,9 +2,12 @@ package com.kh.moong.lesson.model.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 
 @Repository
@@ -30,6 +33,38 @@ public class LessonEnrollDao {
 		
 		return sqlSession.selectOne("lessonEnrollMapper.selectLesson",leNo);
 	}
+
+	public ArrayList<LessonEnroll> selectAllLesson(SqlSessionTemplate sqlSession, PageInfo pi) {
+		
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectAllLesson",null,rowBounds);
+	}
+
+	public int selectAllLessonCount(SqlSessionTemplate sqlSession) {
+		
+		return sqlSession.selectOne("lessonEnrollMapper.selectAllLessonCount");
+	}
+
+	public int deleteLesson(SqlSessionTemplate sqlSession, int leNo) {
+		
+		return sqlSession.update("lessonEnrollMapper.deleteLesson",leNo);
+	}
+
+	public int updateLesson(SqlSessionTemplate sqlSession, LessonEnroll le) {
+		
+		return sqlSession.update("lessonEnrollMapper.updateLesson",le);
+	}
+
+	public ArrayList selectDistrictsList(SqlSessionTemplate sqlSession) {
+		
+		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectDistrictsList");
+	}
+
+	
 
 
 	
