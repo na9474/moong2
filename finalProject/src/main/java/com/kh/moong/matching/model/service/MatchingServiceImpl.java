@@ -94,4 +94,18 @@ public class MatchingServiceImpl implements MatchingService{
 		return matchingDao.updateAlarm(sqlSession,maNo);
 	}
 
+
+	@Override
+	public int tlistCheck(int userNo) {
+		
+		return matchingDao.tlistCheck(sqlSession,userNo);
+	}
+
+
+	@Override
+	public Matching selectcomparison(int userNo) {
+		
+		return matchingDao.selectComparison(sqlSession,userNo);
+	}
+
 }

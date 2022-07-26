@@ -120,9 +120,26 @@ header nav ul li{
                   <li class="nav-item">
                     <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
+                  
                   <li class="nav-item">
-                    <a class="nav-link" href="tlist.le?cpage=1">선생님 리스트</a>
+                    <a class="nav-link" id="tlist" href="tlist.le?cpage=1">선생님 리스트</a>
                   </li>
+                  
+                  <script>
+                  $(function(){
+                      $("#tlist").click(function(){
+                         	if("${loginUser.student}" == 'Y'){
+                         		location.href="tlist.le?cpage=1&&userNo=${loginUser.userNo}"
+                         	}else{
+                         		location.href="tlist.le?cpage=1"
+                         	}
+                              
+                      });
+                  });
+                  </script>
+                  
+                  
+                  
                   <c:choose>
                 	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">
                 			<li class="nav-item">

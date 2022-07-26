@@ -77,4 +77,14 @@ public class MatchingDao {
 		return sqlSession.update("MatchingMapper.updateAlarm",maNo);
 	}
 
+	public int tlistCheck(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("MatchingMapper.tlistCheck",userNo);
+	}
+
+	public Matching selectComparison(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("MatchingMapper.selectComparison",userNo);
+	}
+
 }

@@ -94,12 +94,16 @@ public class MatchingController {
 								//과외비 평균내주기 
 						     
 								//선생님리스트를 조건에 맞는 정보만 보여줌(그전에는 전체리스트가 다보임) 
+							
 								//그룹원들의 status를 c로바꿈 
 								int groupNo = m.getGroupNo();
 								int result4 =  ms.completeMatching(groupNo);	
 													
 									if(result4>0) {//매칭완료된 그룹의 status 변경성공
-										mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());				
+										mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());		
+										
+										
+										
 						} else { // 아니라면 매칭 총 인원이 충족되지 않음
 							session.setAttribute("alertMsg", "기존 그룹에 매칭이 등록되었습니다.");
 							mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());

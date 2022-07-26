@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <result column="MA_DAY" property="maDay"/>
 <result column="ENROLLDATE" property="enrollDate"/>
 <result column="ALERT" property="alert" />
+<result column="YEAR" property="syear"/>
 </resultMap>
 
 <!-- 같은 과목으로 매칭이 있는지 확인 -->
@@ -190,4 +191,20 @@ WHERE ROWNUM = 1
 	WHERE MA_NO = #{maNo}
 
 </update>
+
+<select id="tlistCheck" resultType="_int">
+SELECT COUNT(*)
+FROM MATCHING
+WHERE USER_NO = #{userNo}
+AND STATUS = 'C'
+</select>
+
+<select id="selectComparison" resultMap="matchingResultSet">
+ SELECT SUBJECT,YEAR,AREA,FEE
+FROM MATCHING M 
+JOIN STUDENT S
+USING(USER_NO)
+WHERE USER_NO =#{userNo}
+AND M.STATUS = 'C'
+</select>
 </mapper>
