@@ -19,8 +19,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 						 )
 		VALUES(
 				SEQ_SHNO.NEXTVAL
-				,#{userNo}
-				,#{solutionNo}
+				,#{user_no}
+				,#{solution_no}
 				)
 	</insert>
 	
@@ -28,21 +28,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="sHeartDelete">
 		DELETE
 		FROM SOLUTION_HEART
-		WHERE USER_NO = #{userNo} AND SOLUTION_NO = #{solutionNo}
+		WHERE SOLUTION_NO = #{solution_no} AND USER_NO = #{user_no}
 	</delete>
 	
 	<!-- 게시물별 추천수  -->
-	<select id="sHeartCount" resultMap="sHeartResultSet">
+	<select id="sHeartCount" resultType="_int">
 		SELECT COUNT(*) AS COUNT
 		FROM SOLUTION_HEART
-		WHERE SOLUTION_NO = #{solutionNo}
+		WHERE SOLUTION_NO = ${solution_no}
 	</select>
 	
 	<!-- 해당 user가 해당 게시물을 추천했는지 확인(0/1로 구분) -->
-	<select id="sHeartCheck" resultMap="sHeartResultSet">
+	<select id="sHeartCheck" resultType="_int">
 		SELECT COUNT(*) AS COUNT
 		FROM SOLUTION_HEART
-		WHERE SOLUTION_NO = #{solutionNo} AND USER_NO = #{userNo}
+		WHERE SOLUTION_NO = #{solution_no} AND USER_NO = #{user_no}
 	</select>
 	
 	

@@ -93,7 +93,20 @@ header> nav>ul{
 header nav ul li{
     margin: 0 20px;
     list-style: none;
-}</style>
+}
+
+    .dropdown-menu{
+    	background-color:  rgb(49, 48, 47);  
+    }
+    .dropdown-item{
+    	color: rgb(248, 238, 225);
+    }
+    .dropdown-item{
+    	
+        transition: 0.7s;
+    }
+
+</style>
 </head>
 
 <body>
@@ -158,6 +171,18 @@ header nav ul li{
 		                  	 </li>
                 	</c:when>
                   </c:choose>
+                  <c:if test="${loginUser.userId eq 'admin'}">
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">관리자 페이지</a>
+                        <div class="dropdown-menu">
+					      <a class="dropdown-item" href="#">회원승인</a>
+					      <a class="dropdown-item" href="#">회원리스트</a>
+					      <a class="dropdown-item" href="list.po">신고리스트</a>
+					      <a class="dropdown-item" href="#">QnA</a>
+					      <a class="dropdown-item" href="chart.ch">차트</a>
+					    </div>
+                  </li>
+                  </c:if>
                  
                 </ul>
                 
@@ -194,9 +219,23 @@ header nav ul li{
 		                        <li class="nav-item">            
 		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
 		                       </li>
-		                       <li class="nav-item">            
-		                        <a class="nav-link" href="myPageMain.me">마이페이지</a>
-		                   </li> 
+		                       <c:choose>
+		                       <c:when test="${loginUser.teacher eq 'Y' }">            
+		                   		<li class="nav-item">
+		                        	<a class="nav-link" href="teaMyPage.me">마이페이지</a>
+			                   	</li> 
+		                   		</c:when>
+		                   		<c:when test="${loginUser.student eq 'Y' }">
+		                   		<li class="nav-item">
+		                        	<a class="nav-link" href="stuMyPage.me">마이페이지</a>
+			                   	</li> 
+		                   		</c:when>
+		                   		<c:otherwise>
+		                       	<li class="nav-item">
+		                        	<a class="nav-link" href="myPageMain.me">마이페이지</a>
+			                   	</li> 
+		                   		</c:otherwise>
+		                   		</c:choose>
 		                   <li class="nav-item">            
 		                        <a class="nav-link" href="logout.me">로그아웃</a>
 		                   </li>          

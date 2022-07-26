@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="policeCmtMapper">
+
+	<resultMap type="policeCmt" id="policeCmtResultSet">
+		<result column="PC_NO" property="pc_No"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="REASON" property="reason"/>
+		<result column="CREATE_DATE" property="createDate"/>
+		<result column="SC_NO" property="scNo"/>
+		
+	</resultMap>
+	
+	<!-- 댓글신고 -->
+	<insert id="addPoliceCmt" parameterType="policeCmt">
+		INSERT INTO POLICE_CMT(
+						  PC_NO
+						 ,USER_NO
+						 ,REASON
+						 ,SC_NO
+						 )
+		VALUES(
+				SEQ_PCNO.NEXTVAL
+				,#{userNo}
+				,#{reason}
+				,#{scNo}
+				)
+	</insert>
+	
+	<!-- 신고삭제 -->
+	<delete id="deletePoliceCmt">
+		DELETE
+		FROM POLICE_CMT
+		WHERE PC_NO = #{pcNo}	
+	</delete>
+	
+	<!-- 신고리스트 -->
+	<select id="policeCmtListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM POLICE_CMT
+	</select>
+	
+	<!-- 신고리스트 -->
+	<select id="policeCmtList" resultMap="policeCmtResultSet">
+    select l.*, m.user_id as "reporter", w.user_id as "writer"
+	from 
+    police_cmt l
+    join member m
+    on l.user_no=m.user_no
+    join
+        (select p.pc_no, m.user_id
+        from 
+            police_cmt p
+            join solution_cmt s on p.sc_no=s.sc_no
+            join member m on s.user_no = m.user_no) w
+    on l.pc_no = w.pc_no
+    order by create_date DESC
+	</select>
+	
+</mapper>
