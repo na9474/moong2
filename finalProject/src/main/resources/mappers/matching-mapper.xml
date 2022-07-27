@@ -20,6 +20,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <result column="MA_DAY" property="maDay"/>
 <result column="ENROLLDATE" property="enrollDate"/>
 <result column="ALERT" property="alert" />
+<result column="URL" property="url" />
 </resultMap>
 
 <!-- 같은 과목으로 매칭이 있는지 확인 -->
@@ -196,4 +197,24 @@ WHERE ROWNUM = 1
 		DELETE FROM MATCHING
 		WHERE MA_NO = #{maNo}	
 </delete>
+
+
+
+
+
+<!-- NYJ.. 매칭그룹번호 조회 -->
+<select id="adRoomList" resultMap="matchingResultSet">
+	SELECT GROUP_NO
+	FROM MATCHING
+</select>
+
+<!-- NYJ.. URL 상태 변경 -->
+<update id="updateUrlS"  parameterType="matching">
+	UPDATE MATCHING
+	SET URL = 'Y'
+	WHERE GROUP_NO = #{groupNo}
+</update>
+
+
+
 </mapper>

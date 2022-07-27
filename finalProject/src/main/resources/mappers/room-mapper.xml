@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="RoomMapper">
+	<resultMap type="room" id="roomResultSet">
+		<result column="RONO" property="rono"/>
+		<result column="ROOM_NO" property="roomNo"/>
+		<result column="ROOM_URL" property="roomUrl"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="SUBJECT" property="subject"/>
+		<result column="STATUS" property="status"/>
+	</resultMap>
+
+	
+	<!-- 매칭된 그룹에 채팅방 링크 보내기 -->
+	<select id="roomList" resultMap="roomResultSet">
+		SELECT ROOM_NO, ROOM_URL, SUBJECT
+		FROM ROOM
+		JOIN MATCHING ON (ROOM_NO = GROUP_NO)
+		WHERE USER_NO = #{userNo}
+		ORDER BY ROOM_NO DESC
+	</select>
+	
+	<!-- 관리자 - 채팅방 링크 목록 -->
+	<!-- SUBJECT도 조회를 하면 생성된 채팅방 전체가 조회되지 않음 -->
+<!-- 	<select id="adRoomList" resultMap="roomResultSet"> -->
+<!-- 		SELECT ROOM_NO, ROOM_URL -->
+<!-- 		FROM ROOM -->
+<!-- 		WHERE STATUS = 'Y' -->
+<!-- 		ORDER BY ROOM_NO DESC -->
+<!-- 	</select> -->
+	
+	<!-- 관리자 - 채팅방 링크 입력 -->
+	<insert id="insertUrl" parameterType="Room">
+		INSERT INTO ROOM(RONO, ROOM_NO, ROOM_URL) 
+		          VALUES(SEQ_RONO.NEXTVAL, #{roomNo}, #{roomUrl})
+	</insert>
+	
+	<!-- 관리자 - 채팅방 링크 보이게 -->
+	<select id="aRoomList" resultMap="roomResultSet">
+		SELECT *
+		FROM ROOM
+	</select>
+	
+	<!-- 관리자 - 채팅방 링크 삭제 -->
+<!-- 	<update id="deleteUrl"> -->
+<!-- 		UPDATE ROOM -->
+<!-- 		SET STATUS = 'N' -->
+<!-- 		WHERE ROOM_NO = #{roomNo} -->
+<!-- 	</update> -->
+	
+	<!-- 관리자 - 채팅방 링크 수정 -->
+<!-- 	<update id="modifyUrl"> -->
+<!-- 		UPDATE ROOM -->
+<!-- 		SET ROOM_URL = #{roomUrl} -->
+<!-- 		WHERE ROOM_NO = #{roomNo} -->
+<!-- 	</update> -->
+</mapper>
