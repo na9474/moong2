@@ -7,21 +7,9 @@
 <head>
 <meta charset="UTF-8">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css">
-<!-- Popper JS -->
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<!-- Latest compiled JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
-<!--font Awesome-->
-<script src="https://kit.fontawesome.com/92642353eb.js" crossorigin="anonymous"></script>
-
 <link rel="stylesheet" href="${path}/resources/css/login.css">
 
-<title>로그인</title>
+<title>로그인 | 뭉과외</title>
 
 </head>
 <body>
@@ -40,7 +28,7 @@
 	            <input type="password" class="box" name="userPwd" placeholder="비밀번호를 입력하세요" required> 
 	        </div>
 	        <div id="find">
-		        <a href="#" id="findIP">아이디/비밀번호 찾기</a>
+		        <a href="findIdPw.me" id="findIP">아이디/비밀번호 찾기</a>
 	        </div>
 	        <div style="text-align: center;">
 	            <button type="submit" class="login_btn">로그인</button>

@@ -7,10 +7,7 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias type="com.kh.moong.chat.model.vo.Chat" alias="chat"/>
-		<typeAlias type="com.kh.moong.chat.model.vo.ChatReport" alias="chatReport"/>
-		<typeAlias type="com.kh.moong.chat.model.vo.Room" alias="room"/>
-		<typeAlias type="com.kh.moong.chat.model.vo.RoomJoin" alias="roomJoin"/>
+		<typeAlias type="com.kh.moong.matching.model.vo.Room" alias="room"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.Solution" alias="solution"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionFiles" alias="solutionFiles"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionCmt" alias="solutionCmt"/>
@@ -36,7 +33,7 @@
 	</typeAliases>	
 
 	<mappers>
-		<mapper resource="/mappers/chat-mapper.xml"/>
+		<mapper resource="/mappers/room-mapper.xml"/>
 		<mapper resource="/mappers/solution-mapper.xml"/>
 		<mapper resource="/mappers/solutionfiles-mapper.xml"/>
 		<mapper resource="/mappers/solutioncmt-mapper.xml"/>

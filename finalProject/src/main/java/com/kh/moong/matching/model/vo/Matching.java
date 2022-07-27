@@ -21,6 +21,7 @@ private String maDay;					//	MA_DAY	VARCHAR2(100 BYTE)
 private String sYear;
 private String sGender;
 private String alert;
+private String url;
 private Date enrollDate;
 
 }
