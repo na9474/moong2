@@ -8,24 +8,25 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.qna.model.vo.QnaAnswer;
+import com.kh.moong.qna.model.vo.QnaFile;
 import com.kh.moong.qna.model.vo.QnaQuestion;
 import com.kh.moong.qna.model.vo.QnaType;
 
 @Repository
 public class QnaDao {
 
-	public int selectQnaListCount(SqlSessionTemplate sqlSession) {
-		return sqlSession.selectOne("qnaMapper.selectQnaListCount");
+	public int selectQnaListCount(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("qnaMapper.selectQnaListCount",userNo);
 	}
 
-	public ArrayList<QnaQuestion> selectList(SqlSessionTemplate sqlSession, PageInfo pi) {
+	public ArrayList<QnaQuestion> selectList(SqlSessionTemplate sqlSession, PageInfo pi, int userNo) {
 	
-		int offset = (pi.getCurrentPage()-1*pi.getBoardLimit());
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
 		int limit = pi.getBoardLimit();
 		
 		RowBounds rowBounds = new RowBounds(offset,limit);
 
-		return (ArrayList)sqlSession.selectList("qnaMapper.selectList",null,rowBounds);
+		return (ArrayList)sqlSession.selectList("qnaMapper.selectList",userNo,rowBounds);
 	}
 
 	public int qnaInsert(SqlSessionTemplate sqlSession, QnaQuestion qq) {
@@ -34,31 +35,41 @@ public class QnaDao {
 	}
 
 	public int increaseCount(SqlSessionTemplate sqlSession, int qnaNo) {
-		return 0;
+		return sqlSession.selectOne("qnaMapper.increaseCount",qnaNo);
 	}
 
 	public QnaQuestion selectQuestion(SqlSessionTemplate sqlSession, int qnaNo) {
-		return null;
+		return sqlSession.selectOne("qnaMapper.selectQuestion", qnaNo);
 	}
 
 	public int deleteQna(SqlSessionTemplate sqlSession, int qnaNo) {
-		return 0;
+		return sqlSession.update("qnaMapper.deleteQna", qnaNo);
 	}
 
 	public int updateQna(SqlSessionTemplate sqlSession, QnaQuestion qq) {
-		return 0;
+		return sqlSession.update("qnaMapper.updateQna", qq);
 	}
 
 	public ArrayList<QnaAnswer> selectAnswerList(SqlSessionTemplate sqlSession, int qnaNo) {
-		return null;
+		return (ArrayList)sqlSession.selectList("qnaMapper.selectAnswerList", qnaNo);
 	}
 
-	public int selectAnswer(SqlSessionTemplate sqlSession, QnaAnswer qa) {
-		return 0;
+	public int insertAnswer(SqlSessionTemplate sqlSession, QnaAnswer qa) {
+		return sqlSession.insert("qnaMapper.insertAnswer", qa);
 	}
 
 	public ArrayList<QnaType> selectQnaType(SqlSessionTemplate sqlSession) {
 		return (ArrayList)sqlSession.selectList("qnaMapper.selectQnaType");
+	}
+
+	//첨부파일 이름 db저장
+	public int insertQf(SqlSessionTemplate sqlSession, QnaFile qf) {
+		return sqlSession.insert("qnaMapper.insertQf", qf);
+	}
+
+	//첨부파일의 qnaNo 넣어주기
+	public int updateQfQnaNo(SqlSessionTemplate sqlSession, QnaQuestion qq) {
+		return sqlSession.update("qnaMapper.updateQfQnaNo", qq);
 	}
 
 

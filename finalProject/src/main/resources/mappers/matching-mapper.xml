@@ -20,6 +20,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <result column="MA_DAY" property="maDay"/>
 <result column="ENROLLDATE" property="enrollDate"/>
 <result column="ALERT" property="alert" />
+<result column="YEAR" property="sYear"/>
+<result column="URL" property="url"/>
 </resultMap>
 
 <!-- 같은 과목으로 매칭이 있는지 확인 -->
@@ -38,14 +40,17 @@ FROM STUDENT S,
 (SELECT USER_NO,GROUP_NO
 FROM MATCHING
 WHERE RANDOM = 'Y'
-<if test='#{gender}.equals("S")'>
+<choose>
+<when  test='gender.equals("S")'>
 AND GENDER = #{sGender}
-</if>
+</when>
+<otherwise>
+AND GENDER = 'R'
+</otherwise>
+</choose>
 AND SUBJECT = #{subject}
 AND AREA = #{area}
-<if test='#{maDay}.equals("상관없음")'>
 AND MA_DAY LIKE '%'||#{maDay}||'%'
-</if>
 AND FEE <![CDATA[ <= ]]> #{fee}+10000
 AND FEE <![CDATA[ >= ]]> #{fee}-10000
 AND PEOPLE = #{people}
@@ -56,7 +61,10 @@ AND YEAR = #{sYear}
 </select>
 
 
-<!-- 매칭 등록 -->
+
+
+
+<!-- 매칭 등록  -->
 <insert id="insertMatching" parameterType="matching">
 INSERT INTO MATCHING(
 					MA_NO,
@@ -71,6 +79,7 @@ INSERT INTO MATCHING(
 					CHIEF,
 					MA_DAY,
 					ALERT,
+					URL,
 					STATUS
 					)
 			VALUES(
@@ -78,18 +87,31 @@ INSERT INTO MATCHING(
 			SEQ_MANO.CURRVAL,
 			#{userNo},
 			#{random},
-			<if test='#{gender}.equals("S")'>
+			<choose>
+			<when test='gender.equals("S")'>
 			#{sGender},
-			</if>
+			</when>
+			<otherwise>
 			#{gender},
+			</otherwise>
+			</choose>
 			#{subject},
 			#{area},
 			#{fee},
 			#{people},
 			'Y',
 			#{maDay},
-			'Y',
+			'N',
+			'N',
+			<choose>
+			<when test='random.equals("N")'>
+			'C'
+			</when>
+			<otherwise>
 			'Y'
+			</otherwise>
+			</choose>
+			
 			)
 </insert>
 
@@ -109,6 +131,7 @@ INSERT INTO MATCHING(
 					CHIEF,
 					MA_DAY,
 					ALERT,
+					URL,
 					STATUS
 					)
 			VALUES(
@@ -116,17 +139,22 @@ INSERT INTO MATCHING(
 			#{groupNo},
 			#{userNo},
 			#{random},
-			<if test='#{gender}.equals("S")'>
+			<choose>
+			<when test='#{gender}.equals("S")'>
 			#{sGender},
-			</if>
+			</when>
+			<otherwise>
 			#{gender},
+			</otherwise>
+			</choose>
 			#{subject},
 			#{area},
 			#{fee},
 			#{people},
 			'N',
 			#{maDay},
-			'Y'
+			'N',
+			'N',
 			'Y'
 			)
 
@@ -156,7 +184,7 @@ ORDER BY CHIEF DESC
 
 <!-- 알람페이지에서 보여줄 리스트 -->
 <select id="alarmList" resultMap="matchingResultSet">
-SELECT MA_NO,GROUP_NO,SUBJECT,PEOPLE,GENDER,FEE,ENROLLDATE,STATUS
+SELECT MA_NO,GROUP_NO,SUBJECT,PEOPLE,GENDER,FEE,ENROLLDATE,STATUS,RANDOM
 FROM MATCHING
 WHERE USER_NO=#{userNo}
 </select>
@@ -177,7 +205,7 @@ SELECT MA_NO
 FROM MATCHING
 WHERE USER_NO = #{userNo}
 AND STATUS = 'C'
-AND ALERT = 'Y'
+AND ALERT = 'N'
 AND RANDOM = 'Y'
 ORDER BY ENROLLDATE
 )
@@ -190,6 +218,22 @@ WHERE ROWNUM = 1
 	WHERE MA_NO = #{maNo}
 
 </update>
+
+<select id="tlistCheck" resultType="_int">
+SELECT COUNT(*)
+FROM MATCHING
+WHERE USER_NO = #{userNo}
+AND STATUS = 'C'
+</select>
+
+<select id="selectComparison" resultMap="matchingResultSet">
+ SELECT SUBJECT,YEAR,AREA,FEE
+FROM MATCHING M 
+JOIN STUDENT S
+USING(USER_NO)
+WHERE USER_NO =#{userNo}
+AND M.STATUS = 'C'
+</select>
 
 
 <delete id="deleteMatching" parameterType="matching"> 

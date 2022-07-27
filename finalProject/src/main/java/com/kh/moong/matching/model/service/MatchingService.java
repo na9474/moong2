@@ -28,6 +28,14 @@ public interface MatchingService {
 
 	int updateAlarm(int maNo);
 
+	int tlistCheck(int userNo);
+
+	Matching selectcomparison(int userNo);
+
+	
+
 	int deleteMatching(int maNo);
+
+	
 
 }

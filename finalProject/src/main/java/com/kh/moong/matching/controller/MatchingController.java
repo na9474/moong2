@@ -45,11 +45,11 @@ public class MatchingController {
 			 m.setMaDay(maDay);
 			 
 			if (m.getRandom().equals("N")) {// 매칭이 랜덤이 아니라면 매칭 등록하고 바로 과외선생님과연결
-
+			
 				int result = ms.insertMatching(m);
 				if(result>0) {//매칭등록 성공
-					session.setAttribute("alertMsg", "등록이 완료되었습니다.");
 					
+					session.setAttribute("alertMsg", "등록이 완료되었습니다.");
 					mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());
 				}else {//매칭등록 실패
 					mv.addObject("errorMsg","신규매칭등록실패").setViewName("common/errorPage");
@@ -94,12 +94,16 @@ public class MatchingController {
 								//과외비 평균내주기 
 						     
 								//선생님리스트를 조건에 맞는 정보만 보여줌(그전에는 전체리스트가 다보임) 
+							
 								//그룹원들의 status를 c로바꿈 
 								int groupNo = m.getGroupNo();
 								int result4 =  ms.completeMatching(groupNo);	
 													
 									if(result4>0) {//매칭완료된 그룹의 status 변경성공
-										mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());				
+										mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());		
+										
+										
+										
 						} else { // 아니라면 매칭 총 인원이 충족되지 않음
 							session.setAttribute("alertMsg", "기존 그룹에 매칭이 등록되었습니다.");
 							mv.setViewName("redirect:alarm.ma?uNo="+m.getUserNo());
@@ -120,7 +124,12 @@ public class MatchingController {
 		 ArrayList<Matching> list = ms.alarmList(uNo);
 		
 		 for(int i=0; i<list.size(); i++) {
-	     list.get(i).setPeople(ms.countMatching(list.get(i).getGroupNo())+"/"+ list.get(i).getPeople());
+		if(list.get(i).getRandom().equals("Y")) {
+			list.get(i).setPeople(ms.countMatching(list.get(i).getGroupNo())+"/"+ list.get(i).getPeople());
+		}
+				 
+			 
+	     
 		 }
 		 
 		 mv.addObject("list",list).setViewName("matching/matchingAlarm");

@@ -54,14 +54,16 @@
         <br><br><br>
         <form action="qnaInsert.qu" method="post" enctype="multipart/form-data">
              <div class="container-md p-4 bg-white rounded">
+             
+             <input type="hidden" name="qfSysName" id="qfSysName">
         <h2>QnA 글작성</h2>
         <br>
 
         <div class="row titlebox">
             <div class="col-1" id="top-optionbox" name="type">
-                <select name="type">
+                <select name="typeNo">
                 	<c:forEach var="t" items="${list }">
-                		<option value="${t.typeNo }">${t.typeName }</option>
+                		<option value="${t.typeNo }" name="${t.typeNo }">${t.typeName }</option>
                 	</c:forEach>
 
                 </select>
@@ -102,8 +104,8 @@
 
 
 <!--섬머노트-->
-    <script>
-    $(document).ready(function() {
+     <script>
+/* 	  $(document).ready(function() {
 		$('.summernote').summernote({
 			  height: 800,                 // 에디터 높이
 			  minHeight: null,             // 최소 높이
@@ -113,11 +115,11 @@
 			  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
 		});
     });
-    
+     
 
 	// 툴바생략
 	var setting = {
-            height : 300,
+            height : 800,
             minHeight : null,
             maxHeight : null,
             focus : true,
@@ -134,9 +136,9 @@
             	}
             }
          };
-        $('#summernote').summernote(setting);
+        $('.summernote').summernote(setting);
 
-        
+		//이미지 업로드        
         function uploadSummernoteImageFile(file, el) {
 			data = new FormData();
 			data.append("file", file);
@@ -149,10 +151,78 @@
 				processData : false,
 				success : function(data) {
 					$(el).summernote('editor.insertImage', data.url);
-				}
+				},
+				error : function(){
+    				console.log("통신실패")
+    			}
+			});
+		}  */
+
+        $(document).ready(function() {
+
+        	var toolbar = [
+        		    // 글꼴 설정
+        		    ['fontname', ['fontname']],
+        		    // 글자 크기 설정
+        		    ['fontsize', ['fontsize']],
+        		    // 굵기, 기울임꼴, 밑줄,취소 선, 서식지우기
+        		    ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+        		    // 글자색
+        		    ['color', ['forecolor','color']],
+        		    // 표만들기
+        		    ['table', ['table']],
+        		    // 글머리 기호, 번호매기기, 문단정렬
+        		    ['para', ['ul', 'ol', 'paragraph']],
+        		    // 줄간격
+        		    ['height', ['height']],
+        		    // 그림첨부, 링크만들기, 동영상첨부
+        		    ['insert',['picture','link','video']],
+        		    // 코드보기, 확대해서보기, 도움말
+        		    ['view', ['codeview','fullscreen', 'help']]
+        		  ];
+
+        	var setting = {
+                    height : 800,
+                    minHeight : null,
+                    maxHeight : null,
+                    focus : true,
+                    lang : 'ko-KR',
+                    toolbar : toolbar,
+                    //콜백 함수
+                    callbacks : { 
+                    	onImageUpload : function(files, editor, welEditable) {
+                    // 파일 업로드(다중업로드를 위해 반복문 사용)
+                    for (var i = files.length - 1; i >= 0; i--) {
+                    uploadSummernoteImageFile(files[i],
+                    this);
+                    		}
+                    	}
+                    }
+                 };
+                $('.summernote').summernote(setting);
+                });
+                
+
+		function uploadSummernoteImageFile(file, el) {
+			data = new FormData();
+			data.append("file", file);
+			$.ajax({
+				data : data,
+				type : "POST",
+				url : "uploadSummernoteImageFile",
+				contentType : false,
+				enctype : 'multipart/form-data',
+				processData : false,
+				success : function(data) {
+					$(el).summernote('editor.insertImage', data.url);
+
+					$('input[name=qfSysName]').attr('value',data.qfSysName);
+				},
+				error : function(){
+    				console.log("통신실패")
+    			}
 			});
 		}
-
         </script>
 
 

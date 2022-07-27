@@ -30,6 +30,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             FROM SOLUTION S
                 JOIN MEMBER M ON S.USER_NO=M.USER_NO
 		WHERE S.STATUS='Y'
+		<if test='search_cat == "user_id"'>
+            and m.user_id like '%${keyword}%'
+        </if>
+		<if test='search_cat == "title"'>
+            and s.title like '%${keyword}%'
+        </if>
+		<if test='search_cat == "solution_contents"'>
+            and s.solution_contents like '%${keyword}%'
+        </if>
+        <if test='subject == "국어"'>
+            and s.subject = '국어'
+        </if>
+        <if test='subject == "영어"'>
+            and s.subject = '영어'
+        </if>
+        <if test='subject == "수학"'>
+            and s.subject = '수학'
+        </if>
+        <if test='tag == "수능"'>
+            and s.tag = '수능'
+        </if>
+        <if test='tag == "자주나오는문제"'>
+            and s.tag = '자주나오는문제'
+        </if>
 		ORDER BY CREATE_DATE DESC)
 	</select>
 	
@@ -73,39 +97,5 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET STATUS='N'
 		WHERE SOLUTION_NO = #{solutionNo}
 	</update>
-	
-	<select id="searchTitle" resultMap="solutionResultSet">
-		SELECT *
-		FROM 
-            (SELECT S.*, M.USER_ID
-            FROM SOLUTION S
-                JOIN MEMBER M ON S.USER_NO=M.USER_NO
-		WHERE S.TITLE LIKE '%#{keyword}%'
-        AND S.STATUS='Y'
-		ORDER BY CREATE_DATE DESC)
-	</select>
-	
-	<select id="searchContents" resultMap="solutionResultSet">
-		SELECT *
-		FROM 
-            (SELECT S.*, M.USER_ID
-            FROM SOLUTION S
-                JOIN MEMBER M ON S.USER_NO=M.USER_NO
-		WHERE S.SOLUTION_CONTENTS LIKE '%#{keyword}%'
-        AND S.STATUS='Y'
-		ORDER BY CREATE_DATE DESC)
-	</select>
-	
-	<select id="searchId" resultMap="solutionResultSet">
-		SELECT *
-		FROM 
-            (SELECT S.*, M.USER_ID
-            FROM SOLUTION S
-                JOIN MEMBER M ON S.USER_NO=M.USER_NO
-		WHERE M.USER_ID LIKE '%#{keyword}%'
-        AND S.STATUS='Y'
-		ORDER BY CREATE_DATE DESC)
-	</select>
-	
 	
 </mapper>

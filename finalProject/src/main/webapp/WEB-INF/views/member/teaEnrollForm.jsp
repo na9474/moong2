@@ -113,30 +113,31 @@
             	선생님 MyPage 작성
         </div>
 
-        <form action="teaEnroll.me">
+        <form action="teaEnroll.me" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="userNo" value="${loginUser.userNo }">
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
-                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
+                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" id="div-preview" ><div></div></td>
                         <td>이름 : </td>
-                        <td>나선생</td>
+                        <td>${loginUser.userName }</td>
                     </tr>
                     <tr>
                         <td>나이 : </td>
-                        <td>20</td>
+                        <td>${loginUser.birth }</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
-                        <td>남</td>
+                        <td>${loginUser.gender }</td>
                     </tr>
                     <tr>
                         <td>이메일 : </td>
-                        <td>tjdtossla12@gmail.com</td>
+                        <td>${loginUser.email }</td>
                     </tr>
                   
                     <tr>
                     	<td align="center">증명사진 등록 : </td>
-                    	<td colspan="2"><input  type="file"></td>
+                    	<td colspan="2"><input  type="file" name = "idPicture" required></td>
                     </tr>
                     
                 </table>
@@ -161,11 +162,11 @@
                  <table id="teacher-tb2">
                     <tr>
                         <td>출&nbsp;&nbsp;신&nbsp;&nbsp;학&nbsp;&nbsp;교&nbsp; : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
+                        <td style="float: left;"><input style="width: 175px;" type="text" name="schoolInfo">    </td>
                     </tr>
                     <tr>
                         <td>한줄 자기소개 : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
+                        <td style="float: left;"><input style="width: 175px;" type="text" name="selfIntroduction">    </td>
                     </tr>
                     
                 </table>
@@ -177,7 +178,7 @@
                 <div style="margin:auto; height: 800px;">
                     <div class="mid">재학 증명서</div>
                     <div id="idc"></div>
-                    <div>첨부파일 :  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="file"> </div>
+                    <div>첨부파일 :  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="file" name="idCard" required> </div>
                     
                 </div>
 
@@ -199,7 +200,46 @@
 	</div>
 	</div>
 
-
+	<!-- 증명사진 미리보기 -->
+	<script type="text/javascript">
+	
+	let fileTag = document.querySelector("input[name=idPicture]");
+	let divPreview = document.querySelector("#div-preview");
+	
+	fileTag.onchange = function(){
+		
+		//파일 올렸을 때 : fileTag.files.length > 0
+		if(fileTag.files.length>0){
+			//이미지 src에 들어갈 데이터 구하기
+			for(let i=0; i<fileTag.files.length; i++){
+				let reader = new FileReader();
+				reader.onload = function(data){
+					let src = data.target.result;
+					//이미지 태그를 만들어서 넣어줄거임
+					//1. 이미지 태그 만들기
+					let imgTag = document.createElement('img');
+					
+					//2. 이미지 태그 속성들 세팅하기
+					imgTag.setAttribute('src', src);
+					imgTag.setAttribute('width', '150');
+					imgTag.setAttribute('height', '200');
+					
+					//3. 이미지 태그 div안에 넣기
+					divPreview.appendChild(imgTag);
+				}
+				reader.readAsDataURL(fileTag.files[i]);
+				
+			}//for end
+			
+		}else{
+		//취소 버튼을 눌렀을 때
+			//div 안에 싹 다 비우기
+			divPreview.innerHTML = "";
+	
+		}
+	}
+	
+	</script>
 
 </body>
 </html>

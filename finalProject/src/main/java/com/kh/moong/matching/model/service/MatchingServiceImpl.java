@@ -96,9 +96,32 @@ public class MatchingServiceImpl implements MatchingService{
 
 
 	@Override
+	public int tlistCheck(int userNo) {
+		
+		return matchingDao.tlistCheck(sqlSession,userNo);
+	}
+
+
+	@Override
+	public Matching selectcomparison(int userNo) {
+		
+		return matchingDao.selectComparison(sqlSession,userNo);
+	}
+
+	@Override
 	public int deleteMatching(int maNo) {
 		
 		return matchingDao.deleteMatching(sqlSession,maNo);
 	}
+
+
+
+	
+
+
+	
+
+
+
 
 }

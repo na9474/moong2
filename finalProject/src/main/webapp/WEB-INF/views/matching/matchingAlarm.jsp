@@ -102,7 +102,19 @@
 					                    	</c:otherwise>
 				                    	</c:choose>
 			                    	<td>${m.people}</td>
-			                    	<td>4</td>
+			                    	<c:choose>
+			                    	<c:when test="${m.gender eq 'M' }">
+			                    	<td>남자</td>
+			                    	</c:when>
+			                    	<c:when test="${m.gender eq 'F' }">
+			                    	<td>여자</td>
+			                    	</c:when>
+			                    	<c:otherwise>
+			                    	 <td>상관없음</td>
+			                    	
+			                    	</c:otherwise>
+			                    	</c:choose>
+			                    	
 			                    	<td class="fee">${m.fee}</td>
 			                    	<td>${m.enrollDate}</td>
 			                    		<c:choose>
@@ -113,7 +125,15 @@
 			                    				<td> <span style="color: red;">매칭대기중</span></td>
 			                    			</c:otherwise>
 			                    		</c:choose>
+			                    		<c:choose>
+			                    		<c:when test="${m.status eq 'C'}">
+			                    		<td><button class="btn btn-danger" disabled > x </button> </td>
+			                    		</c:when>
+			                    		<c:otherwise>
 			                    		<td><button class="btn btn-danger" > x </button> </td>
+			                    		</c:otherwise>
+			                    		</c:choose>
+			                    		
 			                    	</tr>
 		                    	</c:forEach>
                 		</c:otherwise>
@@ -129,7 +149,13 @@
     
     $(function(){
     	$('.btn-danger').click(function(){
-    		  location.href="delete.ma?maNo="+$(this).parent().parent().children(".maNo").text()+"&&userNo=${loginUser.userNo}";
+    		
+    		if (!confirm("정말로 매칭을 취소하시겠습니까?")) {
+    	        
+    	    } else {
+    	    	location.href="delete.ma?maNo="+$(this).parent().parent().children(".maNo").text()+"&&userNo=${loginUser.userNo}";
+    	    }
+    		  
     		
     	})
     })

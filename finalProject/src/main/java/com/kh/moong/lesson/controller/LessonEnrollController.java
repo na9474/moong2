@@ -21,12 +21,17 @@ import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
 import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.matching.model.service.MatchingService;
+import com.kh.moong.matching.model.vo.Matching;
 
 @Controller
 public class LessonEnrollController {
 	
 	@Autowired
 	private LessonEnrollService ls;
+	
+	@Autowired
+	private MatchingService ms;
 		//첨부파일
 	
 	
@@ -129,24 +134,62 @@ public class LessonEnrollController {
 		
 		//등록된 선생님 전체 리스트 조회 
 		@RequestMapping("tlist.le")
-		public ModelAndView teacherList(@RequestParam(value="cpage",defaultValue="1") int currentPage,
-				ModelAndView mv) {
+		public ModelAndView teacherList(
+				@RequestParam(value = "cpage", defaultValue = "1") int currentPage/* ,int userNo */, ModelAndView mv) {
 			
 			
-			int listCount = ls.selectAllLessonCount();
+			
+//			if(userNo != 0) { //학생회원
+//				
+//				//등록된 매칭중에 매칭상태가 C인 매칭이 있는지 과목,학년,지역,요금은 평균치
+//				int result = ms.tlistCheck(userNo);
+//				
+//				if(result>0) { //해당학생이 매칭이 완료되서 선생님을 찾고 있음
+//					
+//					//해당학생의 매칭이 완료된 과외정보를 불러옴 
+//					Matching matching = ms.selectcomparison(userNo);
+//								
+//				}else { // 학생이 매칭을 등록하지 않았거나 매칭이 완료되지 않음 
+//					int listCount = ls.selectAllLessonCount();
+//					
+//					
+//					int pageLimit = 10;
+//					int boardLimit = 20;
+//					
+//					PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+//					
+//					
+//					ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
+//					
+//					mv.setViewName("lesson/teacherLessonList");
+//					mv.addObject("pi",pi);
+//					mv.addObject("list",list);
+//				}
+//				
+//				
+//			}else { //userNo가 0이면 학생회원이 아님
+				
+				
+				int listCount = ls.selectAllLessonCount();
+				
+				
+				int pageLimit = 10;
+				int boardLimit = 20;
+				
+				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+				
+				
+				ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
+				
+				mv.setViewName("lesson/teacherLessonList");
+				mv.addObject("pi",pi);
+				mv.addObject("list",list);
+				
+				
+//			}
 			
 			
-			int pageLimit = 10;
-			int boardLimit = 20;
 			
-			PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
-			
-			
-			ArrayList<LessonEnroll> list = ls.selectAllLesson(pi);
-			
-			mv.setViewName("lesson/teacherLessonList");
-			mv.addObject("pi",pi);
-			mv.addObject("list",list);
 			return mv;
 		}
 		
@@ -237,6 +280,18 @@ public class LessonEnrollController {
 				
 				return mv;
 			}
+			
+			
+			@RequestMapping("search.le")
+			public ModelAndView SearchLessonEnroll(String searchCat,String searchText,ModelAndView mv) {
+				System.out.println(searchCat);
+				System.out.println(searchText);
+				
+				
+				return null;
+			}
+			
+			
 }
 
 
