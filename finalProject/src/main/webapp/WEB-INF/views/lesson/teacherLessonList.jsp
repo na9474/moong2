@@ -69,7 +69,8 @@
                     <option value="RATING">등급</option>
                     <option value="SUBJECT">과목</option>
             </select>
-            <input type="text"  name="searchText" style="width:200px;" onKeypress="javascript:if(event.keyCode==13) {search_onclick_submit}"
+            <input type="hidden" name="cpage" value=1 />
+            <input type="text" value="${sText}" name="searchText" style="width:200px;" onKeypress="javascript:if(event.keyCode==13) {search_onclick_submit}"
 >
             </form>
         </div>
@@ -87,9 +88,19 @@
                     <tbody >
                     	<c:choose>
                     	<c:when test="${empty list}">
+                    	<c:choose>
+                    	<c:when test="${!empty sText }">
+                    	<tr>
+                    		<td colspan="6" >${sText}의 검색결과가 없습니다.</td>
+                    	</tr>
+                    	</c:when>
+                    	<c:otherwise>
                     	<tr>
                     		<td colspan="6">과외를 등록한 선생님이 없습니다.</td>
                     	</tr>
+                    	</c:otherwise>
+                    	</c:choose>
+                    	
                     	</c:when>
                     	<c:otherwise>
                     			<c:forEach var="l" items="${list}">

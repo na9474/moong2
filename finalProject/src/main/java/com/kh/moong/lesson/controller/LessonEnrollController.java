@@ -21,8 +21,8 @@ import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
 import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.Search;
 import com.kh.moong.matching.model.service.MatchingService;
-import com.kh.moong.matching.model.vo.Matching;
 
 @Controller
 public class LessonEnrollController {
@@ -283,12 +283,31 @@ public class LessonEnrollController {
 			
 			
 			@RequestMapping("search.le")
-			public ModelAndView SearchLessonEnroll(String searchCat,String searchText,ModelAndView mv) {
-				System.out.println(searchCat);
-				System.out.println(searchText);
+			public ModelAndView SearchLessonEnroll(@RequestParam(value = "cpage", defaultValue = "1") int currentPage,Search s,ModelAndView mv) {
 				
 				
-				return null;
+				
+				int listCount = ls.selectAllLessonCount();
+				
+				
+				int pageLimit = 10;
+				int boardLimit = 20;
+				
+				PageInfo pi = Pagination.getPageInfo(listCount, currentPage, pageLimit, boardLimit);
+				
+				
+				ArrayList<LessonEnroll> list = ls.selectSearchAllLesson(pi,s);
+				
+				
+				
+				
+				mv.setViewName("lesson/teacherLessonList");
+				mv.addObject("sText",s.getSearchText());
+				mv.addObject("pi",pi);
+				mv.addObject("list",list);
+				
+				
+				return mv;
 			}
 			
 			
