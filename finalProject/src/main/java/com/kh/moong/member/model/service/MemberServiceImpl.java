@@ -63,4 +63,5 @@ public class MemberServiceImpl implements MemberService{
 	public Teacher loginTeacherInfo(int userNo) {
 		return memberDao.loginTeacherInfo(sqlSession,userNo);
 	}
+	
 }

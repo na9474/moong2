@@ -67,4 +67,5 @@ public class MemberDao {
 	public Teacher loginTeacherInfo(SqlSessionTemplate sqlSession, int userNo) {
 		return sqlSession.selectOne("memberMapper.loginTeacherInfo",userNo);
 	}
+	
 }

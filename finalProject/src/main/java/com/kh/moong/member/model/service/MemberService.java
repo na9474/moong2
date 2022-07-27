@@ -10,8 +10,6 @@ public interface MemberService {
 	
 	int insertMember(Member m);
 
-	
-	
 	//int updateMember(Member m);
 		
 	//int deleteMember(String userId);
@@ -28,4 +26,5 @@ public interface MemberService {
 	//로그인한 학생/선생정보 가져오기
 	Student loginStudentInfo(int userNo);
 	Teacher loginTeacherInfo(int userNo);
+	
 }

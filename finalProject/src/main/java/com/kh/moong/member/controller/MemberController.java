@@ -21,10 +21,8 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
-	
 	@Autowired
 	private MailSendService mailService;
 	
@@ -154,4 +152,7 @@ public class MemberController {
 	public String findPwView() {
 		return "member/memberFindPw";
 	}
+	
+
+
 }
