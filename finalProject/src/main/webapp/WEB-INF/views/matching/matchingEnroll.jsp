@@ -318,12 +318,27 @@
                
                 <div id="form-btn">
                 <button type="reset" style="float: left; " class="btn moong-dark" >초기화</button>
-                <button type="submit" style="float: right;" id="ok" class="btn moong-yellow" >매칭시작</button>
+                <c:choose>
+                    <c:when test="${loginUser.student} eq 'Y'">
+                        <button type="submit" style="float: right;" id="ok" class="btn moong-yellow" >매칭시작</button>
+                    </c:when>
+                    <c:otherwise>
+                        <button type="button" style="float: right;" id="studentCertification" class="btn moong-yellow" >매칭시작</button>
+                    </c:otherwise>
+
+                </c:choose>
+                
                 </div>
             </form>
         </div>
     </div>
     	<script>
+
+           $("#studentCertification").click(function(){
+                alert("학생회원만 사용할 수 있습니다.")
+           })
+
+
     		function checkForm(){
     			if($('#area').val() == ""){
     				alert("지역을 선택해주세요")

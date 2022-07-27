@@ -1,24 +1,33 @@
 package com.kh.moong.matching.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.kh.moong.matching.model.service.MatchingService;
+import com.kh.moong.matching.model.service.MatchingServiceNam;
 import com.kh.moong.matching.model.vo.Matching;
+import com.kh.moong.matching.model.vo.Room;
 
 @Controller
 public class MatchingController {
 
 	@Autowired
 	private MatchingService ms;
+	
+	@Autowired
+	private MatchingServiceNam msn;
 
 	//매칭페이지이동
 	@RequestMapping("enroll.ma")
@@ -185,5 +194,121 @@ public class MatchingController {
 	
 	
 	
+	//선생님한테URL보내기 체크
+	@ResponseBody
+	@RequestMapping(value ="cheifCheck.ma",produces="application/json; charset=UTF-8")
+	public String cheifCheck(int userNo) {
 	
+		
+		int result = ms.cheifCheck(userNo);
+		
+		Matching m = null;
+		if(result>0) {//선생님한테 url보내기 가능 조건 가져가서 비교 
+			 m= ms.cheifCheck2(userNo);
+			
+		}else {
+			
+		}
+		
+	
+		return new Gson().toJson(m);
+	}
+	
+	
+	// 학생 - 매칭된 그룹 채팅방 url 보여주기
+	@RequestMapping("roomList.rm")
+	public String roomList(Room r, Model model) {
+		ArrayList<Room> rmList = msn.roomList(r);
+		model.addAttribute("rmList", rmList);
+		
+		return "room/roomList";
+	}
+	
+	
+	//선생 - 채팅방 url 보내기  
+	@RequestMapping("sendurl.ma")
+	public ModelAndView sendUrl(int groupNo, ModelAndView mv) {
+		
+		//해당그룹의 sendURL 'N'
+		int result = ms.sendUrl(groupNo);
+		
+		
+		if(result>0) {//update 성공
+			//선생님에게 알림 -> 링크 보여주기 
+			 //해당유저가 가지고 있는 url 가져오기 
+				Room r = ms.selectUrl(groupNo);
+				System.out.println(r.getRoomUrl());
+		}else {//update 실패
+			
+		}
+		
+		
+		 
+		
+		return null;
+	}
+	
+	// 관리자 - 매칭그룹 채팅방 url 목록 불러오기
+	@RequestMapping("adRoomList.rm")
+	public String adRoomList(Matching ma, Model model) {
+		ArrayList<Matching> adRmList = msn.adRoomList(ma);
+		ArrayList<Room> list = msn.aRoomList();
+		model.addAttribute("adRmList", adRmList);
+		model.addAttribute("list", list);
+		
+		return "room/roomInsertUrl";
+	}
+	
+	// 관리자 - 매칭그룹 채팅방 url 입력하기
+	@RequestMapping(value="insertUrl.rm", method=RequestMethod.POST)
+	public String insertUrl(Room r, int groupNo, Model model, HttpSession session) {
+		r.setRoomNo(groupNo);
+
+		int rs = msn.insertUrl(r);
+		
+		if(rs > 0) {
+			int us = msn.updateUrlS(groupNo);
+			if(us > 0) {
+				session.setAttribute("alertMsg", "채팅방 링크가 등록되었습니다.");
+				return "redirect:adRoomList.rm";
+			} else {
+				session.setAttribute("alertMsg", "채팅방 url 상태가 변경되지 않았습니다.");
+				return "redirect:adRoomList.rm";
+			}
+		} else {
+			session.setAttribute("alertMsg", "채팅방 링크 등록에 실패하였습니다.");
+			return "redirect:adRoomList.rm";
+		}
+	}
+	
+//	// 관리자 - 매칭그룹 채팅방 url 삭제하기(체크박스)
+//	@RequestMapping(value="deleteUrl.rm", method=RequestMethod.POST)
+//	@ResponseBody
+//	public int deleteUrl(Room r, HttpSession session, 
+//			      @RequestParam(value="out[]") List<String> chArr) {
+//		int rs = 0;
+//		int roomNo = 0;
+//		
+//		for(String i : chArr) {
+//			roomNo = Integer.parseInt(i);
+//			r.setRoomNo(roomNo);
+//			msn.deleteUrl(r);
+//		}
+//		rs = 1;
+//		return rs;
+//	}
+//	
+//	// 관리자 - 매칭그룹 채팅방 url 수정하기
+//	@RequestMapping(value="modifyUrl.rm", method=RequestMethod.POST)
+//	public String modifyUrl(Room r, Model model, HttpSession session) {
+//		int rs = msn.modifyUrl(r);
+//		
+//		if(rs > 0) {
+//			session.setAttribute("alertMsg", "채팅방 링크가 수정되었습니다.");
+//			return "redirect:adRoomList.rm";
+//		} else {
+//			session.setAttribute("alertMsg", "채팅방 링크 수정에 실패하였습니다.");
+//			return "redirect:adRoomList.rm";
+//		}
+//	}
 }

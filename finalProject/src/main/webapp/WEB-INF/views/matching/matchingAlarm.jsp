@@ -118,7 +118,7 @@
 			                    	<td class="fee">${m.fee}</td>
 			                    	<td>${m.enrollDate}</td>
 			                    		<c:choose>
-			                    			<c:when test = "${m.status eq 'C'}">
+			                    			<c:when test = "${m.status eq 'C' && m.url eq 'Y'}">
 			                    				<td><button onclick="" class="btn moong-yellow">매칭완료</button></td>
 			                    			</c:when>
 			                    			<c:otherwise>
@@ -176,7 +176,7 @@
 				console.log("통신실패");
 			}
 		})
-	}
+	};
     </script>
 </body>
 </html>

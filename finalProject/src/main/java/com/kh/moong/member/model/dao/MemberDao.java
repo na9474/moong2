@@ -1,5 +1,8 @@
 package com.kh.moong.member.model.dao;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -34,7 +37,25 @@ public class MemberDao {
 //		return sqlSession.selectOne("memberMapper.idOk",userId);
 //	}
 	
+	// 아이디 찾기
+	public Member selectFindId(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.selectOne("memberMapper.selectFindId", m);
+	}
 	
+	// 비밀번호 찾기(일치하는 데이터 있는지 확인)
+	public int findPwdCheck(SqlSessionTemplate sqlSession, Member m) {
+		System.out.println(m);
+		return sqlSession.selectOne("memberMapper.findPwdCheck", m);
+	}
+	
+	// 비밀번호 찾기(임시비밀번호로 변경)
+	public int findPwd(SqlSessionTemplate sqlSession, String userId, String email, String userPwd) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("userId", userId);
+		map.put("email", email);
+		map.put("userPwd", userPwd);
+		return sqlSession.update("memberMapper.findPwd", map);
+	}
 	
 	
 	
@@ -46,4 +67,5 @@ public class MemberDao {
 	public Teacher loginTeacherInfo(SqlSessionTemplate sqlSession, int userNo) {
 		return sqlSession.selectOne("memberMapper.loginTeacherInfo",userNo);
 	}
+	
 }

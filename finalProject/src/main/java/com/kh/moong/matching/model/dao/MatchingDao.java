@@ -6,6 +6,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.moong.matching.model.vo.Matching;
+import com.kh.moong.matching.model.vo.Room;
 
 @Repository
 public class MatchingDao {
@@ -91,6 +92,26 @@ public int deleteMatching(SqlSessionTemplate sqlSession, int maNo) {
 		
 		return sqlSession.delete("MatchingMapper.deleteMatching",maNo);
 	}
+
+public int cheifCheck(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.cheifCheck",userNo);
+}
+
+public Matching cheifCheck2(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.cheifCheck2",userNo);
+}
+
+public int sendUrl(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.sendUrl",groupNo);
+}
+
+public Room selectUrl(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.selectOne("RoomMapper.selectUrl",groupNo);
+}
 
 
 }

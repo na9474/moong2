@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.moong.matching.model.dao.MatchingDao;
 import com.kh.moong.matching.model.vo.Matching;
+import com.kh.moong.matching.model.vo.Room;
 
 @Service
 public class MatchingServiceImpl implements MatchingService{
@@ -112,6 +113,34 @@ public class MatchingServiceImpl implements MatchingService{
 	public int deleteMatching(int maNo) {
 		
 		return matchingDao.deleteMatching(sqlSession,maNo);
+	}
+
+
+	@Override
+	public int cheifCheck(int userNo) {
+		
+		return matchingDao.cheifCheck(sqlSession,userNo);
+	}
+
+
+	@Override
+	public Matching cheifCheck2(int userNo) {
+		
+		return matchingDao.cheifCheck2(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int sendUrl(int groupNo) {
+		
+		return matchingDao.sendUrl(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public Room selectUrl(int groupNo) {
+		
+		return matchingDao.selectUrl(sqlSession,groupNo);
 	}
 
 

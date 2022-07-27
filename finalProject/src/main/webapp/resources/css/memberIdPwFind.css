@@ -23,7 +23,17 @@
     to { opacity:1; }
 }
 
-h2 { /*제목*/
+.idpw_wrap { /*전체 div*/
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.find-align {
+    text-align: center;
+}
+
+.title>h2 { /*제목*/
 	height: 50px;
 	text-align: center; 
 	background: linear-gradient(to right, black,rgb(252, 186, 99));
@@ -31,15 +41,8 @@ h2 { /*제목*/
     -webkit-background-clip: text;
 }
 
-
-
-.find_wrap { /*전체 div*/
-    width: 1200px;
-    margin: 0 auto;
-    text-align: center;
-}
-.find_wrap > h4 { /*아이디, 비밀번호*/
-    text-align: left;
+input[type=radio] { /*체크박스*/
+   	accent-color: black;
 }
 
 *::placeholder { /*placeholder*/
@@ -47,7 +50,7 @@ h2 { /*제목*/
     color: rgba(0, 0, 0, 0.329);
 }
 
-.box { /*아이디 입력창*/
+.box { /*아이디/비번 입력창*/
 	width: 400px;
     height: 60px;
     border: 2px solid rgb(49, 48, 47);
@@ -59,18 +62,7 @@ h2 { /*제목*/
 	transition: 0.3s;
 }
 
-#find { /*아디/비번 찾기*/
-    margin-top: 20px;
-    margin-left: 283px;
-}
-
-#findIP { 
-	text-decoration: none;
-    color: #767676;
-    font-size: 13px;
-}
-
-.login_btn { /*로그인 버튼*/
+.findBtn { /*확인 버튼*/
     background-color: rgb(251, 176, 76);
     color: white;
     border: 2px solid rgb(251, 176, 76);
@@ -80,11 +72,38 @@ h2 { /*제목*/
     font-size: 20px;
     margin-top: 20px;
 }
-.login_btn:hover {
+.findBtn:hover {
     color: rgb(248, 238, 225);
 	transition: 0.3s;
 }
-.login_btn:not(:hover) {
+.findBtn:not(:hover) {
 	color: white;
 	transition: 0.3s;
 }
+
+.modal { /*모달*/
+	text-align: center;
+}
+@media screen and (min-width: 400px) {
+	.modal:before {
+	        display: inline-block;
+	        vertical-align: middle;
+	        content: " ";
+	        height: 70%;
+	}
+}
+.modal-dialog {
+    display: inline-block;
+    text-align: center;
+    vertical-align: middle;
+}
+.modal-footer>button {
+	background-color: rgb(251, 176, 76);
+       color: white;
+       border: 2px solid rgb(251, 176, 76);
+       border-radius: 3px;
+       width: 110px;
+       height: 30px;
+       font-size: 13px;
+       letter-spacing: 2px;
+} 

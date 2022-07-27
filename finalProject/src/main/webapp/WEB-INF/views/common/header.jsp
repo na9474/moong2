@@ -105,6 +105,10 @@ header nav ul li{
     	
         transition: 0.7s;
     }
+    #chatRoom:hover{
+		cursor: pointer;
+    }
+    
 
 </style>
 </head>
@@ -216,9 +220,18 @@ header nav ul li{
 		                            <a class="nav-link" href="alarm.ma?uNo=${loginUser.userNo}"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkMatching">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림   </a>
 		                       </li>
 		                       </c:if>
-		                        <li class="nav-item">            
-		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
-		                       </li>
+		                        <c:choose>
+			                       <c:when test="${loginUser.userId eq 'admin'}">
+				                       <li class="nav-item">
+				                            <a class="nav-link" href="adRoomList.rm"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
+				                       </li>
+			                       </c:when>
+			                       <c:otherwise>
+				                       <li class="nav-item">
+				                            <a class="nav-link" id="chatRoom"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
+				                       </li>
+			                       </c:otherwise>
+		                       </c:choose>
 		                       <c:choose>
 		                       <c:when test="${loginUser.teacher eq 'Y' }">            
 		                   		<li class="nav-item">
@@ -320,6 +333,12 @@ header nav ul li{
 			})
 	  }
    		
+		// 접속한 유저가 채팅방 클릭했을 때
+	  	$(function(){
+          $("#chatRoom").click(function(){
+              location.href="roomList.rm?userNo="+${loginUser.userNo};  
+          });
+		});
     </script>
     </c:if>
 </body>

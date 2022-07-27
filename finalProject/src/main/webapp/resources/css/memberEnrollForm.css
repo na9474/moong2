@@ -52,21 +52,6 @@
        margin: auto;
    }
 
-   /* select { select css
-       font-size: 13px;
-       width: 100px; 
-       height: 40px;
-       padding: .8em .5em; 
-       border: 1px solid #999;
-       font-family: inherit;  
-       background: url('../images/arrow.jpg') no-repeat 95% 50%; 
-       border-radius: 0px; 
-       -webkit-appearance: none; 
-       -moz-appearance: none;
-       appearance: none;
-       text-align: left;
-   } */
-
    input[type=text], input[type=password], input[type=date], input[type=email] { /*input*/
        border: 0;
    }
@@ -131,9 +116,17 @@
    .join_wrap { /*전체 div*/
    }
    
-   #chkArea,#chkArea2,#chkArea3 {
+   #chkArea,#chkArea2,#chkArea3,#chkArea4,#email-check {
        display: none;
    }
-   #check,#check2,#check3 {
+   #check,#check2,#check3,#check4,#timer {
        font-size: 12px;
+   }
+   #check4 {
+       padding-top: 10px;
+   }
+   
+   #timer {
+       margin-left: 5px;
+       color: red;
    }

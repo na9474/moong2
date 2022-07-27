@@ -7,11 +7,9 @@
 <head>
 <meta charset="UTF-8">
 
-
-
 <link rel="stylesheet" href="${path}/resources/css/login.css">
 
-<title>로그인</title>
+<title>로그인 | 뭉과외</title>
 
 </head>
 <body>
@@ -30,7 +28,7 @@
 	            <input type="password" class="box" name="userPwd" placeholder="비밀번호를 입력하세요" required> 
 	        </div>
 	        <div id="find">
-		        <a href="#" id="findIP">아이디/비밀번호 찾기</a>
+		        <a href="findIdPw.me" id="findIP">아이디/비밀번호 찾기</a>
 	        </div>
 	        <div style="text-align: center;">
 	            <button type="submit" class="login_btn">로그인</button>

@@ -3,6 +3,7 @@ package com.kh.moong.matching.model.service;
 import java.util.ArrayList;
 
 import com.kh.moong.matching.model.vo.Matching;
+import com.kh.moong.matching.model.vo.Room;
 
 public interface MatchingService {
 
@@ -35,6 +36,14 @@ public interface MatchingService {
 	
 
 	int deleteMatching(int maNo);
+
+	int cheifCheck(int userNo);
+
+	Matching cheifCheck2(int userNo);
+
+	int sendUrl(int groupNo);
+
+	Room selectUrl(int groupNo);
 
 	
 
