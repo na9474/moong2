@@ -105,6 +105,10 @@ header nav ul li{
     	
         transition: 0.7s;
     }
+    #chatRoom:hover{
+		cursor: pointer;
+    }
+    
 
 </style>
 </head>
@@ -133,9 +137,26 @@ header nav ul li{
                   <li class="nav-item">
                     <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
+                  
                   <li class="nav-item">
-                    <a class="nav-link" href="tlist.le?cpage=1">선생님 리스트</a>
+                    <a class="nav-link" id="tlist" href="tlist.le?cpage=1">선생님 리스트</a>
                   </li>
+                  
+                  <script>
+               /*    $(function(){
+                      $("#tlist").click(function(){
+                         	if("${loginUser.student}" == 'Y'){
+                         		location.href="tlist.le?cpage=1&&userNo=${loginUser.userNo}"
+                         	}else{
+                         		location.href="tlist.le?cpage=1&&"
+                         	}
+                              
+                      });
+                  }); */
+                  </script>
+                  
+                  
+                  
                   <c:choose>
                 	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">
                 			<li class="nav-item">
@@ -199,9 +220,32 @@ header nav ul li{
 		                            <a class="nav-link" href="alarm.ma?uNo=${loginUser.userNo}"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkMatching">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림   </a>
 		                       </li>
 		                       </c:if>
-		                        <li class="nav-item">            
-		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
-		                       </li>
+		                        <c:choose>
+			                       <c:when test="${loginUser.userId eq 'admin'}">
+				                       <li class="nav-item">
+				                            <a class="nav-link" href="adRoomList.rm"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
+				                       </li>
+			                       </c:when>
+			                       <c:when test="${loginUser.student eq 'Y'}">
+				                       <li class="nav-item">
+				                            <a class="nav-link" id="chatRoom"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
+				                       </li>
+			                       </c:when>
+			                       <c:otherwise>
+			                       <form id="teacherAlarmList" method="post" action="teacherAlarmList.ma">
+			                       <input type="hidden" name="userNo" value=${loginUser.userNo }>
+			                       </form>
+			                       <li class="nav-item">
+				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-bell"></i> 알림</a>
+				                       </li>
+				                       <script>
+				                       		function teacherAlarmList(){
+				                       			$('#teacherAlarmList').submit();
+				                       		}
+				                       		
+				                       </script>
+			                       </c:otherwise>
+		                       </c:choose>
 		                       <c:choose>
 		                       <c:when test="${loginUser.teacher eq 'Y' }">            
 		                   		<li class="nav-item">
@@ -252,7 +296,7 @@ header nav ul li{
 	 					
 	 					$('#alarmspan').css('visibility','visible');
 	 					$('#checkMatching').css('visibility','visible');
-	 					clearInterval(repeat);
+	 					clearInterval(repeat1);
 			
 				}else{ //완료된매칭이 X
 					
@@ -274,7 +318,7 @@ header nav ul li{
 						
 						alert("완료된매칭이있습니다.");
 						alertComplete(result);
-						clearInterval(repeat);
+						clearInterval(repeat2);
 				}else{	
 				}	
 				},
@@ -303,6 +347,12 @@ header nav ul li{
 			})
 	  }
    		
+		// 접속한 유저가 채팅방 클릭했을 때
+	  	$(function(){
+          $("#chatRoom").click(function(){
+              location.href="roomList.rm?userNo="+${loginUser.userNo};  
+          });
+		});
     </script>
     </c:if>
 </body>

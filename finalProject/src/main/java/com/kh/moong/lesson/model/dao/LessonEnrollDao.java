@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.Search;
 
 @Repository
 public class LessonEnrollDao {
@@ -62,6 +63,17 @@ public class LessonEnrollDao {
 	public ArrayList selectDistrictsList(SqlSessionTemplate sqlSession) {
 		
 		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectDistrictsList");
+	}
+
+	
+	public ArrayList selectSearchAllLesson(SqlSessionTemplate sqlSession, PageInfo pi, Search s) {
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+	return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectSearchAllLesson",s,rowBounds);
+		
 	}
 
 	
