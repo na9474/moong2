@@ -7,9 +7,9 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.moong.common.model.vo.PageInfo;
-import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
+import com.kh.moong.lesson.model.vo.Search;
 
 @Repository
 public class LessonEnrollDao {
@@ -66,6 +66,19 @@ public class LessonEnrollDao {
 	}
 
 	
+	public ArrayList selectSearchAllLesson(SqlSessionTemplate sqlSession, PageInfo pi, Search s) {
+		int offset = (pi.getCurrentPage()-1)*pi.getBoardLimit();
+		int limit = pi.getBoardLimit();
+		
+		RowBounds rowBounds = new RowBounds(offset,limit);
+		
+	return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectSearchAllLesson",s,rowBounds);
+		
+	}
+
+	
+
+	
 	
 	
 	public int insertReview(SqlSessionTemplate sqlSession, LessonReview lr) {
@@ -75,9 +88,6 @@ public class LessonEnrollDao {
 	public ArrayList<LessonReview> reviewList(SqlSessionTemplate sqlSession, int leNo) {
 		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.reviewList", leNo);
 	}
-
-	
-
 
 	
 

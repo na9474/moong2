@@ -32,6 +32,4 @@
 		SELECT *
 		FROM ROOM
 	</select>
-	
-
 </mapper>
