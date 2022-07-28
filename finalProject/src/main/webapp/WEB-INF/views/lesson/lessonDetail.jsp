@@ -155,7 +155,7 @@
                     <tr>
                         <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
                         <td>이름 : </td>
-                        <td>${l.userNo}</td>
+                        <td>${l.userName}</td>
                     </tr>
                     <tr>
                         <td>나이 : </td>
@@ -303,7 +303,8 @@
 			url : "cheifCheck.ma",
 			data : {userNo : ${loginUser.userNo}},
 			success : function(m){
-				
+				 console.log(m);
+				if(m != null){
 				
 				var subject1 = m.subject.slice(0,-1);
 				var subject2 = "${l.subject}";
@@ -327,7 +328,7 @@
 					$('#sendurl').show();
 					$('#sendurl').val(groupNo);
 					
-					
+				}
 				}
 			},
 			error : function(){
@@ -337,7 +338,7 @@
 	}
     	
     	$('#sendurl').click(function(){
-    		location.href="sendurl.ma?groupNo="+$('#sendurl').val();
+    		location.href="sendurl.ma?groupNo="+$('#sendurl').val()+"&&userNo=${l.userNo}&&leNo=${l.leNo}";
     	})
     
     

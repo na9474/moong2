@@ -27,6 +27,7 @@
 		<typeAlias type="com.kh.moong.myBoard.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.moong.myLesson.model.vo.Lesson" alias="lesson"/>
 		<typeAlias type="com.kh.moong.matching.model.vo.Matching" alias="matching"/>
+		<typeAlias type="com.kh.moong.matching.model.vo.Talarm" alias="talarm"/>
 		<typeAlias type="com.kh.moong.police.model.vo.Police" alias="police"/>
 		<typeAlias type="com.kh.moong.police.model.vo.PoliceCmt" alias="policeCmt"/>
 		<typeAlias type="com.kh.moong.charts.model.vo.Chart" alias="chart"/>

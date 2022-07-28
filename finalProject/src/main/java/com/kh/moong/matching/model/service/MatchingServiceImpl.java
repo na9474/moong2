@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.moong.matching.model.dao.MatchingDao;
 import com.kh.moong.matching.model.vo.Matching;
 import com.kh.moong.matching.model.vo.Room;
+import com.kh.moong.matching.model.vo.Talarm;
 
 @Service
 public class MatchingServiceImpl implements MatchingService{
@@ -141,6 +142,27 @@ public class MatchingServiceImpl implements MatchingService{
 	public Room selectUrl(int groupNo) {
 		
 		return matchingDao.selectUrl(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int checkUrl(int userNo) {
+		
+		return matchingDao.checkUrl(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int insertTAlarm(Talarm t) {
+		
+		return matchingDao.insertTAlarm(sqlSession,t);
+	}
+
+
+	@Override
+	public ArrayList<Talarm> checkGroupNo(int userNo) {
+		
+		return matchingDao.checkGroupNo(sqlSession,userNo);
 	}
 
 

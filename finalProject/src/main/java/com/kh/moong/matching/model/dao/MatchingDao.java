@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.moong.matching.model.vo.Matching;
 import com.kh.moong.matching.model.vo.Room;
+import com.kh.moong.matching.model.vo.Talarm;
 
 @Repository
 public class MatchingDao {
@@ -111,6 +112,29 @@ public int sendUrl(SqlSessionTemplate sqlSession, int groupNo) {
 public Room selectUrl(SqlSessionTemplate sqlSession, int groupNo) {
 	
 	return sqlSession.selectOne("RoomMapper.selectUrl",groupNo);
+}
+
+public int checkUrl(SqlSessionTemplate sqlSession, int userNo) {
+
+	return sqlSession.update("MatchingMapper.checkUrl",userNo);
+}
+
+public int insertTAlarm(SqlSessionTemplate sqlSession, Talarm t) {
+	
+	return sqlSession.insert("MatchingMapper.insertTAlarm",t);
+}
+
+public ArrayList<Talarm> checkGroupNo(SqlSessionTemplate sqlSession, int userNo) {
+	ArrayList<Talarm> t = null;
+		
+	try {
+		 t= (ArrayList)sqlSession.selectList("MatchingMapper.checkGroupNo",userNo);
+		 return t;
+	}catch(NullPointerException e) {
+		return t;
+	}
+	
+	
 }
 
 

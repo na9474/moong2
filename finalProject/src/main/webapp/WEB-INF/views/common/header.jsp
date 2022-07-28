@@ -226,10 +226,24 @@ header nav ul li{
 				                            <a class="nav-link" href="adRoomList.rm"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
 				                       </li>
 			                       </c:when>
-			                       <c:otherwise>
+			                       <c:when test="${loginUser.student eq 'Y'}">
 				                       <li class="nav-item">
 				                            <a class="nav-link" id="chatRoom"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
 				                       </li>
+			                       </c:when>
+			                       <c:otherwise>
+			                       <form id="teacherAlarmList" method="post" action="teacherAlarmList.ma">
+			                       <input type="hidden" name="userNo" value=${loginUser.userNo }>
+			                       </form>
+			                       <li class="nav-item">
+				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-bell"></i> 알림</a>
+				                       </li>
+				                       <script>
+				                       		function teacherAlarmList(){
+				                       			$('#teacherAlarmList').submit();
+				                       		}
+				                       		
+				                       </script>
 			                       </c:otherwise>
 		                       </c:choose>
 		                       <c:choose>

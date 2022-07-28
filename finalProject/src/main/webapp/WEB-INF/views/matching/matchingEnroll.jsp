@@ -319,7 +319,7 @@
                 <div id="form-btn">
                 <button type="reset" style="float: left; " class="btn moong-dark" >초기화</button>
                 <c:choose>
-                    <c:when test="${loginUser.student} eq 'Y'">
+                    <c:when test="${loginUser.student eq 'Y'}">
                         <button type="submit" style="float: right;" id="ok" class="btn moong-yellow" >매칭시작</button>
                     </c:when>
                     <c:otherwise>

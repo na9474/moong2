@@ -66,7 +66,7 @@
             <span style="font-size: 20px; visibility:hidden;" id="alarmspan">완료된 과외매칭이 있습니다.</span>
         </div>
         <div id="alarm-select">
-          <span style=" font-size: 15px;"><i class="fa-solid fa-play"></i> 매칭완료버튼 클릭시 채팅방이 개설됩니다.</span>  
+          <span style=" font-size: 15px;"><i class="fa-solid fa-play"></i> 매칭완료버튼 클릭시 개설된 채팅방을 확인할 수 있습니다.</span>  
                 <table id="alarmTb"class="table table-hover">
                     <thead>
                         <tr>
@@ -117,14 +117,26 @@
 			                    	
 			                    	<td class="fee">${m.fee}</td>
 			                    	<td>${m.enrollDate}</td>
+			                    	<form method="post" action="checkUrl.ma">
 			                    		<c:choose>
 			                    			<c:when test = "${m.status eq 'C' && m.url eq 'Y'}">
-			                    				<td><button onclick="" class="btn moong-yellow">매칭완료</button></td>
+			                    				
+			                    				<c:choose>
+			                    					<c:when test="${m.alert2 eq 'Y' }" >
+			                    						<td><button class="btn moong-yellow">링크확인</button> <input type="hidden" name="userNo" value="${loginUser.userNo}"></td>
+			                    					</c:when>
+			                    					<c:otherwise>
+			                    						<td><button class="btn moong-yellow">매칭완료</button> <input type="hidden" name="userNo" value="${loginUser.userNo}"></td>
+			                    					</c:otherwise>
+			                    				</c:choose>
+			                    				
+				                    				
 			                    			</c:when>
 			                    			<c:otherwise>
 			                    				<td> <span style="color: red;">매칭대기중</span></td>
 			                    			</c:otherwise>
 			                    		</c:choose>
+			                    		</form>
 			                    		<c:choose>
 			                    		<c:when test="${m.status eq 'C'}">
 			                    		<td><button class="btn btn-danger" disabled > x </button> </td>
@@ -143,6 +155,10 @@
         </div>
     </div>
     <script>
+    
+   
+    
+    
     $(function(){
     	checkAlarm();
     })
