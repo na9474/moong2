@@ -51,6 +51,7 @@
 				,STATUS
 			FROM MEMBER
 			WHERE USER_ID = #{userId}
+			AND USER_PWD = #{userPwd}
 			AND STATUS = 'Y'
 	</select>
 	

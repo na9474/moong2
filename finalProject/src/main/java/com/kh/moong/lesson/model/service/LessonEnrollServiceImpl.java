@@ -10,6 +10,7 @@ import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.dao.LessonEnrollDao;
 import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.LessonReview;
 
 @Service
 public class LessonEnrollServiceImpl implements LessonEnrollService{
@@ -73,6 +74,19 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 	public ArrayList selectDistrictsList() {
 		
 		return lessonEnrollDao.selectDistrictsList(sqlSession);
+	}
+
+	
+	
+	
+	@Override
+	public int insertReview(LessonReview lr) {
+		return lessonEnrollDao.insertReview(sqlSession, lr);
+	}
+
+	@Override
+	public ArrayList<LessonReview> reviewList(int leNo) {
+		return lessonEnrollDao.reviewList(sqlSession, leNo);
 	}
 
 	

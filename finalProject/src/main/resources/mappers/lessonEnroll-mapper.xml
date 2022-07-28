@@ -139,5 +139,51 @@ SET SUBJECT = #{subject},
 	LE_CHANGENAME = #{leChangename}
 WHERE LE_NO =#{leNo}
 </update>
+ 
+ 
+ 
+ <resultMap type="lessonReview" id="lessonReviewResultSet">
+ 	<result column="RENO" property="reNo"/>
+ 	<result column="REF_LENO" property="refLeno"/>
+ 	<result column="RE_UNO" property="reUno"/>
+ 	<result column="RE_UNAME" property="reUname"/>
+ 	<result column="RE_TEXT" property="reText"/>
+ 	<result column="CREATE_DATE" property="createDate"/>
+ 	<result column="STATUS" property="status"/>
+	<result column="STUDENT_NO" property="studentNo"/>
+	<result column="TEACHER_NO" property="teacherNo"/>
+ </resultMap>
+
+<!-- <resultMap type="lesson" id="lessonResultSet"> -->
+<!-- 	<result column="L_NO" property="lNo"/> -->
+<!-- </resultMap> -->
+
+<insert id="insertReview" parameterType="lessonReview">
+	INSERT INTO LESSON_REVIEW(RENO, 
+							  REF_LENO, 
+							  RE_UNO, 
+							  RE_UNAME, 
+							  RE_TEXT, 
+							  CREATE_DATE, 
+							  STATUS
+							  )
+	                   VALUES(SEQ_RENO.NEXTVAL, 
+	                          #{refLeno}, 
+	                          #{reUno}, 
+	                          #{reUname}, 
+	                          #{reText}, 
+	                          SYSDATE, 
+	                          'Y'
+	                          )
+</insert>
+
+<select id="reviewList" resultMap="lessonReviewResultSet">
+	SELECT REF_LENO, RE_UNO, RE_UNAME, RE_TEXT, CREATE_DATE
+	FROM LESSON_REVIEW LR
+	JOIN LESSON ON (RE_UNO = STUDENT_NO)
+	WHERE TEACHER_NO = #{refLeNo}
+	AND LR.STATUS = 'Y'
+	ORDER BY CREATE_DATE DESC
+</select>
 
 </mapper>

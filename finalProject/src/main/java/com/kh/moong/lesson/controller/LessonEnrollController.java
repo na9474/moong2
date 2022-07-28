@@ -13,14 +13,17 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
 import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.LessonReview;
 
 @Controller
 public class LessonEnrollController {
@@ -237,6 +240,33 @@ public class LessonEnrollController {
 				
 				return mv;
 			}
+			
+			
+			
+	
+	// 후기
+	@RequestMapping(value="revinsert.rv", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String insertReview(LessonReview lr) {
+		int result = ls.insertReview(lr);
+		
+		String rv = "";
+		
+		if(result > 0) {
+			rv = "Y";
+		} else {
+			rv = "N";
+		}
+		return new Gson().toJson(rv);
+	}
+	
+	@RequestMapping(value="revlist.rv", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String reviewList(int refLeNo) {
+		ArrayList<LessonReview> rvList = ls.reviewList(refLeNo);
+		System.out.println(rvList);
+		return new Gson().toJson(rvList);
+	}
 }
 
 

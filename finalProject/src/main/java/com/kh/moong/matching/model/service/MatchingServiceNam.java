@@ -15,8 +15,5 @@ public interface MatchingServiceNam {
 	int updateUrlS(int groupNo);
 
 	ArrayList<Room> aRoomList();
-	
-//	int deleteUrl(Room r);
-//
-//	int modifyUrl(Room r);
+
 }

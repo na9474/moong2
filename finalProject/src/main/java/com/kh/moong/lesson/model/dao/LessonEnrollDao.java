@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.LessonReview;
 
 @Repository
 public class LessonEnrollDao {
@@ -62,6 +63,17 @@ public class LessonEnrollDao {
 	public ArrayList selectDistrictsList(SqlSessionTemplate sqlSession) {
 		
 		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.selectDistrictsList");
+	}
+
+	
+	
+	
+	public int insertReview(SqlSessionTemplate sqlSession, LessonReview lr) {
+		return sqlSession.insert("lessonEnrollMapper.insertReview", lr);
+	}
+
+	public ArrayList<LessonReview> reviewList(SqlSessionTemplate sqlSession, int leNo) {
+		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.reviewList", leNo);
 	}
 
 	

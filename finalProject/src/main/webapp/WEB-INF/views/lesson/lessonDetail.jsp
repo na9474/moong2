@@ -252,16 +252,25 @@
             <div id="replytit">
                 후기
             </div>
-            <form action="">
-            <div id="replyinsert">
-                <div id="replyinsert-1">
-                    <textarea name="" id="reply" cols="55" rows="3" style="resize: none;" >선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다.</textarea>
-                </div>
-                <div id="replyinsert-2">
-                    <button type="submit" disabled>작성하기</button>
-                </div>
-            </div>
-        </form>
+           
+	            <div id="replyinsert">
+	                <div id="replyinsert-1">
+	                    <textarea name="" id="reply" cols="55" rows="3" style="resize: none;" placeholder="선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다."></textarea>
+	                </div>
+<%-- 	                <c:choose> --%>
+<%-- 		                <c:when test="${loginUser.userNo eq }"> --%>
+			                <div id="replyinsert-2">
+			                    <button type="button" onclick="addReview();">작성하기</button>
+			                </div>
+<%-- 		                </c:when> --%>
+<%-- 		                <c:otherwise> --%>
+<!-- 		                	<div id="replyinsert-2"> -->
+<!-- 			                    <button type="button" disabled>작성하기</button> -->
+<!-- 			                </div> -->
+<%-- 		                </c:otherwise> --%>
+<%-- 	                </c:choose> --%>
+	            </div>
+        	
             <table  id="replylist">
                 <thead>
                     <tr>
@@ -271,21 +280,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>나학생</td>
-                        <td>선생님최고시다..</td>
-                        <td>2022-06-22</td>
-                    </tr>
-                    <tr>
-                        <td>김학생</td>
-                        <td>이선생님 ㄹㅇ 개별로임</td>
-                        <td>2022-06-22</td>
-                    </tr>
+                    
                 </tbody>
-                
             </table>
         </div>
-        
     </div>
     
 
@@ -310,6 +308,65 @@
         
         
        
+        
+        // 후기
+        $(function(){
+        	reviewList();	
+        });
+        
+        function addReview(){
+        	if($("#reply").val().trim().length != 0){
+        		$.ajax({
+        			url: "revinsert.rv",
+        			data: {
+        				refLeno: ${l.leNo},
+        				reUno: ${loginUser.userNo},
+        				reText: $("#reply").val(),
+        				reUname: "${loginUser.userName}"
+        			},
+        			success: function(e){
+        				console.log(e);
+        				
+        				if(e == 'Y'){
+        					reviewList();
+        					$("#reply").val("");
+        				}
+        			},
+        			error: function(){
+       					console.log("통신 실패");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+        			}
+        		});
+        	} else {
+        		$("#reply").val("");
+        		alert("후기를 입력하세요.");
+        	}
+        }
+        
+        function reviewList(){
+        	$.ajax({
+        		url: "revlist.rv",
+        		data: {
+        			refLeNo: ${l.leNo}
+        		},
+        		success: function(e){
+        			console.log(e);
+        			
+        			var rvStr = "";
+        			
+        			for(var i=0; i<e.length; i++){
+        				rvStr += "<tr>"
+        				       + "<td>"+e[i].reUname+"</td>"
+        				       + "<td>"+e[i].reText+"</td>"
+        				       + "<td>"+e[i].createDate+"</td>"
+        				       + "</tr>"
+        			}
+        			$("#replyList>tbody").html(rvStr);
+        		},
+        		error: function(){
+        			console.log("통신 실패");
+        		}
+        	});
+        }
     </script>
 </body>
 </html>
