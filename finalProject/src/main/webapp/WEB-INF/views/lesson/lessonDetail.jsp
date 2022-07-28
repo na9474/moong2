@@ -155,7 +155,7 @@
                     <tr>
                         <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
                         <td>이름 : </td>
-                        <td>${l.userNo}</td>
+                        <td>${l.userName}</td>
                     </tr>
                     <tr>
                         <td>나이 : </td>
@@ -242,9 +242,11 @@
 
 				<div id="btnArea" style="width:fit-content; margin:auto;"><button class="btn moong-yellow" onclick="location.href='tlist.le?cpage=1'">목록으로</button> 
 				<c:if test="${loginUser.userNo eq l.userNo }">
-				<button class="btn moong-dark" id="updateLe">수정하기</button>
+				<button class="btn moong-dark" id="updateLe" >수정하기</button>
 				</c:if>
-				</div>
+				<button class="btn moong-dark" id="sendurl" style="display:none;" value="">채팅방초대</button>
+				<br>
+				
 				
         </div>
         
@@ -290,6 +292,57 @@
     
 
     <script>
+    
+    if('${loginUser.student}' == 'Y'){
+    	studentCheifCheck();
+    	
+    }
+    
+    function studentCheifCheck(){ 
+		$.ajax({
+			url : "cheifCheck.ma",
+			data : {userNo : ${loginUser.userNo}},
+			success : function(m){
+				 console.log(m);
+				if(m != null){
+				
+				var subject1 = m.subject.slice(0,-1);
+				var subject2 = "${l.subject}";
+				
+				var area1 = m.area;
+				var area2 = "${l.area}";
+				
+				var fee1 = m.fee
+				var fee2 = ${l.fee};
+				
+				
+				var groupNo = m.groupNo;
+				
+				if(subject1 == subject2 
+						<c:if test="${l.area ne '상관없음' }">
+						&& area2.includes(area1)
+						</c:if>
+						&& (fee1-20000<=fee2 && fee2<=fee1+20000) 
+						){
+					
+					$('#sendurl').show();
+					$('#sendurl').val(groupNo);
+					
+				}
+				}
+			},
+			error : function(){
+				console.log("통신실패");
+			}
+		})
+	}
+    	
+    	$('#sendurl').click(function(){
+    		location.href="sendurl.ma?groupNo="+$('#sendurl').val()+"&&userNo=${l.userNo}&&leNo=${l.leNo}";
+    	})
+    
+    
+    
         $('#reply').click(function(){
             $(this).text("");
         })

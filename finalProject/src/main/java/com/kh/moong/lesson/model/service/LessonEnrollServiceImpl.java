@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.dao.LessonEnrollDao;
-import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.Search;
 
 @Service
 public class LessonEnrollServiceImpl implements LessonEnrollService{
@@ -73,6 +73,12 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 	public ArrayList selectDistrictsList() {
 		
 		return lessonEnrollDao.selectDistrictsList(sqlSession);
+	}
+
+	@Override
+	public ArrayList<LessonEnroll> selectSearchAllLesson(PageInfo pi,Search s) {
+		
+		return lessonEnrollDao.selectSearchAllLesson(sqlSession,pi,s);
 	}
 
 	

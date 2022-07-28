@@ -6,8 +6,8 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.moong.matching.model.vo.Matching;
-
-import oracle.net.aso.s;
+import com.kh.moong.matching.model.vo.Room;
+import com.kh.moong.matching.model.vo.Talarm;
 
 @Repository
 public class MatchingDao {
@@ -75,15 +75,67 @@ public class MatchingDao {
 	}
 
 	public int updateAlarm(SqlSessionTemplate sqlSession, int maNo) {
-			   
+		
 		return sqlSession.update("MatchingMapper.updateAlarm",maNo);
 	}
 
-	public int deleteMatching(SqlSessionTemplate sqlSession, int maNo) {
+	public int tlistCheck(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("MatchingMapper.tlistCheck",userNo);
+	}
+
+	public Matching selectComparison(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("MatchingMapper.selectComparison",userNo);
+	}
+
+public int deleteMatching(SqlSessionTemplate sqlSession, int maNo) {
 		
 		return sqlSession.delete("MatchingMapper.deleteMatching",maNo);
 	}
+
+public int cheifCheck(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.cheifCheck",userNo);
+}
+
+public Matching cheifCheck2(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.cheifCheck2",userNo);
+}
+
+public int sendUrl(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.sendUrl",groupNo);
+}
+
+public Room selectUrl(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.selectOne("RoomMapper.selectUrl",groupNo);
+}
+
+public int checkUrl(SqlSessionTemplate sqlSession, int userNo) {
+
+	return sqlSession.update("MatchingMapper.checkUrl",userNo);
+}
+
+public int insertTAlarm(SqlSessionTemplate sqlSession, Talarm t) {
+	
+	return sqlSession.insert("MatchingMapper.insertTAlarm",t);
+}
+
+public ArrayList<Talarm> checkGroupNo(SqlSessionTemplate sqlSession, int userNo) {
+	ArrayList<Talarm> t = null;
+		
+	try {
+		 t= (ArrayList)sqlSession.selectList("MatchingMapper.checkGroupNo",userNo);
+		 return t;
+	}catch(NullPointerException e) {
+		return t;
+	}
 	
 	
+}
+
 
 }

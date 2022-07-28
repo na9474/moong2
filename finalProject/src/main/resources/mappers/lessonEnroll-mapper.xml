@@ -140,4 +140,16 @@ SET SUBJECT = #{subject},
 WHERE LE_NO =#{leNo}
 </update>
 
+
+
+<select id="selectSearchAllLesson" resultMap="lessonEnrollResultSet">
+SELECT USER_NAME,GENDER,RATING,SUBJECT,T_YEAR,LE_NO
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (M.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'Y'
+AND ${searchCat} LIKE '%'||#{searchText}||'%'
+ORDER BY T.RATING
+</select>
 </mapper>
