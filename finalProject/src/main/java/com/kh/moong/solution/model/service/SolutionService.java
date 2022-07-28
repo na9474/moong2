@@ -2,7 +2,11 @@ package com.kh.moong.solution.model.service;
 
 import java.util.ArrayList;
 
+import org.mybatis.spring.SqlSessionTemplate;
+
 import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.qna.model.vo.QnaFile;
+import com.kh.moong.qna.model.vo.QnaQuestion;
 import com.kh.moong.solution.model.vo.Solution;
 import com.kh.moong.solution.model.vo.SolutionCmt;
 import com.kh.moong.solution.model.vo.SolutionCmtFiles;
@@ -10,6 +14,8 @@ import com.kh.moong.solution.model.vo.SolutionFiles;
 import com.kh.moong.solution.model.vo.SolutionHeart;
 
 public interface SolutionService {
+	
+	public abstract ArrayList<String> selectTags();
 	
 	//게시판 리스트 조회 + 페이징처리
 	//전체 게시글 수 구하기
@@ -29,12 +35,6 @@ public interface SolutionService {
 	
 	//게시글 삭제
 	public abstract int deleteSolution(int solutionNo);
-	
-	//게시글 수정
-	public abstract int updateBoard(Solution s);
-	
-	//게시글 파일첨부
-	int insertSolutionFiles(SolutionFiles sf);
 	
 	//댓글 리스트 조회
 	public abstract ArrayList<SolutionCmt> cmtListAll(int solutionNo);
@@ -65,4 +65,16 @@ public interface SolutionService {
 
 	//댓글 scNo뽑기
 	int getScNo();
+	
+	//첨부파일 이름 db저장
+	int insertSolutionFiles(SolutionFiles sf);
+
+	//첨부파일의 solutionNo 넣어주기
+	int updateSolutionNo(Solution s);
+	
+	//게시글 수정
+	int updateSolution(Solution s);
+	
+	//해시태그 가져오기
+	public abstract ArrayList<String> selectTag();
 }

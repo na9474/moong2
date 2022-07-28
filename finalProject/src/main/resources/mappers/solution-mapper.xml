@@ -17,6 +17,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="USER_ID" property="userId"/>
 	</resultMap>
 	
+	<select id="selectTags" resultType="string">
+		SELECT DISTINCT(TAG) FROM SOLUTION
+	</select>
+	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM SOLUTION
@@ -97,5 +101,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET STATUS='N'
 		WHERE SOLUTION_NO = #{solutionNo}
 	</update>
+	
+	<insert id="insertSolutionFiles" parameterType="solutionFiles">
+		INSERT INTO SOLUTION_FILES(
+						  SF_NO
+						 ,SF_ORIGINNAME
+						 ,SF_SYSNAME
+						 ,SOLUTION_NO
+						 )
+		VALUES(
+				SEQ_SFNO.NEXTVAL
+				,#{sfOriginName}
+				,#{sfSysName}
+				,0
+				)
+	</insert>
+	
+	<update id="updateSolutionNo">
+		UPDATE SOLUTION_FILES
+		SET SOLUTION_NO = #{solutionNo}
+		WHERE SF_SYSNAME = #{sfSysName}
+	</update>
+	
+	<update id="updateSolution">
+		UPDATE SOLUTION
+		SET TITLE = #{title},	
+			SOLUTION_CONTENTS = #{solutionContents},
+			SUBJECT = #{subject},
+			TAG = #{tag}
+		WHERE SOLUTION_NO = #{solutionNo}
+	</update>
+	
+	<select id="selectTag" resultType="string">
+		SELECT TAG 
+		FROM SOLUTION
+		WHERE STATUS = 'Y'
+	</select>
 	
 </mapper>

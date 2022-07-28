@@ -26,7 +26,7 @@ public class ChartController {
 	    
 	    List<String> teaGenderLabel = chartService.teaGenderLabel();
 	    List<Integer> teaGenderCounts = chartService.teaGenderCounts();
-	    
+
 	    List<String> stuGenderLabel = chartService.stuGenderLabel();
 	    List<Integer> stuGenderCounts = chartService.stuGenderCounts();
 	    

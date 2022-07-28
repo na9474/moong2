@@ -14,6 +14,7 @@
 		<typeAlias type="com.kh.moong.solution.model.vo.Solution" alias="solution"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionFiles" alias="solutionFiles"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionCmt" alias="solutionCmt"/>
+		<typeAlias type="com.kh.moong.solution.model.vo.SolutionCmtFiles" alias="solutionCmtFiles"/>
 		<typeAlias type="com.kh.moong.solution.model.vo.SolutionHeart" alias="solutionHeart"/>
 		<typeAlias type="com.kh.moong.lesson.model.vo.LessonEnroll" alias="lessonEnroll"/>
 		<typeAlias type="com.kh.moong.lesson.model.vo.Districts" alias="districts"/>
@@ -38,7 +39,6 @@
 	<mappers>
 		<mapper resource="/mappers/chat-mapper.xml"/>
 		<mapper resource="/mappers/solution-mapper.xml"/>
-		<mapper resource="/mappers/solutionfiles-mapper.xml"/>
 		<mapper resource="/mappers/solutioncmt-mapper.xml"/>
 		<mapper resource="/mappers/solutionheart-mapper.xml"/>
 		<mapper resource="/mappers/lessonEnroll-mapper.xml"/>

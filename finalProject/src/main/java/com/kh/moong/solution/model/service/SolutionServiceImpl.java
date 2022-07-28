@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.qna.model.vo.QnaFile;
+import com.kh.moong.qna.model.vo.QnaQuestion;
 import com.kh.moong.solution.model.dao.SolutionDao;
 import com.kh.moong.solution.model.vo.Solution;
 import com.kh.moong.solution.model.vo.SolutionCmt;
@@ -17,11 +19,18 @@ import com.kh.moong.solution.model.vo.SolutionHeart;
 @Service
 public class SolutionServiceImpl implements SolutionService {
 	
+	
+	
 	@Autowired
 	private SolutionDao solutionDao;
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
+	
+	@Override
+	public ArrayList<String> selectTags(){
+		return solutionDao.selectTags(sqlSession);
+	};
 
 	@Override
 	public int selectListCount() {
@@ -51,16 +60,6 @@ public class SolutionServiceImpl implements SolutionService {
 	@Override
 	public int deleteSolution(int solutionNo) {
 		return solutionDao.deleteSolution(sqlSession, solutionNo);
-	}
-
-	@Override
-	public int updateBoard(Solution b) {
-		return 0;
-	}
-	
-	@Override
-	public int insertSolutionFiles(SolutionFiles sf) {
-		return solutionDao.insertSolutionFiles(sqlSession, sf);
 	}
 	
 	@Override
@@ -112,6 +111,26 @@ public class SolutionServiceImpl implements SolutionService {
 	@Override
 	public int getScNo() {
 		return solutionDao.getScNo(sqlSession);
+	}
+	
+	@Override
+	public int insertSolutionFiles(SolutionFiles sf) {
+		return solutionDao.insertSolutionFiles(sqlSession, sf);
+	}
+	
+	@Override
+	public int updateSolutionNo(Solution s) {
+		return solutionDao.updateSolutionNo(sqlSession,s);
+	}
+	
+	@Override
+	public int updateSolution(Solution s) {
+		return solutionDao.updateSolution(sqlSession,s);
+	}
+	
+	@Override
+	public ArrayList<String> selectTag() {
+		return solutionDao.selectTag(sqlSession);
 	}
 	
 }

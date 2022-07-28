@@ -3,6 +3,7 @@ package com.kh.moong.police.controller;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class PoliceController {
 	
 	//게시글 신고하기
 	@RequestMapping("report.so")
-	public String addPolice(Police p, int solutionNo, HttpServletRequest request) {
+	public String addPolice(Police p, int solutionNo, HttpServletRequest request, HttpSession session) {
 
 		int loginNo = 0;
 		if(request.getSession().getAttribute("loginUser") !=null) {
@@ -47,7 +48,7 @@ public class PoliceController {
 		int result = policeService.addPolice(p);
 		
 		if(result>0) {
-			System.out.println("신고 성공");
+			session.setAttribute("alertMsg", "신고 완료");
 		}else {			
 			System.out.println("신고 실패");
 		}
@@ -93,7 +94,7 @@ public class PoliceController {
 	
 	//댓글 신고하기
 	@RequestMapping("cmtReport.so")
-	public String addPoliceCmt(HttpServletRequest request, int scNo, PoliceCmt pc, int solutionNo) {
+	public String addPoliceCmt(HttpServletRequest request, int scNo, PoliceCmt pc, int solutionNo, HttpSession session) {
 		
 		int loginNo = 0;
 		if(request.getSession().getAttribute("loginUser") !=null) {
@@ -106,7 +107,7 @@ public class PoliceController {
 		int result = policeService.addPoliceCmt(pc);
 		
 		if(result>0) {
-			System.out.println("신고 성공");
+			session.setAttribute("alertMsg", "신고 완료");
 		}else {			
 			System.out.println("신고 실패");
 		}
