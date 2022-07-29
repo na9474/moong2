@@ -137,5 +137,40 @@ public ArrayList<Talarm> checkGroupNo(SqlSessionTemplate sqlSession, int userNo)
 	
 }
 
+public Matching matchingInfo(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.matchingInfo",groupNo);
+}
+
+public Room matchingURL(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.selectOne("RoomMapper.selectUrl",groupNo);
+}
+
+public int updateSendUrl(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.updateSendUrl",groupNo);
+}
+
+public int talarmStatusUpdate(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.talarmStatusUpdate",groupNo);
+}
+
+public int checkSendUrl(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.checkSendUrl",userNo);
+}
+
+public int checkSendUrlUpdate(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.update("MatchingMapper.checkSendUrlUpdate",userNo);
+}
+
+public int checkSendUrl2(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.checkSendUrl2",userNo);
+}
+
 
 }

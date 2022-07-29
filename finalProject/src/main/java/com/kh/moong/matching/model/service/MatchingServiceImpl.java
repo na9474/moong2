@@ -166,6 +166,55 @@ public class MatchingServiceImpl implements MatchingService{
 	}
 
 
+	@Override
+	public Matching matchingInfo(int groupNo) {
+		
+		return matchingDao.matchingInfo(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public Room matchingURL(int groupNo) {
+		
+		return matchingDao.matchingURL(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int updateSendUrl(int groupNo) {
+		
+		return matchingDao.updateSendUrl(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int talarmStatusUpdate(int groupNo) {
+		
+		return matchingDao.talarmStatusUpdate(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int checkSendUrl(int userNo) {
+		
+		return matchingDao.checkSendUrl(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int checkSendUrlUpdate(int userNo) {
+		
+		return matchingDao.checkSendUrlUpdate(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int checkSendUrl2(int userNo) {
+		
+		return matchingDao.checkSendUrl2(sqlSession,userNo);
+	}
+
+
 
 	
 

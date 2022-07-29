@@ -70,33 +70,196 @@
                 <table id="alarmTb"class="table table-hover">
                     <thead>
                         <tr>
-                            <td>과외 그룹정보</td>
-                            <td>채팅방URL</td>
+                       		<td>No</td>
+                            <td >과외 그룹정보</td>
+                            <td >채팅방URL</td>
                             <td>과외 시작</td>
                             <td>매칭 취소</td>
                         </tr>
                     </thead>
                     <tbody>
                     <c:choose>
-                    <c:when test="${ empty t  }">
-                    	<td colspan="4">초대된 채팅방이 없습니다.</td>
+                    <c:when test="${ empty list  }">
+                    <tr>
+                    	<td colspan="5">초대된 채팅방이 없습니다.</td>
+                    	</tr>
                     </c:when>
                     <c:otherwise>
-                    	<c:forEach var="t" items="${t}">
+                    	
+                    	<c:forEach var="t" items="${list}">
                     		<tr>
-                 
-	                			<td><button>정보확인</button></td>
-	                			<td><button>링크확인</button></td>
-	                			<td><button>시작</button></td>
-	                			<td><button>취소</button></td>
+                    			<td>1</td>
+                 				<td style="display:none"class="gNo">${t}</td>
+	                			<td><button data-toggle="modal" data-target="#matchingInfo" class="matchingInfo">정보확인</button></td>
+	                			<td><button data-toggle="modal" data-target="#matchingURL" class="matchingURL">링크확인</button></td>
+	                			<td><button class="lessonStart">시작</button></td>
+	                			<td><button class="matchingCnacel">취소</button></td>
 	                		</tr>
                     	</c:forEach>
                     </c:otherwise>
                     </c:choose>
-	                		
+					</tbody>	                		
                 </table>
         </div>
     </div>
 
+
+	<!-- 그룹정보확인 modal -->
+	<script>
+	
+	$(function (){
+		
+		$(".matchingInfo").click(function(){
+			var groupNo = $(this).parent().parent().children(".gNo").text();
+			
+		 	$.ajax({
+				url:"matchingInfo.ma",
+				data : {groupNo: groupNo},
+				success : function(x){
+					var str =""
+					var subject = x.subject;	
+					
+							str += "<tr>"
+							+"<td>과목 : </td>";
+							
+							if(subject.includes('KO')){
+								str+="<td>국어</td>"	
+							}else if(subject.includes('MATH')){
+								str+="<td>수학</td>"
+							}else{
+								str+="<td>영어</td>"
+							}
+							
+							str+="</tr>"
+							+"<tr>"
+							+"<td>인원 : </td>"
+							+"<td>"+x.people+"명</td>"
+							+"</tr>"
+							+"<tr>"
+							+"<td>지역 : </td>"
+							+"<td>"+x.area+"</td>"
+							+"</tr>"
+							+"<tr>"
+							+"<td>학년 : </td>"
+							+"<td>"+x.sYear+"학년</td>"
+							+"</tr>"
+							+"<tr>"
+							+"<td>요일 : </td>"
+							+"<td>"+x.maDay+"</td>"
+							+"</tr>"
+							$("#matchingInfoTb>tbody").html(str);
+										
+				},
+				error: function(){
+					통신실패
+				}
+			}) 
+			
+		}) 
+	})
+	</script>
+
+
+ <div class="modal fade" id="matchingInfo">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">과외정보</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+               
+                    <div class="modal-body">
+						<table id="matchingInfoTb">
+						<tbody>
+						</tbody>
+								
+						</table>
+                    </div>
+                    <!-- Modal Footer -->
+                	<div class="modal-footer" align="center">
+                        <button  class="btn btn-default" data-dismiss="modal">확인</button>
+                	</div>
+                
+            </div>
+        </div>
+    </div>
+	<!-- url링크띄우는 modal -->
+	<script>
+		$('.matchingURL').click(function(){
+			var groupNo = $(this).parent().parent().children(".gNo").text();
+			
+		 	$.ajax({
+				url:"matchingURL.ma",
+				data : {groupNo: groupNo},
+				success : function(x){
+					var str = x.roomUrl;
+					
+							$("#url").html(str);
+							$("#url").prop('href',str)		
+				},
+				error: function(){
+					통신실패
+				}
+			}) 
+		})
+	
+	</script>
+	
+	
+	<div class="modal fade" id="matchingURL">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">과외정보</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+               
+                    <div class="modal-body">
+						<a id="url" href=""></a>
+                    </div>
+                    <!-- Modal Footer -->
+                	<div class="modal-footer" align="center">
+                        <button  class="btn btn-default" data-dismiss="modal">확인</button>
+                	</div>
+                
+            </div>
+        </div>
+    </div>
+	
+	<!-- 과외시작 -->
+	<script>
+	  
+	    	$('.lessonStart').click(function(){
+	    		
+	    		if (!confirm("해당그룹과 괴외를 시작합니다.")) {
+	    	        
+	    	    } else {
+	    	    	location.href="lesson.ls?groupNo="+$(this).parent().parent().children(".gNo").text()+"&&userNo=${loginUser.userNo}";
+	    	    }
+	    		  
+	    		
+	    	})
+	    
+	</script>
+	
+	
+	<!-- 매칭취소 -->
+	<script>
+	
+	$('.matchingCnacel').click(function(){
+		
+		if (!confirm("정말로 매칭을 취소하시겠습니까?")) {
+	        
+	    } else {
+	    	location.href="matcingCancel.ma?groupNo="+$(this).parent().parent().children(".gNo").text()+"&&userNo=${loginUser.userNo}";
+	    }
+		  
+		
+	})
+	</script>
 </body>
 </html>
