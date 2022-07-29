@@ -236,7 +236,7 @@ header nav ul li{
 			                       <input type="hidden" name="userNo" value=${loginUser.userNo }>
 			                       </form>
 			                       <li class="nav-item">
-				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-bell"></i> 알림</a>
+				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkSendUrl"></i> &nbsp; <i class="fa-solid fa-bell"></i> 알림</a>
 				                       </li>
 				                       <script>
 				                       		function teacherAlarmList(){
@@ -272,8 +272,10 @@ header nav ul li{
                 </c:choose>
         </nav>
     </header>
-    <c:if test="${not empty loginUser && loginUser.userId ne 'admin' && loginUser.student eq 'Y'}">
-    <script>
+	<c:choose>
+	
+	<c:when test="${loginUser.student eq 'Y'}">
+	<script>
     	var repeat1 = null;
     	var repeat2 = null;
     	var delay = 3000;
@@ -354,6 +356,72 @@ header nav ul li{
           });
 		});
     </script>
-    </c:if>
+	</c:when>
+	
+	<c:when test="${loginUser.teacher eq 'Y'}">
+		<script>
+    	var repeat3 = null;
+    	var repeat4 = null;
+    	var delay2 = 3000;
+    	
+    	$(function(){
+			checkSendUrl1()
+			checkSendUrl2()
+			var repeat3 =setInterval(checkSendUrl,delay2);
+			var repeat4 =setInterval(checkSendUr2,delay2);
+		})
+		
+		//선생님한테온 url초대요청이 있는가? alert창
+			function checkSendUrl1(){ 
+			$.ajax({
+				url : "checkSendUrl.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+	 				if(result>0){ //받은 초대요청 O
+
+						alert("새로운 과외요청이 있습니다.");
+	 					clearInterval(repeat3);
+			
+				}else{ //받은 초대요청 X
+					
+				}
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+		}
+
+		//선생님한테온 url초대요청이 있는가? check표시
+		function checkSendUrl2(){
+			$.ajax({
+				url : "checkSendUrl2.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+	 				if(result>0){ //받은 초대요청 O
+						$('#checkSendUrl').css('visibility','visible');
+			clearInterval(repeat4);
+				}else{ //받은 초대요청 X
+					
+				}
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+
+		}
+		
+		
+    
+	  
+    </script>
+	</c:when>
+	</c:choose>
+   
+    
+   
+
+	
 </body>
 </html>
