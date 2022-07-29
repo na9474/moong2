@@ -110,7 +110,6 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	<jsp:include page="../common/myPageNavi.jsp"/>
 	
 	<br><br>
 	 <div id="alarm-outer">
@@ -126,12 +125,17 @@
                         <td>${loginUser.userName }</td>
                     </tr>
                     <tr>
-                        <td>나이 : </td>
-                        <td>${loginUser.birth }</td>
+                        <td>나이 :  </td>
+                        <td>${age }세</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
-                        <td>${loginUser.gender }</td>
+                        <c:if test="${loginUser.gender eq 'M' }">
+                        <td>남</td>
+                        </c:if>
+                        <c:if test="${loginUser.gender eq 'F' }">
+                        <td>여</td>
+                        </c:if>
                     </tr>
                     <tr>
                         <td>이메일 : </td>
@@ -141,6 +145,7 @@
                 </table>
                 <div class="line"></div>
                 <div class="mid"></div>
+   				<c:if test="${loginUser.approval eq 'D' || (loginUser.teacher eq 'N' && loginUser.student eq 'N')}">
                 <table id="teacher-tb2">
                     <tr>
                         <th><a href="stuEnrollForm.me"><i class="fa-solid fa-graduation-cap fa-4x"></i></a></th>
@@ -151,8 +156,8 @@
                         <td>선생님</td>
                     </tr>                    
                 </table>
-
                 <div class="line"></div>
+				</c:if>
 
                 
 

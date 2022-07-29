@@ -185,7 +185,7 @@
 			<button onclick="location.href='teaUpdate.me'" style="margin:auto"class="moong-dark find-btn1">수정하기</button>
 			<button onclick="location.href='teaDelete.me'" style="margin:auto"class="moong-dark find-btn1">탈퇴하기</button>
        		 
-       		<button onclick="location.href='pwUpdate.me'" style="float:right;">비밀번호 변경</button>
+       		<button onclick="location.href='pwUpdateForm.me'" style="float:right;">비밀번호 변경</button>
        	</div>        
 
         </div>

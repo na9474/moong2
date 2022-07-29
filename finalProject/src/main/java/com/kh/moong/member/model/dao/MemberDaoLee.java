@@ -125,6 +125,21 @@ public class MemberDaoLee {
 	public int teaUpate(SqlSessionTemplate sqlSession, Teacher tea) {
 		return sqlSession.update("memberMapperLee.teaUpdate",tea);
 	}
+	
+	//비밀번호 변경
+	public int updatePwd(SqlSessionTemplate sqlSession, Member m) {
+		return sqlSession.update("memberMapperLee.updatePwd", m);
+	}
+
+	//Member에 담긴 회원 정보
+	public Member selectMember(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.selectOne("memberMapperLee.selectMember", userNo);
+	}
+	
+	//member의 modifyDate, approval 수정
+	public int updateMember(SqlSessionTemplate sqlSession, int userNo) {
+		return sqlSession.update("memberMapper.updateMember", userNo);
+	}
 
 	
 	

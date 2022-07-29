@@ -6,15 +6,19 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.kh.moong.member.captcha.CaptchaUtil;
 import com.kh.moong.member.model.service.MemberServiceLee;
 import com.kh.moong.member.model.vo.IdCard;
 import com.kh.moong.member.model.vo.IdPicture;
@@ -30,28 +34,56 @@ public class MemberContollerLee {
 	@Autowired 
 	private MemberServiceLee memberService;
 	
+	@Autowired
+	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	
 	//마이페이지 메인 이동
 	@RequestMapping("myPageMain.me")
-	public String myPageMain(Member m,HttpSession session) {
+	public String myPageMain(Member m,HttpSession session, Model model) {
 		
-//		Member loginUser = (Member)session.getAttribute("loginUser");
+		Member loginUser = (Member)session.getAttribute("loginUser");
 		
-//		session.setAttribute("loginUser", loginUser);
+		java.sql.Date birth = ((Member)session.getAttribute("loginUser")).getBirth();
+		int age = getAge(birth);
+		model.addAttribute("age",age);
+
+		if(loginUser.getApproval().equals("N") && (loginUser.getStudent().equals("Y") || loginUser.getTeacher().equals("Y"))) {
+			
+			session.setAttribute("alertMsg", "회원가입 승인 대기 중입니다.");
+
+			return "member/myPageMain";
+		}
+		if(loginUser.getApproval().equals("D")) {
+			
+			session.setAttribute("alertMsg", "회원가입 거절되었습니다. 정보를 다시 입력해주세요.");
+			
+			return "member/myPageMain";
+		}
 		
+		
+
 		return "member/myPageMain";
 	}
 	
 	//학생 등록 페이지
 	@RequestMapping("stuEnrollForm.me")
-	public String stuEnrollForm() {
+	public String stuEnrollForm(HttpSession session, Model model) {
 
+		java.sql.Date birth = ((Member)session.getAttribute("loginUser")).getBirth();
+		int age = getAge(birth);
+		model.addAttribute("age",age);
+		
 		return "member/stuEnrollForm";
 	}
 	
 	//선생님 등록 페이지
 	@RequestMapping("teaEnrollForm.me")
-	public String teaEnrollForm() {
+	public String teaEnrollForm(HttpSession session, Model model) {
 
+		java.sql.Date birth = ((Member)session.getAttribute("loginUser")).getBirth();
+		int age = getAge(birth);
+		model.addAttribute("age",age);
+		
 		return "member/teaEnrollForm";
 	}
 	
@@ -344,7 +376,8 @@ public class MemberContollerLee {
 	
 	//학생 마이페이지
 	@RequestMapping("stuMyPage.me")
-	public String stuMyPage(HttpSession session, Model model) {
+	public String stuMyPage(HttpSession session, Model model
+							) {
 
 		//학생 마이페이지에 띄워줄 정보 가져오기
 		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
@@ -538,6 +571,9 @@ public class MemberContollerLee {
 		//성적 수정 하기
 		int result = memberService.stuGradeUpdate(stu);
 		
+		//member의 modifyDate, approval 수정하기
+		int result4 = memberService.updateMember(userNo);
+		
 		if(result>0) {
 			model.addAttribute("student",stu);
 		}
@@ -608,6 +644,79 @@ public class MemberContollerLee {
 		
 		
 	}
+	
+	
+	//비밀번호 변경
+	@RequestMapping("pwUpdateForm.me")
+	public String pwUpdateForm() {
+		
+		return "member/pwUpdateForm";
+	}
+	
+	//비밀번호 변경 처리
+	@RequestMapping("pwUpdate.me")
+	public String pwUpdate(Member m, String updatePwd, String ckUpdatePwd,
+							String answer,
+							HttpSession session, HttpServletRequest request,
+							Model model
+							) {
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		m.setUserNo(userNo);
+
+		//캡차 이미지의 숫자
+		String getAnswer = (String) request.getSession().getAttribute("captcha");
+
+		//입력한 비번
+		String ckPwd = m.getUserPwd();
+		
+		//변경 비밀번호 암호화
+		String encPwd = bcryptPasswordEncoder.encode(ckPwd);
+		
+
+		//session의 비번 가져와서 비교
+		String userPwd = ((Member)session.getAttribute("loginUser")).getUserPwd();
+		
+		if(getAnswer.equals(answer)) {
+			
+			if(bcryptPasswordEncoder.matches(ckPwd,userPwd)) {
+				//비밀번호 update
+				m.setUserPwd(encPwd);
+				int result = memberService.updatePwd(m);
+				
+				if(result>0) {
+					
+					session.setAttribute("alertMsg", "비밀번호가 변경되었습니다. 다시 로그인 해주세요.");
+					session.removeAttribute("loginUser");
+					return "redirect:/";
+				}
+			}else {
+				session.setAttribute("alertMsg", "현재 비밀번호가 일치하지 않습니다.");
+				return "member/pwUpdateForm";
+			}
+			
+			
+		}else {
+			session.setAttribute("alertMsg", "잘못된 자동입력 방지문자입니다. 다시 입력해 주세요.");
+		}
+		
+		
+		return "redirect:/";
+		
+	
+	}
+	
+	
+	//비밀번호 변경 캡차
+	@RequestMapping(value = "captchaImg.do")
+    public void cpatchaImg(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        new CaptchaUtil().captchaImg(request, response);
+    }
+    @RequestMapping(value = "captchaAudio.do")
+    public void cpatchaAudio(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        new CaptchaUtil().captchaAudio(request, response);
+    }
+
+	
 	
 	//파일 명 처리 메소드
 	public String saveFile(MultipartFile file,HttpSession session) {

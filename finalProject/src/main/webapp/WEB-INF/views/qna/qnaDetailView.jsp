@@ -70,14 +70,15 @@
 		
 
         <!-- 로그인 한 회원 = 작성 회원 -->
-        <c:if test="${loginUser.userNo eq qq.userNo }">
-	            <div align="center">
-	                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
-	                <a class="btn moong-dark" onclick="postFormSubmit(1)">수정하기</a>
-	                <a class="btn moong-dark" onclick="postFormSubmit(2)">삭제하기</a>
-	            </div>
+        <div align="center">
+                <!-- 수정하기, 삭제하기 버튼은 이 글이 본인이 작성한 글일 경우에만 보여져야 함 -->
+       		<c:if test="${loginUser.userNo eq qq.userNo }">
+                <a class="btn moong-dark" onclick="postFormSubmit(1)">수정하기</a>
+                <a class="btn moong-dark" onclick="postFormSubmit(2)">삭제하기</a>
+			</c:if>
+        	<a class="btn moong-yellow" href="qnaListView.qu">목록으로</a>
+        </div>
 	            <br><br>
-		</c:if>
 
 
         

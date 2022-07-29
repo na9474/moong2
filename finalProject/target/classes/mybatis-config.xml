@@ -51,6 +51,7 @@
 		<mapper resource="/mappers/police-mapper.xml"/>
 		<mapper resource="/mappers/policecmt-mapper.xml"/>
 		<mapper resource="/mappers/chart-mapper.xml"/>
+		<mapper resource="/mappers/admin-mapper.xml"/>
 	</mappers>
 
 </configuration>

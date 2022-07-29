@@ -159,9 +159,9 @@ header nav ul li{
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">관리자 페이지</a>
                         <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">회원승인</a>
-					      <a class="dropdown-item" href="#">회원리스트</a>
+					      <a class="dropdown-item" href="memberList.ad">회원리스트</a>
 					      <a class="dropdown-item" href="list.po">신고리스트</a>
-					      <a class="dropdown-item" href="#">QnA</a>
+					      <a class="dropdown-item" href="qnaListView.qu">QnA</a>
 					      <a class="dropdown-item" href="chart.ch">차트</a>
 					    </div>
                   </li>
@@ -203,6 +203,11 @@ header nav ul li{
 		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
 		                       </li>
 		                       <c:choose>
+		                       <c:when test="${loginUser.approval eq 'N' || loginUser.approval eq 'D'}">
+		                       	<li class="nav-item">
+		                        	<a class="nav-link" href="myPageMain.me">마이페이지</a>
+								</li>
+		                       </c:when>
 		                       <c:when test="${loginUser.teacher eq 'Y' }">            
 		                   		<li class="nav-item">
 		                        	<a class="nav-link" href="teaMyPage.me">마이페이지</a>
