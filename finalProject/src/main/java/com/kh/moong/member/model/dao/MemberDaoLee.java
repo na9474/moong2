@@ -138,7 +138,7 @@ public class MemberDaoLee {
 	
 	//member의 modifyDate, approval 수정
 	public int updateMember(SqlSessionTemplate sqlSession, int userNo) {
-		return sqlSession.update("memberMapper.updateMember", userNo);
+		return sqlSession.update("memberMapperLee.updateMember", userNo);
 	}
 
 	

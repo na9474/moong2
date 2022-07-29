@@ -597,15 +597,15 @@ public class MemberContollerLee {
 				ReportCard reportCard2 = memberService.selectRc(userNo);
 				
 				model.addAttribute("reportCard",reportCard2);
+		
+				session.setAttribute("alertMsg", "회원 정보가 변경되어 로그아웃 됩니다.");
 				
-				return "member/stuGradeUpdate";
+				return "redirect:/";
 			}
 		
 		}
 		return "member/stuGradeUpdate";
 	}
-	
-	
 	
 
 	//마이페이지 공통 수정페이지 이동
@@ -697,6 +697,7 @@ public class MemberContollerLee {
 			
 		}else {
 			session.setAttribute("alertMsg", "잘못된 자동입력 방지문자입니다. 다시 입력해 주세요.");
+			return "member/pwUpdateForm";
 		}
 		
 		

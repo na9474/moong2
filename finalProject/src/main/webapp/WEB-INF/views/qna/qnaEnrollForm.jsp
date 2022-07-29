@@ -44,6 +44,14 @@
             transition: 0.5s;
             
         }
+        
+        /*버튼 */
+		.find-btn{
+			text-align: center;
+		}
+		.find-btn1{
+			display :inline-block;
+		}
     </style>
 </head>
 <body>
@@ -84,10 +92,12 @@
                 <textarea class="summernote" name="questionContent"></textarea>
             </div>
         </div>
-
+		
+		<br>
         <div class="row bottombox">
-            <div class="col-12" id="bottombox">
-                <button type="submit" class="btn moong-dark">작성</button>
+            <div class="col-12 find-btn" id="bottombox">
+                <button type="submit" class="btn moong-dark find-btn1">작성</button>
+                <button type="reset" class="btn moong-yellow find-btn1">취소</button>
             </div>
         </div>
 
@@ -131,12 +141,13 @@
         		  ];
 
         	var setting = {
-                    height : 800,
+                    height : 500,
                     minHeight : null,
                     maxHeight : null,
                     focus : true,
                     lang : 'ko-KR',
                     toolbar : toolbar,
+                    placeholder: '최대 2048자까지 쓸 수 있습니다'	,
                     //콜백 함수
                     callbacks : { 
                     	onImageUpload : function(files, editor, welEditable) {

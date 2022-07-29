@@ -44,6 +44,25 @@
             transition: 0.5s;
             
         }
+	        
+         #subtit{
+            font-size: 25px;
+            font-weight: 700;
+            margin-top: 50px;
+            margin-bottom: 20px;
+	    }
+	    
+	    #qDate{
+	    	margin-left:800px;
+	    
+	    }
+
+		#qName{
+			margin-left:800px;
+			
+		}
+
+
     </style>
 </head>
 <body>
@@ -53,19 +72,27 @@
 	<div class="outer">
         <br><br><br>
         <div class="container-md p-4 bg-white rounded">
-        <h2>QnA 상세보기</h2>
+        
         <br>
 
         <b>${qq.typeName }</b>
+	        <span id="qDate">
+	        ${qq.questionDate }
+	        </span>
+        
         <br>
+        <span id="subtit">
         ${qq.title }
+        </span>
+        	<span id="qName">
+	        ${qq.userName }
+	        </span>
         <hr>
         <div>
-        ${qq.userName }
-        ${qq.questionDate }
-        <hr>
-        ${qq.questionContent }
-        <hr>
+	       	<div style="height:400px;"> 
+	        ${qq.questionContent }
+	        </div>
+	        <hr>
 		</div>
 		
 

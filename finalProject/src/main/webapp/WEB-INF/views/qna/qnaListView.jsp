@@ -105,7 +105,9 @@
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
+	<c:if test="${loginUser.userNo ne 1 }">
 	<jsp:include page="../common/myPageNavi.jsp"/>
+ 	</c:if>
  <div class="outer" align="center">
         <br><br><br><br>
         <div>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.Search;
 
 public interface LessonEnrollService {
 
@@ -25,6 +26,10 @@ public interface LessonEnrollService {
 	int updateLesson(LessonEnroll le);
 
 	ArrayList<Districts> selectDistrictsList();
+
+	
+
+	ArrayList<LessonEnroll> selectSearchAllLesson(PageInfo pi, Search s);
 
 	
 

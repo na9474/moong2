@@ -106,6 +106,13 @@
         width: 600px;
     }
     
+    /*버튼 */
+	.find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
 </style>
 </head>
 <body>
@@ -171,8 +178,10 @@
 				<br>
                 <div class="line"></div>
 
-			<button type="submit">수정하기</button>                
-
+			
+			<div class="find-btn">
+				<button type="submit" style="margin:auto;" class="find-btn1 moong-yellow">수정하기</button>                
+			</div>
         </div>
         </form>
         

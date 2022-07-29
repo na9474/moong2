@@ -3,6 +3,8 @@ package com.kh.moong.matching.model.service;
 import java.util.ArrayList;
 
 import com.kh.moong.matching.model.vo.Matching;
+import com.kh.moong.matching.model.vo.Room;
+import com.kh.moong.matching.model.vo.Talarm;
 
 public interface MatchingService {
 
@@ -28,6 +30,46 @@ public interface MatchingService {
 
 	int updateAlarm(int maNo);
 
+	int tlistCheck(int userNo);
+
+	Matching selectcomparison(int userNo);
+
+	
+
 	int deleteMatching(int maNo);
+
+	int cheifCheck(int userNo);
+
+	Matching cheifCheck2(int userNo);
+
+	int sendUrl(int groupNo);
+
+	Room selectUrl(int groupNo);
+
+	int checkUrl(int userNo);
+
+	int insertTAlarm(Talarm t);
+
+	ArrayList<Talarm> checkGroupNo(int userNo);
+
+	Matching matchingInfo(int groupNo);
+
+	Room matchingURL(int groupNo);
+
+	int updateSendUrl(int groupNo);
+
+	int talarmStatusUpdate(int groupNo);
+
+	int checkSendUrl(int userNo);
+
+	int checkSendUrlUpdate(int userNo);
+
+	int checkSendUrl2(int userNo);
+
+	
+
+	
+
+	
 
 }

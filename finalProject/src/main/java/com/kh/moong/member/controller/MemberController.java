@@ -7,7 +7,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.kh.moong.member.model.service.MailSendService;
 import com.kh.moong.member.model.service.MemberService;
 import com.kh.moong.member.model.vo.Member;
 import com.kh.moong.member.model.vo.Student;
@@ -18,9 +21,10 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService memberService;
-	
 	@Autowired
 	private BCryptPasswordEncoder bcryptPasswordEncoder;
+	@Autowired
+	private MailSendService mailService;
 	
 	@RequestMapping("login.me")
 	public String login() {
@@ -93,6 +97,12 @@ public class MemberController {
 		return "redirect:/";
 	}
 	
+	// 이메일 인증
+		@RequestMapping("mailCheck")
+		@ResponseBody
+		public String mailCheck(String email) {
+			return mailService.joinEmail(email);
+		}
 	
 	// 아이디 중복 체크
 //	@RequestMapping("idCheck.me")
@@ -104,5 +114,45 @@ public class MemberController {
 //		return (count > 0) ? "NOPE" : "YEAH";
 //	}
 	
+	// 아이디 | 비밀번호 찾기 포워딩
+	@RequestMapping("findIdPw.me")
+	public String findIdPw() {
+		return "member/memberIdPwFind";
+	}
+
+	// 아이디 찾기
+	@RequestMapping(value="findId.me", method=RequestMethod.POST)
+	public String selectFindId(Member m, Model model, HttpSession session) {
+		Member id = memberService.selectFindId(m);
+		
+		if(id != null) {
+			model.addAttribute("id", id);
+			return "member/memberIdList";
+		} else {
+			session.setAttribute("alertMsg", "이름 또는 이메일을 다시 확인해주세요.");
+			return "redirect:findIdPw.me";
+		}
+	}
+	
+	// 비밀번호 찾기
+	@RequestMapping(value="findPw.me", method=RequestMethod.POST)
+	public String findPw(Member m, Model model, HttpSession session) {
+		if(memberService.findPwdCheck(m) == 0) {
+			session.setAttribute("alertMsg", "아이디 또는 이메일을 다시 확인해주세요.");
+			return "redirect:findIdPw.me";
+		} else {
+			mailService.findPwd(m.getUserId(), m.getEmail());
+			model.addAttribute("mEmail", m.getEmail());
+			return "member/memberFindPw";
+		}
+	}
+	
+	// 비밀번호 찾기 포워딩
+	@RequestMapping("findPwView.me")
+	public String findPwView() {
+		return "member/memberFindPw";
+	}
+	
+
 
 }

@@ -23,6 +23,12 @@ public class MyLessonServiceImpl implements MyLessonService {
 	public ArrayList<Lesson> lessonList(Member loginUser) {
 		return myLessonDao.lessonList(sqlSession,loginUser);
 	}
+
+	//레슨 종료
+	@Override
+	public int updateLessonEnd(int lNo) {
+		return myLessonDao.updateLessonEnd(sqlSession,lNo);
+	}
 	
 
 

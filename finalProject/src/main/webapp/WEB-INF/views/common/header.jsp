@@ -105,6 +105,10 @@ header nav ul li{
     	
         transition: 0.7s;
     }
+    #chatRoom:hover{
+		cursor: pointer;
+    }
+    
 
 </style>
 </head>
@@ -133,9 +137,26 @@ header nav ul li{
                   <li class="nav-item">
                     <a class="nav-link" href="list.so">문제 풀이</a>
                   </li>
+                  
                   <li class="nav-item">
-                    <a class="nav-link" href="tlist.le?cpage=1">선생님 리스트</a>
+                    <a class="nav-link" id="tlist" href="tlist.le?cpage=1">선생님 리스트</a>
                   </li>
+                  
+                  <script>
+               /*    $(function(){
+                      $("#tlist").click(function(){
+                         	if("${loginUser.student}" == 'Y'){
+                         		location.href="tlist.le?cpage=1&&userNo=${loginUser.userNo}"
+                         	}else{
+                         		location.href="tlist.le?cpage=1&&"
+                         	}
+                              
+                      });
+                  }); */
+                  </script>
+                  
+                  
+                  
                   <c:choose>
                 	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">
                 			<li class="nav-item">
@@ -199,9 +220,32 @@ header nav ul li{
 		                            <a class="nav-link" href="alarm.ma?uNo=${loginUser.userNo}"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkMatching">&nbsp; </i><i class="fa-solid fa-bell"></i> 알림   </a>
 		                       </li>
 		                       </c:if>
-		                        <li class="nav-item">            
-		                            <a class="nav-link" href="msgList.ms"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 메세지</a>
-		                       </li>
+		                        <c:choose>
+			                       <c:when test="${loginUser.userId eq 'admin'}">
+				                       <li class="nav-item">
+				                            <a class="nav-link" href="adRoomList.rm"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
+				                       </li>
+			                       </c:when>
+			                       <c:when test="${loginUser.student eq 'Y'}">
+				                       <li class="nav-item">
+				                            <a class="nav-link" id="chatRoom"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-message fa-flip-horizontal"></i> 채팅방</a>
+				                       </li>
+			                       </c:when>
+			                       <c:otherwise>
+			                       <form id="teacherAlarmList" method="post" action="teacherAlarmList.ma">
+			                       <input type="hidden" name="userNo" value=${loginUser.userNo }>
+			                       </form>
+			                       <li class="nav-item">
+				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkSendUrl"></i> &nbsp; <i class="fa-solid fa-bell"></i> 알림</a>
+				                       </li>
+				                       <script>
+				                       		function teacherAlarmList(){
+				                       			$('#teacherAlarmList').submit();
+				                       		}
+				                       		
+				                       </script>
+			                       </c:otherwise>
+		                       </c:choose>
 		                       <c:choose>
 		                       <c:when test="${loginUser.approval eq 'N' || loginUser.approval eq 'D'}">
 		                       	<li class="nav-item">
@@ -233,8 +277,10 @@ header nav ul li{
                 </c:choose>
         </nav>
     </header>
-    <c:if test="${not empty loginUser && loginUser.userId ne 'admin' && loginUser.student eq 'Y'}">
-    <script>
+	<c:choose>
+	
+	<c:when test="${loginUser.student eq 'Y'}">
+	<script>
     	var repeat1 = null;
     	var repeat2 = null;
     	var delay = 3000;
@@ -257,7 +303,7 @@ header nav ul li{
 	 					
 	 					$('#alarmspan').css('visibility','visible');
 	 					$('#checkMatching').css('visibility','visible');
-	 					clearInterval(repeat);
+	 					clearInterval(repeat1);
 			
 				}else{ //완료된매칭이 X
 					
@@ -279,7 +325,7 @@ header nav ul li{
 						
 						alert("완료된매칭이있습니다.");
 						alertComplete(result);
-						clearInterval(repeat);
+						clearInterval(repeat2);
 				}else{	
 				}	
 				},
@@ -308,7 +354,79 @@ header nav ul li{
 			})
 	  }
    		
+		// 접속한 유저가 채팅방 클릭했을 때
+	  	$(function(){
+          $("#chatRoom").click(function(){
+              location.href="roomList.rm?userNo="+${loginUser.userNo};  
+          });
+		});
     </script>
-    </c:if>
+	</c:when>
+	
+	<c:when test="${loginUser.teacher eq 'Y'}">
+		<script>
+    	var repeat3 = null;
+    	var repeat4 = null;
+    	var delay2 = 3000;
+    	
+    	$(function(){
+			checkSendUrl1()
+			checkSendUrl2()
+			var repeat3 =setInterval(checkSendUrl,delay2);
+			var repeat4 =setInterval(checkSendUr2,delay2);
+		})
+		
+		//선생님한테온 url초대요청이 있는가? alert창
+			function checkSendUrl1(){ 
+			$.ajax({
+				url : "checkSendUrl.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+	 				if(result>0){ //받은 초대요청 O
+
+						alert("새로운 과외요청이 있습니다.");
+	 					clearInterval(repeat3);
+			
+				}else{ //받은 초대요청 X
+					
+				}
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+		}
+
+		//선생님한테온 url초대요청이 있는가? check표시
+		function checkSendUrl2(){
+			$.ajax({
+				url : "checkSendUrl2.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+	 				if(result>0){ //받은 초대요청 O
+						$('#checkSendUrl').css('visibility','visible');
+			clearInterval(repeat4);
+				}else{ //받은 초대요청 X
+					
+				}
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+
+		}
+		
+		
+    
+	  
+    </script>
+	</c:when>
+	</c:choose>
+   
+    
+   
+
+	
 </body>
 </html>

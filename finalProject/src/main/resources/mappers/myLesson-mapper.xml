@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace="myLessonMapper">
 	
 	<resultMap type="lesson" id="lessonResultSet">
-		<result column="L_NO" property="lNo"/>
+		<result column="L_NO" property="leNo"/>
 		<result column="STUDENT_NO" property="studentNo"/>
 		<result column="TEACHER_NO" property="teacherNo"/>
 		<result column="SUBJECT" property="subject"/>
@@ -16,7 +16,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="lessonList" resultMap="lessonResultSet" >
-		SELECT STUDENT_NO, TEACHER_NO, M.USER_NAME, SUBJECT, START_DATE, END_DATE, L.STATUS
+		SELECT STUDENT_NO, TEACHER_NO, M.USER_NAME, SUBJECT, START_DATE, END_DATE, L.STATUS, L_NO
 		FROM LESSON L
 		JOIN MEMBER M ON (M.USER_NO = TEACHER_NO)
 		<choose>
@@ -29,7 +29,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		</choose>
 	</select>
 	
-
-
+	<!-- 레슨 종료 -->
+	<update id="updateLessonEnd">
+	UPDATE LESSON
+	SET END_DATE = SYSDATE,
+		STATUS = 'N'
+	WHERE L_NO = #{lNo}
+	
+	</update>
 
 </mapper>
