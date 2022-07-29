@@ -325,7 +325,7 @@ WHERE GROUP_NO = #{groupNo}
 				#{groupNo},
 				'N',
 				'N',
-				SYSDATE
+				SYSDATE,
 				'Y'
 						)
 	

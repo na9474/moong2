@@ -12,4 +12,5 @@ public class QnaAnswer {
 	private Date answerDate;
 	private String answerStatus;
 	
+	private int qaCount;
 }

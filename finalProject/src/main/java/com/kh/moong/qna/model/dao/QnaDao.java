@@ -72,6 +72,11 @@ public class QnaDao {
 		return sqlSession.update("qnaMapper.updateQfQnaNo", qq);
 	}
 
+	//댓글 개수
+	public ArrayList<QnaAnswer> qaCount(SqlSessionTemplate sqlSession) {
+		return (ArrayList)sqlSession.selectList("qnaMapper.qaCount");
+	}
+
 
 
 }

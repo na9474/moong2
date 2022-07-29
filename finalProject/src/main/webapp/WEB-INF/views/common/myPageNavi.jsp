@@ -67,11 +67,7 @@
             <a class="list-group-item list-group-item-action list-group-item-light p-3" href="stuGrade.me"><i class="fa-solid fa-file-pen"></i>  성적 관리</a>
         </div>
         </c:if>
-		<c:if test="${loginUser.userNo eq 1 }">
-		<div class="list-group list-group-flush">
-			<a class="list-group-item list-group-item-action list-group-item-light p-3" href="qnaListView.qu"><i class="fa-solid fa-circle-question"></i>  QnA</a>
-		</div>
-		</c:if>
+
     </div>
     
     <!-- 내용 작성 -->

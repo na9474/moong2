@@ -16,6 +16,7 @@
 		<result column="BIRTH" property="birth"/>
 		<result column="ENROLL_DATE" property="enrollDate"/>
 		<result column="MODIFIY_DATE" property="modifyDate"/>
+		<result column="APPROVAL" property="approval"/>
 		<result column="STATUS" property="status"/>
 	</resultMap>
 	
@@ -48,6 +49,7 @@
 				,BIRTH
 				,ENROLL_DATE
 				,MODIFY_DATE
+				,APPROVAL
 				,STATUS
 			FROM MEMBER
 			WHERE USER_ID = #{userId}

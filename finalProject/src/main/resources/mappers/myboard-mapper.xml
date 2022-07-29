@@ -102,19 +102,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="selectLikeSolutionListCount"  resultType="_int">
 	SELECT COUNT(*)
 	FROM SOLUTION S
-	JOIN SOLUTION_HEART SH ON (SH.USER_NO = S.USER_NO)
-	WHERE S.USER_NO = #{userNo}
-	AND SH.SOLUTION_NO = S.SOLUTION_NO
+	JOIN SOLUTION_HEART SH ON (SH.USER_NO = #{userNo}) 
+	WHERE SH.SOLUTION_NO = S.SOLUTION_NO
+	
 	</select>
 
 
 	<!-- 좋아요 문제풀이 목록 -->
 	<select id="selectLikeSolutionsList"  resultMap="solutionResultSet">
-	SELECT S.SOLUTION_NO, SUBJECT, TITLE, COUNT, CREATE_DATE
+    	SELECT S.SOLUTION_NO, S.SUBJECT, TITLE, S.COUNT, S.CREATE_DATE
 	FROM SOLUTION S
-	JOIN SOLUTION_HEART SH ON (SH.USER_NO = S.USER_NO)
-	WHERE S.USER_NO = #{userNo}
-	AND SH.SOLUTION_NO = S.SOLUTION_NO
+	JOIN SOLUTION_HEART SH ON (SH.USER_NO = #{userNo}) 
+	WHERE SH.SOLUTION_NO = S.SOLUTION_NO
 	</select>
 
 
