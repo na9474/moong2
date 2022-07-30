@@ -60,10 +60,9 @@
         margin-bottom: 20px;
     }
     #idc{
-        
-        width: 500px;
-        height: 700px;
-        margin: auto;
+        width: 400px;
+    	height: 500px;
+    	margin: auto;
         margin-bottom: 10px;
         /*공란색칠*/
         background-color: orange;
@@ -175,7 +174,7 @@
 
                 <div style="margin:auto; height: 800px;">
                     <div class="mid">재학 증명서</div>
-                    <div id="idc"></div>
+                    <div id="idc"><img style="height:500px; width:400px;" src="${idCard.icSysName }"></div>
                     <div>첨부파일 : ${idCard.icOriginName }</div>
                 </div>
 

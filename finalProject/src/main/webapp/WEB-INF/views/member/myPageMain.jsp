@@ -120,7 +120,6 @@
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
-                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
                         <td>이름 : </td>
                         <td>${loginUser.userName }</td>
                     </tr>
