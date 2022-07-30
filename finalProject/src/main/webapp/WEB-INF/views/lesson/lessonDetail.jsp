@@ -274,12 +274,6 @@
             </div>
            
             <div id="replyinsert">
-<!--                 <div id="replyinsert-1"> -->
-<!--                     <textarea name="" id="reply" cols="55" rows="3" style="resize: none;" placeholder="선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다."></textarea> -->
-<!--                 </div> -->
-<!--                 <div id="replyinsert-2"> -->
-<!--                     <button type="button" onclick="addReview();">작성하기</button> -->
-<!--                 </div> -->
             </div>
         	
             <table  id="replylist">
@@ -292,7 +286,6 @@
                     </tr>
                 </thead>
                 <tbody>
-                    
                 </tbody>
             </table>
         </div>
