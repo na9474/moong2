@@ -17,17 +17,17 @@
 	<div id="ir_wrap">
 		<div class="title"><h2>채팅방 링크</h2></div>
 	    <br><br>
-	    <div>
-	    	<span id="room">
-	    		<select name="sOption">
-	    			<option value="all">전체</option>
-	    			<option value="rno">방 번호</option>
-	    			<option value="url">링크</option>
-	    		</select>
-	    		<input type="text" class="search" name="k" value="">
-	    		<input type="submit" value="검색">
-		    </span>
-	    </div>
+<!-- 	    <div> -->
+<!-- 	    	<span id="room"> -->
+<!-- 	    		<select name="sOption"> -->
+<!-- 	    			<option value="all">전체</option> -->
+<!-- 	    			<option value="rno">방 번호</option> -->
+<!-- 	    			<option value="url">링크</option> -->
+<!-- 	    		</select> -->
+<!-- 	    		<input type="text" class="search" name="k" value=""> -->
+<!-- 	    		<input type="submit" value="검색"> -->
+<!-- 		    </span> -->
+<!-- 	    </div> -->
 	    <br>
 	    <div id="table-scroll">
 		    <table align="center" id="matchingTable">

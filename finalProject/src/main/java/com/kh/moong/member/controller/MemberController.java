@@ -64,7 +64,12 @@ public class MemberController {
 								,Model model) {
 
 		Member loginUser = memberService.loginMember(m);
-
+		
+		if(loginUser.getUserNo() == 1) {// 관리자가 로그인했을 때
+			session.setAttribute("loginUser", loginUser);
+			return "redirect:/";
+		}
+		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
 		
 			if(loginUser.getStudent().equals("Y")) {//로그인한 회원이 학생회원이면 학생정보 보냄
@@ -85,7 +90,6 @@ public class MemberController {
 			session.setAttribute("alertMsg", "로그인에 실패하였습니다.");
 			return "redirect:login.me";
 		}
-		
 	}
 	
 	@RequestMapping("logout.me")
