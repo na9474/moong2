@@ -65,12 +65,8 @@ public class MemberController {
 
 		Member loginUser = memberService.loginMember(m);
 
+		if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
 		
-		
-		if(loginUser == null) {
-			session.setAttribute("alertMsg", "로그인에 실패하였습니다.");
-			return "redirect:login.me";
-		}else {
 			if(loginUser.getStudent().equals("Y")) {//로그인한 회원이 학생회원이면 학생정보 보냄
 				
 				Student student = memberService.loginStudentInfo(loginUser.getUserNo());
@@ -85,6 +81,9 @@ public class MemberController {
 			
 			session.setAttribute("loginUser", loginUser);
 			return "redirect:/";
+		}else {
+			session.setAttribute("alertMsg", "로그인에 실패하였습니다.");
+			return "redirect:login.me";
 		}
 		
 	}
