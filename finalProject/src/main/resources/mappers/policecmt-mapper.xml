@@ -10,7 +10,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="REASON" property="reason"/>
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="SC_NO" property="scNo"/>
-		
 	</resultMap>
 	
 	<!-- 댓글신고 -->
@@ -44,19 +43,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 신고리스트 -->
 	<select id="policeCmtList" resultMap="policeCmtResultSet">
-    select l.*, m.user_id as "reporter", w.user_id as "writer"
-	from 
-    police_cmt l
-    join member m
-    on l.user_no=m.user_no
-    join
-        (select p.pc_no, m.user_id
-        from 
-            police_cmt p
-            join solution_cmt s on p.sc_no=s.sc_no
-            join member m on s.user_no = m.user_no) w
-    on l.pc_no = w.pc_no
-    order by create_date DESC
+	    SELECT L.*, M.USER_ID AS "REPORTER", W.USER_ID AS "WRITER"
+		FROM 
+	    POLICE_CMT L
+	    JOIN MEMBER M
+	    ON L.USER_NO=M.USER_NO
+	    JOIN
+	        (SELECT P.PC_NO, M.USER_ID
+	        FROM 
+	            POLICE_CMT P
+	            JOIN SOLUTION_CMT S ON P.SC_NO=S.SC_NO
+	            JOIN MEMBER M ON S.USER_NO = M.USER_NO) W
+	    ON L.PC_NO = W.PC_NO
+	    ORDER BY CREATE_DATE DESC
+	</select>
+	
+	<delete id="cmtDeletePolice">
+		DELETE
+		FROM POLICE_CMT
+		WHERE SC_NO = #{scNo}
+	</delete>
+	
+	<!-- 해당 user가 해당 댓글을 신고했는지 확인(0/1로 구분) -->
+	<select id="cmtPoliceCheck" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		FROM POLICE_CMT
+		WHERE SC_NO = #{scNo} AND USER_NO = #{userNo}
 	</select>
 	
 </mapper>

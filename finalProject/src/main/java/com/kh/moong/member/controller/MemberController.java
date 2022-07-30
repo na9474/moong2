@@ -71,7 +71,6 @@ public class MemberController {
 				
 				Student student = memberService.loginStudentInfo(loginUser.getUserNo());
 				session.setAttribute("s", student);
-				
 			}
 				
 			if(loginUser.getTeacher().equals("Y")) {//로그인한 회원이 선생회원이면 선생정보 보냄
