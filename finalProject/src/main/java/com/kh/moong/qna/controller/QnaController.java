@@ -57,9 +57,13 @@ public class QnaController {
 
 		ArrayList<QnaQuestion> list = qnaService.selectList(pi,userNo);
 		
+		//댓글 개수 가져오기
+		ArrayList<QnaAnswer> alist = qnaService.qaCount();
+		
 		model.addAttribute("list",list);
 		model.addAttribute("pi",pi);
-
+		model.addAttribute("alist",alist);
+		
 		return "qna/qnaListView";
 	}
 	

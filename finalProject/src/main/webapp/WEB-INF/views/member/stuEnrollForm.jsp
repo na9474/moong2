@@ -117,14 +117,19 @@
 <body>
 
 	<jsp:include page="../common/header.jsp"/>
-	<jsp:include page="../common/myPageNavi.jsp"/>
 	
 	
 	  <div id="alarm-outer">
+	  <br><br>
         <div id="subtit">
             	학생 MyPage 작성
         </div>
 
+		   <p style="border: 1px solid black;  width: 500px; margin:auto; height:30px">
+		       * 관리자의 승인 후 학생 회원가입이 완료됩니다. <br>
+		   </p>
+		<div class="line"></div>
+		   
         <form action="stuEnroll.me" method="post" enctype="multipart/form-data">
         <input type="hidden" name="userNo" value="${loginUser.userNo }">
         <div id="teacher-detail">
@@ -136,7 +141,7 @@
                     </tr>
                     <tr>
                         <td>나이 : </td>
-                        <td>${loginUser.birth }</td>
+                        <td>${age }</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
@@ -154,22 +159,6 @@
                 </table>
                 <div class="line"></div>
 
-                <table id="teacher-tb2">
-                    <tr>
-                        <td>비&nbsp;&nbsp;밀&nbsp;&nbsp;번&nbsp;&nbsp;호&nbsp; : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
-                    </tr>
-                    <tr>
-                        <td>비밀번호 수정 : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
-                    </tr>
-                    <tr>
-                        <td>이&nbsp;&nbsp;&nbsp;&nbsp;메&nbsp;&nbsp;&nbsp;&nbsp;일 : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
-                    </tr>
-                   
-                </table>
-                <div class="line"></div>
                 <div class="mid">성적 입력</div>
                     <table id="teacher-tb2">
                         <thead align="center">
@@ -227,6 +216,7 @@
                                     </select>
                                 </td>
                             </tr>
+                            <tr><td></td></tr>
                             <tr>
                             	<td>학년</td>
                             	<td>
@@ -239,7 +229,7 @@
                             </tr>
                             <tr>
                                 <td  align="center">성적표</td>
-                                <td><input type="file" name = "reportCard"></td>
+                                <td><input type="file" name = "reportCard" required></td>
                             </tr>
                         </tbody>
 
@@ -250,8 +240,8 @@
                 <div class="line"></div>
 
 				<div class="find-btn" >
-               		<button type="submit" class="moong-yellow find-btn1" >제출하기</button>
-               		<button type="reset" class="moong-dark find-btn1">취소</button>
+               		<button type="submit" class="btn moong-yellow find-btn1" >등록하기</button>
+               		<button type="reset" class="btn moong-dark find-btn1">취소</button>
         		</div>
         </form>
         

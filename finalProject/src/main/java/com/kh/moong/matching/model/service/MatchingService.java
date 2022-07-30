@@ -52,6 +52,22 @@ public interface MatchingService {
 
 	ArrayList<Talarm> checkGroupNo(int userNo);
 
+	Matching matchingInfo(int groupNo);
+
+	Room matchingURL(int groupNo);
+
+	int updateSendUrl(int groupNo);
+
+	int talarmStatusUpdate(int groupNo);
+
+	int checkSendUrl(int userNo);
+
+	int checkSendUrlUpdate(int userNo);
+
+	int checkSendUrl2(int userNo);
+
+	
+
 	
 
 	

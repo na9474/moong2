@@ -22,5 +22,6 @@ public class Member {
 	private Date birth;
 	private Date enrollDate;
 	private Date modifyDate;
+	private String approval;
 	private String status;
 }

@@ -95,6 +95,14 @@
         margin: auto;
         width: 600px;
     }
+    
+    /*버튼 */
+	.find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
 
     
 </style>
@@ -110,6 +118,7 @@
         
         <form action="stuUpdateForm.me" method="post" enctype="multipart/form-data">
         <input type="hidden" name="userNo" value="${loginUser.userNo }">
+        <input type="hidden" name="userEmail" value="${loginUser.email }">
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
@@ -127,7 +136,10 @@
                     </tr>
                     <tr>
                         <td>이메일 : </td>
-                        <td><input type="email" name="email" value="${loginUser.email}"></td>
+                        <td id="emailTd"><input type="email" name="email" id="email" value="${loginUser.email}">
+							  
+							 <button type="button" class="email_btn" id="email-check" visibility: hidden;>인증번호 받기</button>
+                        </td>
                     </tr>
                     <tr>
                         <td>증명사진 : </td>
@@ -137,9 +149,11 @@
                 </table>
                 <div class="line"></div>
 
-                
-		<button type="submit" style="float: right; margin:auto">수정하기</button>
-
+		<div class="find-btn">  
+			<button type="submit" id="change" style="margin:auto"  class="find-btn1 moong-yellow">수정하기</button>
+			<button type="reset"style="margin:auto"  class="find-btn1 moong-dark">취소</button>
+		</div>
+        
         </div>
         </form>
     </div>
@@ -150,6 +164,7 @@
 
 	<script type="text/javascript">
 	
+	//증명사진 띄우기
 	let fileTag = document.querySelector("input[name=idPicture]");
 	let divPreview = document.querySelector("#div-preview");
 	
@@ -186,6 +201,23 @@
 	
 		}
 	}
+	
+	//이메일 인증 버튼
+	$("#email").blur(function(){
+		var updateEmail = $("#email").val();
+		var userEmail = $('input[name=userEmail]').val();
+		if(updateEmail==userEmail){
+			console.log("같아");
+		}else{
+			console.log("달라");
+			//이메일 인증 버튼 띄워주기
+			/* #emailTd */
+			
+			
+		}
+	});
+	
+	
 	
 	</script>
 

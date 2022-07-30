@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="BIRTH" property="birth"/>
 		<result column="ENROLL_DATE" property="enrollDate"/>
 		<result column="MODIFIY_DATE" property="modifyDate"/>
+		<result column="APPROVAL" property="approval"/>
 		<result column="STATUS" property="status"/>
 	</resultMap>
 	
@@ -134,7 +135,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="memberStudent">
 	UPDATE MEMBER 
 	SET STUDENT = 'Y',
-		TEACHER = 'N'
+		TEACHER = 'N',
+		APPROVAL = 'N'
 	WHERE USER_NO = #{userNo}
 	</update>
 	
@@ -288,7 +290,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<update id="memberTeacher">
 	UPDATE MEMBER 
 	SET TEACHER = 'Y',
-		STUDENT = 'N'
+		STUDENT = 'N',
+		APPROVAL = 'N'
 	WHERE USER_NO = #{userNo}
 	</update>
 
@@ -329,5 +332,30 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</update>
 
+	<!-- 비밀번호 변경 -->
+	<update id="updatePwd">
+	UPDATE MEMBER 
+	SET USER_PWD = #{userPwd}
+	WHERE USER_NO = #{userNo}
+	</update>
 
+	<!-- Member에 담긴 회원 정보 -->
+	<select id="selectMember" resultMap="memberResultSet">
+	SELECT * 
+	FROM MEMBER
+	WHERE USER_NO = #{userNo}
+	
+	</select>
+	
+	<!-- 	//member의 modifyDate, approval 수정 -->
+	<update id="updateMember">
+	UPDATE MEMBER
+	SET MODIFY_DATE = SYSDATE,
+	APPROVAL = 'N'
+	WHERE USER_NO = #{userNo}
+	
+	</update>
+	
+	
+	
 </mapper>
