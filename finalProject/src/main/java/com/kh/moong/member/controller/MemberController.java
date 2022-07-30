@@ -79,8 +79,11 @@ public class MemberController {
 			}
 			
 			session.setAttribute("loginUser", loginUser);
+			return "redirect:/";
+		}else {
+			session.setAttribute("alertMsg", "로그인에 실패하였습니다.");
+			return "redirect:login.me";
 		}
-		return "redirect:/";
 		
 	}
 	
