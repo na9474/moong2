@@ -375,42 +375,5 @@ public class MatchingController {
 			return "redirect:adRoomList.rm";
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-//	// 관리자 - 매칭그룹 채팅방 url 삭제하기(체크박스)
-//	@RequestMapping(value="deleteUrl.rm", method=RequestMethod.POST)
-//	@ResponseBody
-//	public int deleteUrl(Room r, HttpSession session, 
-//			      @RequestParam(value="out[]") List<String> chArr) {
-//		int rs = 0;
-//		int roomNo = 0;
-//		
-//		for(String i : chArr) {
-//			roomNo = Integer.parseInt(i);
-//			r.setRoomNo(roomNo);
-//			msn.deleteUrl(r);
-//		}
-//		rs = 1;
-//		return rs;
-//	}
-//	
-//	// 관리자 - 매칭그룹 채팅방 url 수정하기
-//	@RequestMapping(value="modifyUrl.rm", method=RequestMethod.POST)
-//	public String modifyUrl(Room r, Model model, HttpSession session) {
-//		int rs = msn.modifyUrl(r);
-//		
-//		if(rs > 0) {
-//			session.setAttribute("alertMsg", "채팅방 링크가 수정되었습니다.");
-//			return "redirect:adRoomList.rm";
-//		} else {
-//			session.setAttribute("alertMsg", "채팅방 링크 수정에 실패하였습니다.");
-//			return "redirect:adRoomList.rm";
-//		}
-//	}
+
 }

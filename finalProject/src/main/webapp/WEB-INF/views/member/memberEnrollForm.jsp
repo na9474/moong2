@@ -95,7 +95,7 @@
 	                <tr>
 	                    <td><span class="must_icon">*</span> <label for="birth">생년월일</label></td>
 	                    <td colspan="2">
-	                    	<input type="date" id="birth" name="birth" required style="width:150px;">
+	                    	<input type="date" id="birth" name="birth" min="1940-01-01" max="2010-12-31" style="width:150px;" required>
 	                    </td>
 	                </tr>
 	            </tbody>
