@@ -79,8 +79,8 @@ public class MemberController {
 			}
 			
 			session.setAttribute("loginUser", loginUser);
-			return "redirect:/";
 		}
+		return "redirect:/";
 		
 	}
 	
