@@ -359,7 +359,22 @@
             	<th class="td-r">첨부파일</th>
                 <td><input type="file" id="upfile"  name="upfile" accept="video/*" ></td>
             </tr>
-          
+          		<script>
+          		$("input[name=upfile]").off().on("change", function(){
+
+          			if (this.files && this.files[0]) {
+
+          				var maxSize = 500 * 1024 * 1024;
+          				var fileSize = this.files[0].size;
+
+          				if(fileSize > maxSize){
+          					alert("첨부파일 사이즈는 500MB 이내로 등록 가능합니다.");
+          					$(this).val('');
+          					return false;
+          				}
+          			}
+          		});
+          		</script>
           
         </table>
         <div id="btfm">

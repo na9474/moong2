@@ -23,6 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <result column="ALERT2" property="alert2" />
 <result column="YEAR" property="sYear"/>
 <result column="URL" property="url"/>
+<result column="URL_ALERT" property="urlAlert"/>
 <result column="SENDURL" property="sendurl"/>
 
 </resultMap>
@@ -95,6 +96,7 @@ INSERT INTO MATCHING(
 					ALERT,
 					ALERT2,
 					URL,
+					URL_ALERT,
 					SENDURL,
 					STATUS
 					)
@@ -120,6 +122,7 @@ INSERT INTO MATCHING(
 			'N',
 			'N',
 			'N',
+			'Y',
 			'N',
 			<choose>
 			<when test='random.equals("N")'>
@@ -151,6 +154,7 @@ INSERT INTO MATCHING(
 					ALERT,
 					ALERT2,
 					URL,
+					URL_ALERT,
 					SENDURL,
 					STATUS
 					)
@@ -176,7 +180,8 @@ INSERT INTO MATCHING(
 			'N',
 			'N',
 			'N',
-			'N'
+			'Y',
+			'N',
 			'Y'
 			)
 
@@ -325,7 +330,7 @@ WHERE GROUP_NO = #{groupNo}
 				#{groupNo},
 				'N',
 				'N',
-				SYSDATE
+				SYSDATE,
 				'Y'
 						)
 	
@@ -412,4 +417,34 @@ AND CHIEF = 'Y'
 	AND ALARM ='N'
 	AND STATUS='Y'
 </select>
+
+<update id="urlAlertUpdate" parameterType="matching">
+	UPDATE MATCHING
+	SET URL_ALERT ='N'
+	WHERE GROUP_NO = #{groupNo}
+</update>
+
+<select id="selectGroupNo" resultType="_int">
+SELECT GROUP_NO
+FROM MATCHING
+WHERE USER_NO = #{userNo}
+
+</select>
+
+<select id="checkSendUrlCount" resultType="_int">
+SELECT COUNT(*)
+FROM MATCHING
+WHERE CHIEF ='Y'
+AND GROUP_NO =#{groupNo}
+AND URL_ALERT = 'N'
+AND URL ='N'
+AND STATUS ='C'
+
+</select>
+
+<update id="urlAlertUpdate2" parameterType="matching">
+UPDATE MATCHING
+SET URL_ALERT = 'Y'
+WHERE GROUP_NO = #{groupNo}
+</update>
 </mapper>

@@ -23,6 +23,8 @@ import com.kh.moong.lesson.model.vo.Districts;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.Search;
 import com.kh.moong.matching.model.service.MatchingService;
+import com.kh.moong.member.model.service.MemberServiceLee;
+import com.kh.moong.member.model.vo.IdPicture;
 
 @Controller
 public class LessonEnrollController {
@@ -33,6 +35,7 @@ public class LessonEnrollController {
 	@Autowired
 	private MatchingService ms;
 		//첨부파일
+	private MemberServiceLee memberService;
 	
 	
 	public String saveFile(MultipartFile upfile,HttpSession session) {
@@ -105,7 +108,7 @@ public class LessonEnrollController {
 					 
 				if(result>0) { //똑같은 과목으로 생성된 과외가 있음(과외등록불가능)
 					session.setAttribute("alertMsg", "이미 등록된 같은 과목이 있습니다 ");
-					mv.setViewName("lesson/lessonEnrollForm");
+					mv.setViewName("redirect:enrollFrom.le");
 				}else { //똑같은 과목으로 생성된 과외가 없음(과외등록가능) 
 					
 						
@@ -200,10 +203,12 @@ public class LessonEnrollController {
 				public ModelAndView selectLesson(int leNo,ModelAndView mv) {
 					
 					LessonEnroll l = ls.selectLesson(leNo);
-					
+					int userNo = Integer.parseInt(l.getUserNo());
+					IdPicture ip =memberService.selectIp(userNo);
 					//조회성공
 					if(l.getLeNo()>0) {
-						mv.addObject("l",l).setViewName("lesson/lessonDetail");
+						
+						mv.addObject("idPicture",ip).addObject("l",l).setViewName("lesson/lessonDetail");
 					//조회실패
 					}else {
 						mv.addObject("errorMsg","조회실패").setViewName("common/errorPage");
@@ -285,6 +290,15 @@ public class LessonEnrollController {
 			@RequestMapping("search.le")
 			public ModelAndView SearchLessonEnroll(@RequestParam(value = "cpage", defaultValue = "1") int currentPage,Search s,ModelAndView mv) {
 				
+				
+				if(s.getSearchText().equals("수학")) {
+					s.setSearchText("MATH");
+				}else if(s.getSearchText().equals("국어")) {
+					s.setSearchText("KO");
+				}else if(s.getSearchText().equals("영어")) {
+					s.setSearchText("ENG");
+				}
+					
 				
 				
 				int listCount = ls.selectAllLessonCount();

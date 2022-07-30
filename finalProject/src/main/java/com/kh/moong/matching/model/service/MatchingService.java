@@ -66,6 +66,16 @@ public interface MatchingService {
 
 	int checkSendUrl2(int userNo);
 
+	int urlAlertUpdate(int groupNo);
+
+	int selectGroupNo(int userNo);
+
+	int checkSendUrlCount(int userNo);
+
+	int urlAlertUpdate2(int groupNo);
+
+
+
 	
 
 	

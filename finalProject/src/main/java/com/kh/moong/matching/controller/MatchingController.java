@@ -269,7 +269,8 @@ public class MatchingController {
 		
 		int result1 = ms.updateSendUrl(groupNo);
 		int result2 = ms.talarmStatusUpdate(groupNo);
-		if(result1*result2>0) {
+		int result3 = ms.urlAlertUpdate(groupNo);
+		if(result1*result2*result3>0) {
 					session.setAttribute("alertMsg", "매칭이 취소되었습니다.");
 					mv.setViewName("redirect:teacherAlarmList.ma?userNo="+userNo);
 		}else {
@@ -299,6 +300,24 @@ public class MatchingController {
 		
 		return new Gson().toJson(m);
 	}
+	//학생 -선생님이 취소한요청확인
+	
+	@ResponseBody
+	@RequestMapping(value ="sendUrlAlert.ma",produces="application/json; charset=UTF-8")
+	public String sendUrlAlert(int userNo) {
+		
+		int groupNo = ms.selectGroupNo(userNo);
+		
+		int result = ms.checkSendUrlCount(userNo);
+		
+		if(result*groupNo>0) {
+			int result2 = ms.urlAlertUpdate2(groupNo);
+			
+		}
+		
+		return new Gson().toJson(result);
+	}
+	
 	
 	//선생 - 채팅방 URL확인 AJAX
 	

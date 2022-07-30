@@ -172,5 +172,27 @@ public int checkSendUrl2(SqlSessionTemplate sqlSession, int userNo) {
 	return sqlSession.selectOne("MatchingMapper.checkSendUrl2",userNo);
 }
 
+public int urlAlertUpdate(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.urlAlertUpdate",groupNo);
+}
+
+public int selectGroupNo(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.selectGroupNo",userNo);
+}
+
+public int checkSendUrlCount(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.checkSendUrlCount",userNo);
+}
+
+public int urlAlertUpdate2(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.urlAlertUpdate2",groupNo);
+}
+
+
+
 
 }

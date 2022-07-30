@@ -215,6 +215,39 @@ public class MatchingServiceImpl implements MatchingService{
 	}
 
 
+	@Override
+	public int urlAlertUpdate(int groupNo) {
+		
+		return matchingDao.urlAlertUpdate(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int selectGroupNo(int userNo) {
+		
+		return matchingDao.selectGroupNo(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int checkSendUrlCount(int userNo) {
+		
+		return matchingDao.checkSendUrlCount(sqlSession,userNo);
+	}
+
+
+
+
+	@Override
+	public int urlAlertUpdate2(int groupNo) {
+		
+		return matchingDao.urlAlertUpdate2(sqlSession,groupNo);
+	}
+
+
+	
+
+
 
 	
 

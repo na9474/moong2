@@ -246,6 +246,8 @@ header nav ul li{
 				                       </script>
 			                       </c:otherwise>
 		                       </c:choose>
+							   <c:if test="${loginUser.userId ne 'admin'}">
+
 		                       <c:choose>
 		                       <c:when test="${loginUser.teacher eq 'Y' }">            
 		                   		<li class="nav-item">
@@ -258,11 +260,12 @@ header nav ul li{
 			                   	</li> 
 		                   		</c:when>
 		                   		<c:otherwise>
-		                       	<li class="nav-item">
-		                        	<a class="nav-link" href="myPageMain.me">마이페이지</a>
-			                   	</li> 
-		                   		</c:otherwise>
+                                <li class="nav-item">
+                                	 <a class="nav-link" href="myPageMain.me">마이페이지</a>
+                               	</li> 
+                               </c:otherwise>
 		                   		</c:choose>
+								</c:if>
 		                   <li class="nav-item">            
 		                        <a class="nav-link" href="logout.me">로그아웃</a>
 		                   </li>          
@@ -278,6 +281,7 @@ header nav ul li{
 	<script>
     	var repeat1 = null;
     	var repeat2 = null;
+    	var repeat5 = null;
     	var delay = 3000;
     	
     	$(function(){
@@ -285,6 +289,7 @@ header nav ul li{
 			alertMatching();
 			repeat1 = setInterval(checkMatching, delay);
 			repeat2 = setInterval(alertMatching, delay);
+			repeat5 = setInterval(, delay)
 		})
 		
 		
@@ -347,6 +352,26 @@ header nav ul li{
 					console.log("통신실패");
 				}
 			})
+	  }
+
+
+	  function sendUrlAlert(){
+			 $.ajax({
+				url : "sendUrlAlert.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+					if(result>0){
+						alert("선생님에게 보낸 매칭요청이 거절되었습니다.")
+						clearInterval(repeat5);
+					}else{
+						
+					}	
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+
 	  }
    		
 		// 접속한 유저가 채팅방 클릭했을 때
