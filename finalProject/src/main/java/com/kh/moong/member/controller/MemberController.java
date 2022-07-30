@@ -64,6 +64,8 @@ public class MemberController {
 								,Model model) {
 
 		Member loginUser = memberService.loginMember(m);
+
+		
 		
 		if(loginUser == null) {
 			session.setAttribute("alertMsg","아이디 또는 비밀번호가 일치하지 않습니다. 다시 확인해 주세요.");

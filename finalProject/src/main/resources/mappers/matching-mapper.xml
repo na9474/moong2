@@ -301,6 +301,7 @@ WHERE GROUP_NO = #{groupNo}
 <select id="adRoomList" resultMap="matchingResultSet">
 	SELECT GROUP_NO
 	FROM MATCHING
+	ORDER BY GROUP_NO DESC
 </select>
 
 <!-- NYJ.. URL 상태 변경 -->
