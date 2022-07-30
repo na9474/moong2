@@ -44,7 +44,7 @@ public class CaptchaUtil{
         response.setHeader("Pragma", "no-cache");
         response.setDateHeader("Max-Age", 0);
     
-        CaptchaServletUtil.writeAudio(response,  ac.getChallenge());;
+        CaptchaServletUtil.writeAudio(response,  ac.getChallenge());
         request.getSession().setAttribute("captcha", ac.getAnswer());
     }
 }
