@@ -140,6 +140,24 @@
         #replylist>tbody>tr>td{
             border-bottom: 1px solid black;
         }
+        
+        .modiBtn { /*수정, 등록 버튼*/
+        	border: 0;
+        	border-radius: 3px;
+        	font-size: 14px;
+        	color: rgb(104, 103, 102);
+        	padding: 3px;
+        	padding-left: 5px;
+        	padding-right: 5px;
+        }
+        .mo {
+        	background-color: rgb(251, 176, 76);
+        	color: rgb(49, 48, 47);
+        }
+        .cd {
+        	font-size: 14px;
+        	color: rgb(104, 103, 102);
+        }
     /*후기 리스트 끝*/
    /*후기부분 끝*/
 </style>
@@ -240,7 +258,7 @@
 
                 <div class="line"></div>
 
-				<div id="btnArea" style="width:fit-content; margin:auto;"><button class="btn moong-yellow" onclick="location.href='tlist.le?cpage=1'">목록으로</button> 
+				<div id="btnArea" style="width:fit-content; margin:auto;"><button class="btn moong-dark" onclick="location.href='tlist.le?cpage=1'">목록으로</button> 
 				<c:if test="${loginUser.userNo eq l.userNo }">
 				<button class="btn moong-dark" id="updateLe" >수정하기</button>
 				</c:if>
@@ -255,30 +273,22 @@
                 후기
             </div>
            
-	            <div id="replyinsert">
-	                <div id="replyinsert-1">
-	                    <textarea name="" id="reply" cols="55" rows="3" style="resize: none;" placeholder="선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다."></textarea>
-	                </div>
-<%-- 	                <c:choose> --%>
-<%-- 		                <c:when test="${loginUser.userNo eq }"> --%>
-			                <div id="replyinsert-2">
-			                    <button type="button" onclick="addReview();">작성하기</button>
-			                </div>
-<%-- 		                </c:when> --%>
-<%-- 		                <c:otherwise> --%>
-<!-- 		                	<div id="replyinsert-2"> -->
-<!-- 			                    <button type="button" disabled>작성하기</button> -->
-<!-- 			                </div> -->
-<%-- 		                </c:otherwise> --%>
-<%-- 	                </c:choose> --%>
-	            </div>
+            <div id="replyinsert">
+<!--                 <div id="replyinsert-1"> -->
+<!--                     <textarea name="" id="reply" cols="55" rows="3" style="resize: none;" placeholder="선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다."></textarea> -->
+<!--                 </div> -->
+<!--                 <div id="replyinsert-2"> -->
+<!--                     <button type="button" onclick="addReview();">작성하기</button> -->
+<!--                 </div> -->
+            </div>
         	
             <table  id="replylist">
                 <thead>
                     <tr>
-                        <td style="width: 8%;">이름</td>
-                        <td>내용</td>
-                        <td style="width: 15%;">작성일</td>
+                        <td width="10%">이름</td>
+                        <td width="60%">내용</td>
+                        <td width="15%">작성일</td>
+                        <td width="6%"></td>
                     </tr>
                 </thead>
                 <tbody>
@@ -287,18 +297,19 @@
             </table>
         </div>
     </div>
-    
-
+	
     <script>
-    
+    <c:if test="${!empty loginUser}">
     if('${loginUser.student}' == 'Y'){
     	studentCheifCheck();
     	
     }
     
     function studentCheifCheck(){ 
+    	
 		$.ajax({
 			url : "cheifCheck.ma",
+			
 			data : {userNo : ${loginUser.userNo}},
 			success : function(m){
 				 console.log(m);
@@ -360,28 +371,59 @@
         })
         
         
+        
+        
        
-        
-        // 후기
+         // 해당 선생님의 과외 학생이면 작성란O, 아니면 X
         $(function(){
-        	reviewList();	
+        	$.ajax({
+        		url: "revCount.rv",
+        		data: {
+        			studentNo: '${loginUser.userNo}',
+        			subject: '${l.subject}',
+        			teacherNo: '${l.userNo}'
+        		},
+        		success: function(e){
+        			if(e > 0){
+        				var rvArea = "";
+        				
+        				rvArea += "<div id='replyinsert-1'>"
+        						+ "<textarea id='reply' cols='55' rows='3' style='resize: none;' placeholder='선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다.'></textarea>"
+        						+ "</div>"
+        						+ "<div id='replyinsert-2'>"
+        						+ "<button type='button' id='wrBtn' class='btn moong-yellow' onclick='addReview();'>작성하기</button>"
+        						+ "</div>";
+        				
+        				$("#replyinsert").append(rvArea);
+        			} 
+        		},
+        		error: function(){
+        			console.log("통신 실패");
+        		}
+        	});
         });
-        
+    	
+      
+    	// 후기 쓰기
         function addReview(){
         	if($("#reply").val().trim().length != 0){
         		$.ajax({
         			url: "revinsert.rv",
         			data: {
-        				refLeno: ${l.leNo},
-        				reUno: ${loginUser.userNo},
+        				refLeno: '${l.leNo}',
+        				reUno: '${loginUser.userNo}',
         				reText: $("#reply").val(),
-        				reUname: "${loginUser.userName}"
+        				reUname: '${loginUser.userName}'
         			},
         			success: function(e){
-        				console.log(e);
-        				
         				if(e == 'Y'){
+        					
         					reviewList();
+        					$("#reply").val("");
+        					$("#wrBtn").attr("disabled", true);
+        				}
+        				if(e == "nn"){
+        					alert("후기는 한 번만 작성할 수 있습니다.");
         					$("#reply").val("");
         				}
         			},
@@ -394,7 +436,15 @@
         		alert("후기를 입력하세요.");
         	}
         }
+        </c:if>
         
+        
+        // 후기
+        $(function(){
+        	reviewList();	
+        });
+        
+        // 후기 목록
         function reviewList(){
         	$.ajax({
         		url: "revlist.rv",
@@ -402,24 +452,92 @@
         			refLeNo: ${l.leNo}
         		},
         		success: function(e){
-        			console.log(e);
+        			<c:choose>
+	        			<c:when test="${!empty loginUser}">
+	        				var num1 = ${loginUser.userNo};
+	        			</c:when>
+	        			<c:otherwise>
+	        				var num1= 0;
+	        			</c:otherwise>
+        			</c:choose>
         			
+        			var num2 =0;
         			var rvStr = "";
         			
         			for(var i=0; i<e.length; i++){
-        				rvStr += "<tr>"
-        				       + "<td>"+e[i].reUname+"</td>"
-        				       + "<td>"+e[i].reText+"</td>"
-        				       + "<td>"+e[i].createDate+"</td>"
-        				       + "</tr>"
+        				num2 = e[i].reUno;
+        				if(num1 == num2){
+	        				rvStr += "<tr class='rv'>"
+	        				       + "<td>"+e[i].reUname+"</td>"
+	        				       + "<td>"+e[i].reText+"</td>"
+	        				       + "<td class='cd'>"+e[i].createDate+"</td>"
+	       				  		   + "<td><button type='button' class='modiBtn' onclick='modiRv();'>수정</button></td>"
+	       				  	       + "</tr>";
+        				} else {
+        					rvStr += "<tr>"
+	        				       + "<td>"+e[i].reUname+"</td>"
+	        				       + "<td>"+e[i].reText+"</td>"
+	        				       + "<td class='cd'>"+e[i].createDate+"</td>"
+	       				  		   + "<td></td>"
+	       				  	       + "</tr>";
+        				}
         			}
-        			$("#replyList>tbody").html(rvStr);
+        			$("#replylist>tbody").html(rvStr);
         		},
         		error: function(){
         			console.log("통신 실패");
         		}
         	});
         }
+        
+       // 후기 수정버튼 누르면 밑에 수정칸 보이게
+       function modiRv(){
+    	   $(function(){
+	           $(".modiBtn").css("display", "none"); 
+	           
+		       var modiRvStr = "";
+		       
+		       modiRvStr += "<tr>"
+		                  + "<td></td>"
+		                  + "<td><textarea id='modiReply' cols='30' rows='3' style='resize: none;'></textarea></td>"
+		                  + "<td colspan='2'><button type='button' class='modiBtn mo' onclick='modiReview();'>등록</button>"
+		                  + "&nbsp;&nbsp;<button type='button' class='modiBtn' onclick='modiReset();'>취소</button></td>"
+		       			  + "</tr>";
+		       			  
+	       	   $(".rv").after(modiRvStr);
+    	   });
+       }
+       
+       // 후기 수정
+       function modiReview(){
+    	   if($("#modiReply").val().trim().length != 0){
+	    	   $.ajax({
+	    		  url: "modifyRev.rv",
+	    		  data: {
+	    			  refLeno: '${l.leNo}',
+	  				  reUno: '${loginUser.userNo}',
+	  				  reText: $("#modiReply").val()
+	    		  },
+	    		  success: function(e){
+	    			  if(e == 'Y'){
+					      reviewList();
+						  $("#modiReply").val("");
+	  			      }
+	    		  },
+	    		  error: function(){
+	    			  console.log("통신 오류");
+	    		  }
+	    	   });
+    	   } else {
+    		   alert("수정할 후기를 작성하세요.");
+    	   }
+  	   }
+       
+       // 후기 수정 취소
+       function modiReset(){
+    	   reviewList();
+       }
     </script>
+    
 </body>
 </html>

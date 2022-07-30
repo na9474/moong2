@@ -139,6 +139,17 @@ SET SUBJECT = #{subject},
 	LE_CHANGENAME = #{leChangename}
 WHERE LE_NO =#{leNo}
 </update>
+
+<select id="selectSearchAllLesson" resultMap="lessonEnrollResultSet">
+SELECT USER_NAME,GENDER,RATING,SUBJECT,T_YEAR,LE_NO
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (M.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'Y'
+AND ${searchCat} LIKE '%'||#{searchText}||'%'
+ORDER BY T.RATING
+</select>
  
  
  
@@ -150,14 +161,19 @@ WHERE LE_NO =#{leNo}
  	<result column="RE_TEXT" property="reText"/>
  	<result column="CREATE_DATE" property="createDate"/>
  	<result column="STATUS" property="status"/>
-<!-- 	<result column="STUDENT_NO" property="studentNo"/> -->
-<!-- 	<result column="TEACHER_NO" property="teacherNo"/> -->
  </resultMap>
 
-<!-- <resultMap type="lesson" id="lessonResultSet"> -->
-<!-- 	<result column="L_NO" property="lNo"/> -->
-<!-- </resultMap> -->
+<resultMap type="lessonn" id="lessonResultSet">
+	<result column="L_NO" property="lNo"/>
+	<result column="STUDENT_NO" property="studentNo"/>
+	<result column="TEACHER_NO" property="teacherNo"/>
+	<result column="SUBJECT" property="subject"/>
+	<result column="START_DATE" property="startDate"/>
+	<result column="END_DATE" property="endDate"/>
+	<result column="STATUS" property="status"/>
+</resultMap>
 
+<!-- 후기 등록 -->
 <insert id="insertReview" parameterType="lessonReview">
 	INSERT INTO LESSON_REVIEW(RENO, 
 							  REF_LENO, 
@@ -177,25 +193,39 @@ WHERE LE_NO =#{leNo}
 	                          )
 </insert>
 
+<!-- 후기 목록 -->
 <select id="reviewList" resultMap="lessonReviewResultSet">
 	SELECT REF_LENO, RE_UNO, RE_UNAME, RE_TEXT, CREATE_DATE
 	FROM LESSON_REVIEW LR
-	JOIN LESSON ON (RE_UNO = STUDENT_NO)
-	WHERE TEACHER_NO = #{refLeNo}
+	WHERE REF_LENO = #{refLeNo}
 	AND LR.STATUS = 'Y'
 	ORDER BY CREATE_DATE DESC
 </select>
 
-
-
-<select id="selectSearchAllLesson" resultMap="lessonEnrollResultSet">
-SELECT USER_NAME,GENDER,RATING,SUBJECT,T_YEAR,LE_NO
-FROM LESSON_ENROLL L
-JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
-JOIN TEACHER T ON (M.USER_NO = T.USER_NO)
-WHERE M.STATUS = 'Y'
-AND L.STATUS = 'Y'
-AND ${searchCat} LIKE '%'||#{searchText}||'%'
-ORDER BY T.RATING
+<!-- 선생님 과목의 과외학생인지? -->
+<select id="countStudent" resultType="_int">
+	SELECT COUNT(*)
+	FROM LESSON
+	WHERE STUDENT_NO = #{studentNo}
+	AND SUBJECT = #{subject}
+	AND TEACHER_NO = #{teacherNo}
+	AND STATUS ='N'
 </select>
+
+<!-- 후기를 이미 한 번 썼는지? -->
+<select id="isWriteReview" resultMap="lessonReviewResultSet">
+	SELECT *
+	FROM LESSON_REVIEW
+	WHERE REF_LENO = #{refLeno}
+	AND RE_UNAME = #{reUname}
+</select>
+
+<!-- 후기 수정 -->
+<update id="modiReview" parameterType="lessonReview">
+	UPDATE LESSON_REVIEW
+	SET RE_TEXT = #{reText}
+	WHERE REF_LENO = #{refLeno}
+	AND RE_UNO = #{reUno}
+</update>
+
 </mapper>

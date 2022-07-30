@@ -15,6 +15,7 @@
 		<typeAlias type="com.kh.moong.lesson.model.vo.LessonEnroll" alias="lessonEnroll"/>
 		<typeAlias type="com.kh.moong.lesson.model.vo.Districts" alias="districts"/>
 		<typeAlias type="com.kh.moong.lesson.model.vo.LessonReview" alias="lessonReview"/>
+		<typeAlias type="com.kh.moong.lesson.model.vo.Lesson" alias="lessonn"/>
 		<typeAlias type="com.kh.moong.qna.model.vo.QnaQuestion" alias="qnaQuestion"/>
 		<typeAlias type="com.kh.moong.qna.model.vo.QnaAnswer" alias="qnaAnswer"/>
 		<typeAlias type="com.kh.moong.qna.model.vo.QnaType" alias="qnaType"/>

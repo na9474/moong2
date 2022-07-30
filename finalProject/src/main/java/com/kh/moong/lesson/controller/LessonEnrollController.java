@@ -22,6 +22,7 @@ import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
 import com.kh.moong.lesson.model.vo.Districts;
+import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
@@ -316,28 +317,62 @@ public class LessonEnrollController {
 			
 			
 			
-			// 후기
+			// 후기 쓰기(한 번 작성하면 재작성X)
 			@RequestMapping(value="revinsert.rv", produces="application/json; charset=UTF-8")
 			@ResponseBody
 			public String insertReview(LessonReview lr) {
-				int result = ls.insertReview(lr);
-				
+				LessonReview wr = ls.isWriteReview(lr);
 				String rv = "";
 				
-				if(result > 0) {
-					rv = "Y";
+				if(wr == null) {
+					int result = ls.insertReview(lr);
+					
+					if(result > 0) {
+						rv = "Y";
+					} else {
+						rv = "N";
+					}
+					return new Gson().toJson(rv);
+					
 				} else {
-					rv = "N";
+					rv = "nn";
+					
+					return new Gson().toJson(rv);
 				}
-				return new Gson().toJson(rv);
 			}
 			
+			// 후기 목록
 			@RequestMapping(value="revlist.rv", produces="application/json; charset=UTF-8")
 			@ResponseBody
 			public String reviewList(int refLeNo) {
+				
 				ArrayList<LessonReview> rvList = ls.reviewList(refLeNo);
-				System.out.println(rvList);
+
 				return new Gson().toJson(rvList);
+			}
+			
+			// 해당 선생님의 과외학생인지
+			@RequestMapping(value="revCount.rv", produces="application/json; charset=UTF-8")
+			@ResponseBody
+			public String countStudent(Lesson les) {
+				int stuCount = ls.countStudent(les);
+				return new Gson().toJson(stuCount);
+			}
+			
+			// 후기 수정
+			@RequestMapping(value="modifyRev.rv", produces="application/json; charset=UTF-8")
+			@ResponseBody
+			public String modiReview(LessonReview lr) {
+				int result = ls.modiReview(lr);
+				
+				String modiRv = "";
+				
+				if(result > 0) {
+					modiRv = "Y";
+				} else {
+					modiRv = "N";
+				}
+				return new Gson().toJson(modiRv);
 			}
 }
 

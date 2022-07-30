@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.moong.common.model.vo.PageInfo;
+import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
@@ -89,6 +90,16 @@ public class LessonEnrollDao {
 		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.reviewList", leNo);
 	}
 
-	
+	public int countStudent(SqlSessionTemplate sqlSession, Lesson les) {
+		return sqlSession.selectOne("lessonEnrollMapper.countStudent", les);
+	}
+
+	public LessonReview isWriteReview(SqlSessionTemplate sqlSession, LessonReview lr) {
+		return sqlSession.selectOne("lessonEnrollMapper.isWriteReview", lr);
+	}
+
+	public int modiReview(SqlSessionTemplate sqlSession, LessonReview lr) {
+		return sqlSession.update("lessonEnrollMapper.modiReview", lr);
+	}
 
 }

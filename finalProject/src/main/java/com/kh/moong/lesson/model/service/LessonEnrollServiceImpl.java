@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.dao.LessonEnrollDao;
+import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
@@ -96,5 +97,18 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 		return lessonEnrollDao.reviewList(sqlSession, leNo);
 	}
 	
+	@Override
+	public int countStudent(Lesson les) {
+		return lessonEnrollDao.countStudent(sqlSession, les);
+	}
 
+	@Override
+	public LessonReview isWriteReview(LessonReview lr) {
+		return lessonEnrollDao.isWriteReview(sqlSession, lr);
+	}
+
+	@Override
+	public int modiReview(LessonReview lr) {
+		return lessonEnrollDao.modiReview(sqlSession, lr);
+	}
 }

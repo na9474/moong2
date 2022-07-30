@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.vo.Districts;
+import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
@@ -39,6 +40,11 @@ public interface LessonEnrollService {
 
 	ArrayList<LessonReview> reviewList(int leNo);
 
+	int countStudent(Lesson les);
+
+	LessonReview isWriteReview(LessonReview lr);
+
+	int modiReview(LessonReview lr);
 	
 
 }
