@@ -151,7 +151,6 @@ public class PoliceController {
 		return "admin/policeCmt";
 	}
 	
-	// ajax  이름은 cmtCon.po
 	@RequestMapping(value="cmtCon.po",produces="application/json; charset=utf8")
 	@ResponseBody
 	public String policeCmtCon(int scNo) {
@@ -159,14 +158,6 @@ public class PoliceController {
 		JsonObject jsonObject = new JsonObject();
 		SolutionCmt cmtCon = solutionService.cmtSelctSn(scNo);
 		
-//		jsonObject.addProperty("scNo", cmtCon.getScNo());
-//		jsonObject.addProperty("userNo", cmtCon.getUserNo());
-//		jsonObject.addProperty("userId", cmtCon.getUserId());
-//		jsonObject.addProperty("solutionCmtContents", cmtCon.getSolutionCmtContents());
-//		jsonObject.addProperty("createDate", cmtCon.getCreateDate());
-//		jsonObject.addProperty("solutonNo", cmtCon.getSolutionNo());
-//		
-//		String cmtData = jsonObject.toString();
 		return new Gson().toJson(cmtCon);
 		
 		

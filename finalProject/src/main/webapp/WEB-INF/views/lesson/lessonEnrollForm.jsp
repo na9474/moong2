@@ -89,7 +89,7 @@
         <div id="subtit">
             과외 등록
         </div>
-        <form method="post" action="insert.le" enctype="multipart/form-data">
+        <form method="post" action="insert.le" enctype="multipart/form-data" onsubmit="return checkForm()">
             <input type="hidden" name="userNo" value="${loginUser.userNo }">
         <table border="1" id="lessonEnrollTb">
             <tr>
@@ -115,7 +115,7 @@
             </tr>
             <tr>
                 <td class="td-r" >과외 가능 지역</td>
-                <td><select class="form-control" onchange="handleOnChange(this)" name="select-area">
+                <td><select class="form-control" onchange="handleOnChange(this)" name="select-area" id="select-area">
                     <option value="">--5개까지 선택이 가능합니다--</option>
                     <c:forEach var="d" items="${d}">
                     	<option value="${d.dno}">${d.area}</option>
@@ -214,7 +214,7 @@
             </tr>
             <tr>
                 <td class="td-r">과외 경력</td>
-                <td><input type="text" name="career" id="" required></td>
+                <td><input type="text" name="career" id="career" required></td>
             </tr>
             <tr>
                 <td class="td-r" >과외 가능 요일</td>
@@ -357,7 +357,7 @@
             </script>
             <tr>
             	<th class="td-r">첨부파일</th>
-                <td><input type="file" id="upfile"  name="upfile" accept="video/*" ></td>
+                <td><input type="file" id="upfile" name="upfile" accept="video/*" required></td>
             </tr>
           
           
@@ -372,6 +372,19 @@
                 $('.resultDayIn').remove();
             }
         </script>
+
+		<script>
+			function checkForm(){
+				if($('#select-area').val() == ""){
+					alert("지역을 선택해주세요")
+					return false;
+				}else if($('#leDay').val() == ""){
+					alert("요일을 선택해주세요")
+					return false;
+				}
+			}
+		</script>
+        
         </div>
        
 </body>

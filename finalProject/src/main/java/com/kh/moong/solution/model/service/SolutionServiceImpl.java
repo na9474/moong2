@@ -19,8 +19,6 @@ import com.kh.moong.solution.model.vo.SolutionHeart;
 @Service
 public class SolutionServiceImpl implements SolutionService {
 	
-	
-	
 	@Autowired
 	private SolutionDao solutionDao;
 	
@@ -39,7 +37,8 @@ public class SolutionServiceImpl implements SolutionService {
 
 	@Override
 	public ArrayList<Solution> listAll(PageInfo pi, String search_cat, String keyword, String subject, String tag) {
-		return solutionDao.listAll(sqlSession, pi, search_cat, keyword, subject, tag);
+		ArrayList<Solution>list = solutionDao.listAll(sqlSession, pi, search_cat, keyword, subject, tag);
+		return list;
 	}
 
 	@Override
@@ -132,5 +131,37 @@ public class SolutionServiceImpl implements SolutionService {
 	public ArrayList<String> selectTag() {
 		return solutionDao.selectTag(sqlSession);
 	}
+	
+	@Override
+	public ArrayList<Solution> teacherSolution(String subject) {
+		return solutionDao.teacherSolution(sqlSession,subject);
+	}
+
+	@Override
+	public ArrayList<Solution> studentSolution(Solution s2) {
+		ArrayList<Solution>list = solutionDao.studentSolution(sqlSession, s2);
+		return list;
+	}
+	
+	@Override
+	public int solDeletePolice(int solutionNo) {
+		return solutionDao.solDeletePolice(sqlSession, solutionNo);
+	}
+	
+	@Override
+	public int cmtDeletePolice(int scNo) {
+		return solutionDao.cmtDeletePolice(sqlSession, scNo);
+	}
+	
+	@Override
+	public int solPoliceCheck(int solution_no, int user_no) {
+		return solutionDao.solPoliceCheck(sqlSession, solution_no, user_no);
+	}
+	
+	@Override
+	public int cmtPoliceCheck(int sc_no, int user_no) {
+		return solutionDao.cmtPoliceCheck(sqlSession, sc_no, user_no);
+	}
+
 	
 }

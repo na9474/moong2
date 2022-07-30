@@ -69,8 +69,6 @@ public class SolutionController {
 		
 		ArrayList<Solution> list = solutionService.listAll(pi, search_cat, keyword, subject, tag);
 		
-		
-		
 //		ArrayList<String> tags= solutionService.selectTags();
 //		int rRange = tags.size();
 //		int rnum1 = (int)(Math.random()*rRange);
@@ -131,7 +129,6 @@ public class SolutionController {
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
 
-		
 		return "solution/solutionList";
 	}
 	
@@ -180,19 +177,34 @@ public class SolutionController {
 		int result = solutionService.increaseCount(sno);
 				
 		int loginNo = 0;
+		String loginId = null;
 		if(request.getSession().getAttribute("loginUser") !=null) {
 			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+			loginId = ((Member) request.getSession().getAttribute("loginUser")).getUserId();
 		}
 		int heartYn = solutionService.sHeartCheck(sno, loginNo);
+		int solPoliceYn = solutionService.solPoliceCheck(sno, loginNo);
 		
 		if(result > 0) { 
 			
 			Solution s = solutionService.selectSolution(sno);
+			
+			ArrayList<Solution> ts = solutionService.teacherSolution(s.getSubject());
+			
+			Solution s2 = new Solution();
+			s2.setSubject(s.getSubject());
+			s2.setUserNo(s.getUserNo());
+			ArrayList<Solution> ss = solutionService.studentSolution(s2);
+			
 			int heartCount = solutionService.sHeartCount(sno);
 			
+			mv.addObject("ts",ts);
+			mv.addObject("ss",ss);
 			mv.addObject("s",s);
 			mv.addObject("heartYn", heartYn);
+			mv.addObject("solPoliceYn", solPoliceYn);
 			mv.addObject("loginNo", loginNo);
+			mv.addObject("loginId", loginId);
 			mv.addObject("heartCount",heartCount).setViewName("solution/solutionDetail");
 
 		}else {
@@ -205,19 +217,12 @@ public class SolutionController {
 	@RequestMapping("delete.so")
 	public ModelAndView deleteSolution(ModelAndView mv,
 									int sno,
-									int p_No,
 									String filePath,
 									HttpSession session) {
 		
 		int result = solutionService.deleteSolution(sno);
-		
-		Police p = new Police();
-		
-		p.setP_No(p_No);
-		
-		policeService.deletePolice(p_No);
+		int result2 = solutionService.solDeletePolice(sno);
 		 
-		
 		if(result>0) { 
 			if(!filePath.equals("")) {
 				String realPath = session.getServletContext().getRealPath(filePath);
@@ -285,8 +290,6 @@ public class SolutionController {
 			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
 		}
 		
-		
-		
 		if(!file.getOriginalFilename().equals("") || !file.isEmpty()) {
 			
 			String changeName = saveFile(file,session);
@@ -296,13 +299,7 @@ public class SolutionController {
 			scf.setScfSysName("resources/uploadFiles/"+changeName);
 			scf.setScNo(scNo);
 			int result1 = solutionService.insertSolCmtFiles(scf);
-			if(result1>0) {
-				System.out.println("파일 첨부 성공");
-			}
-		}else {
-			System.out.println("파일 첨부 안함");
 		}
-        
 		
 		sc.setUserNo(loginNo);
 
@@ -313,10 +310,8 @@ public class SolutionController {
 		re.addAttribute("sno", sc.getSolutionNo());
 		
 		if(result2 > 0) {
-			System.out.println("댓글 저장 성공");
 			return "redirect:detail.so";
 		}else {
-			System.out.println("댓글 저장 실패");
 			return "redirect:detail.so";
 		}
 
@@ -327,16 +322,12 @@ public class SolutionController {
 	public ModelAndView deleteCmt(ModelAndView mv,
 									int scNo,
 									int solutionNo,
-									String filePath,
 									HttpSession session) {
 		
 		int result = solutionService.deleteCmt(scNo);
+		int result2 = solutionService.cmtDeletePolice(scNo);
 		
 		if(result>0) { 
-//			if(!filePath.equals("")) {
-//				String realPath = session.getServletContext().getRealPath(filePath);
-//				new File(realPath).delete();
-//			}
 			session.setAttribute("alertMsg", "댓글 삭제 성공");
 			
 			mv.setViewName("redirect:detail.so?sno="+solutionNo);
@@ -360,12 +351,7 @@ public class SolutionController {
 		sh.setUser_no(loginNo);
 	
 		int result = solutionService.sHeartInsert(sh);
-		
-		if(result>0) {
-			System.out.println("추천 성공");
-		}else { 
-			System.out.println("추천 실패");
-		}
+			
 		return "redirect:detail.so?sno="+solutionNo;
 	}
 	
@@ -384,11 +370,6 @@ public class SolutionController {
 
 		int result = solutionService.sHeartDelete(sh);
 		
-		if(result>0) { 
-			System.out.println("추천 취소");
-		}else {
-			System.out.println("추천 취소 실패");
-		}
 		return "redirect:detail.so?sno="+solutionNo;
 	}
 	
@@ -426,7 +407,6 @@ public class SolutionController {
 			//qf를 db에 저장시켜준다
 			//나중에 작성 버튼 클릭 시 sysName가지고 가서 해당 사진의 참조 qna번호 업데이트 시켜줄것
 			int result = solutionService.insertSolutionFiles(sf);
-			System.out.println(result);
 			
 		} catch (IOException e) {
 			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제

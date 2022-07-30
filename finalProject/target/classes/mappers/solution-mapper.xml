@@ -52,12 +52,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='subject == "수학"'>
             and s.subject = '수학'
         </if>
-        <if test='tag == "수능"'>
-            and s.tag = '수능'
+        <if test='tag neq null and id neq ""'>
+            and s.tag = #{tag}
         </if>
-        <if test='tag == "자주나오는문제"'>
-            and s.tag = '자주나오는문제'
-        </if>
+
 		ORDER BY CREATE_DATE DESC)
 	</select>
 	
@@ -136,6 +134,34 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SELECT TAG 
 		FROM SOLUTION
 		WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="teacherSolution" resultMap="solutionResultSet">
+		SELECT ROWNUM, A.*
+    	FROM
+        (SELECT S.* ,M.USER_ID
+        FROM SOLUTION S
+        JOIN MEMBER M ON S.USER_NO=M.USER_NO
+            WHERE S.STATUS = 'Y'
+                AND SUBJECT = #{subject}
+                AND SOLUTION_NO NOT IN (SELECT SOLUTION_NO FROM SOLUTION_CMT)
+        ORDER BY DBMS_RANDOM.RANDOM) A
+        WHERE <![CDATA[ROWNUM<=3]]>
+	</select>
+	
+	<select id="studentSolution" resultMap="solutionResultSet">
+        SELECT ROWNUM, A.*
+            FROM
+                (SELECT S.* ,M.USER_ID
+                FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		    WHERE S.STATUS = 'Y'
+		    	AND SUBJECT = #{subject}
+		        AND S.USER_NO IN 
+		        (SELECT USER_NO FROM STUDENT WHERE YEAR = 
+		            (SELECT YEAR FROM STUDENT WHERE USER_NO = #{userNo}))
+		             ORDER BY DBMS_RANDOM.RANDOM) A
+		WHERE <![CDATA[ROWNUM<=3]]>
 	</select>
 	
 </mapper>

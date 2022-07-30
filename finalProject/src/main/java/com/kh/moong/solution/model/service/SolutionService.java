@@ -77,4 +77,21 @@ public interface SolutionService {
 	
 	//해시태그 가져오기
 	public abstract ArrayList<String> selectTag();
+	
+	//선생 추천 게시물 가져오기
+	public abstract ArrayList<Solution> teacherSolution(String subject);
+	
+	//학생 추천 게시물 가져오기
+	public abstract ArrayList<Solution> studentSolution(Solution s2);
+	
+	public abstract int solDeletePolice(int solutionNo);
+	
+	public abstract int cmtDeletePolice(int scNo);
+	
+	//user가 해당 게시물을 신고했는지 확인
+	int solPoliceCheck(int solution_no, int user_no);
+	
+	//user가 해당 게시물을 신고했는지 확인
+	int cmtPoliceCheck(int sc_no, int user_no);
+	
 }

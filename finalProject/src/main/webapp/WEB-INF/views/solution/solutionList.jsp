@@ -104,13 +104,12 @@
 					enctype="multipart/form-data" accept-charset="utf-8">
 					<input type="hidden" name="subject" id="inputSubject"> 
 					<input type="hidden" name="tag" id="inputTag">
-					<button id="subBtnKor" type="submit" class="btn moong-yellow btn-sm">#국어</button>
-					<button id="subBtnEng" type="submit" class="btn moong-yellow btn-sm">#영어</button>
-					<button id="subBtnMat" type="submit" class="btn moong-yellow btn-sm">#수학</button>
+					<button type="submit" id="subBtnKor" class="btn moong-yellow btn-sm">국어</button>
+					<button type="submit" id="subBtnEng" class="btn moong-yellow btn-sm">영어</button>
+					<button type="submit" id="subBtnMat" class="btn moong-yellow btn-sm">수학</button>
 					<c:forEach var="t" items="${tagOut}">
-						<button type="submit" class="tagBtn btn moong-yellow btn-sm">#${t }</button>
+						<button type="submit" class="tagBtn btn moong-yellow btn-sm">#${t}</button>
 					</c:forEach>
-					
 				</form>
 			</div>
 

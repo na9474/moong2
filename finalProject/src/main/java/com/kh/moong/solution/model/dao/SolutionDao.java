@@ -145,5 +145,39 @@ public class SolutionDao {
 	public ArrayList<String> selectTag(SqlSessionTemplate sqlSession) {
 		return (ArrayList) sqlSession.selectList("solutionMapper.selectTag");
 	}
-
+	
+	//선생 추천 게시물 가져오기
+	public ArrayList<Solution> teacherSolution(SqlSessionTemplate sqlSession, String subject) {
+		return (ArrayList) sqlSession.selectList("solutionMapper.teacherSolution", subject);
+	}
+	
+	//학생 추천 게시물 가져오기
+	public ArrayList<Solution> studentSolution(SqlSessionTemplate sqlSession, Solution s2) {
+		return (ArrayList) sqlSession.selectList("solutionMapper.studentSolution", s2);
+	}
+	
+	public int solDeletePolice(SqlSessionTemplate sqlSession, int solutionNo) {
+		return sqlSession.delete("policeMapper.solDeletePolice",solutionNo);
+	}
+	
+	public int cmtDeletePolice(SqlSessionTemplate sqlSession, int scNo) {
+		return sqlSession.delete("policeCmtMapper.cmtDeletePolice",scNo);
+	}
+	
+	// user가 해당 게시물을 신고했는지 확인
+	public int solPoliceCheck(SqlSessionTemplate sqlSession, int solution_no, int user_no) {
+		HashMap<String, Integer> param = new HashMap<String, Integer>();
+		param.put("solution_no", solution_no);
+		param.put("user_no", user_no);
+		return sqlSession.selectOne("policeMapper.solPoliceCheck", param);
+	}
+	
+	// user가 해당 댓글을 신고했는지 확인
+	public int cmtPoliceCheck(SqlSessionTemplate sqlSession, int sc_no, int user_no) {
+		HashMap<String, Integer> param = new HashMap<String, Integer>();
+		param.put("sc_no", sc_no);
+		param.put("user_no", user_no);
+		return sqlSession.selectOne("policeMapper.cmtPoliceCheck", param);
+	}
+	
 }
