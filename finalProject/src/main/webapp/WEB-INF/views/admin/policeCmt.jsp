@@ -64,7 +64,6 @@ form{
                 		<a class="cmtCon btn moong-yellow btn-sm" data-toggle="modal" data-target="#cmtContents">댓글내용보기</a>
                 		<input type="hidden" name="scNo" value="${pc.scNo}"> 
                      <form id="deleteCmtPolice" method="post" action="cmtDelete.po" enctype="multipart/form-data" accept-charset="utf-8">
-<%--                      	<a class="btn moong-yellow btn-sm" style="margin-top:-5px;" href="detail.so?sno=${p.solutionNo}">해당게시물이동</a> --%>
 						<input type="hidden" name="pc_No" value="${pc.pc_No}">
                     	<button type="submit" class="btn moong-yellow btn-sm">삭제</button>
                      </form>
@@ -108,14 +107,13 @@ form{
 			                    <input type="hidden" id="tSolutonNo" name="sno">
 			                    <button type="submit" class="btn moong-yellow btn-sm" >해당게시물이동</button>
 							</form>
-		                        <button type="button" class="btn moong0-yellow btn-sm" data-dismiss="modal">확인</button>
+		                        <button type="button" class="btn moong-yellow btn-sm" data-dismiss="modal">확인</button>
 	                    </div>
 	                
 	            </div>
 	        </div>
 	    </div>
         
-  
         <div id="pagingArea">
 			<ul class="pagination">
 				<c:choose>

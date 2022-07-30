@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,10 +32,13 @@ import com.google.gson.JsonObject;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.police.model.service.PoliceService;
+import com.kh.moong.police.model.vo.Police;
 import com.kh.moong.solution.model.service.SolutionService;
 import com.kh.moong.solution.model.vo.Solution;
 import com.kh.moong.solution.model.vo.SolutionCmt;
 import com.kh.moong.solution.model.vo.SolutionCmtFiles;
+import com.kh.moong.solution.model.vo.SolutionFiles;
 import com.kh.moong.solution.model.vo.SolutionHeart;
 
 @Controller
@@ -39,6 +46,9 @@ public class SolutionController {
 	
 	@Autowired
 	private SolutionService solutionService;
+	
+	@Autowired
+	private PoliceService policeService;
 	
 	@RequestMapping("list.so")
 	public String listAll(
@@ -59,9 +69,66 @@ public class SolutionController {
 		
 		ArrayList<Solution> list = solutionService.listAll(pi, search_cat, keyword, subject, tag);
 		
+//		ArrayList<String> tags= solutionService.selectTags();
+//		int rRange = tags.size();
+//		int rnum1 = (int)(Math.random()*rRange);
+//		int rnum2 = (int)(Math.random()*rRange);
+//		if(rnum1==rnum2) {
+//			if(rnum1<rRange) {
+//				rnum2++;
+//			}else {
+//				rnum2--;
+//			}
+//		}
+//		
+//		ArrayList<String> rTags = new ArrayList<String>();
+//		rTags.add(tags.get(rnum1));
+//		rTags.add(tags.get(rnum2));
+		
+		ArrayList<String> tagList = solutionService.selectTag();
+		
+		String tags = "";
+		
+		try {
+			
+			for(String s : tagList) {
+				 tags+= s;
+			}
+			
+//			//앞부분에 필요없는 문자를 지우고 공백을 없애줌
+//			tags = tags.replaceAll("\\s", "");
+					
+			//#을 구분자로 배열에 담아서 구분함
+			String[] tagArr =tags.split("#");
+			
+			//구분한 배열을 리스트로 담고 해쉬셋으로 바꿔주고 다시 리스트에 담아주면 중복이 제거됨
+			List<String> tagList1 =Arrays.asList(tagArr); 
+			HashSet<String> tagList2 = new HashSet<String>(tagList1);
+			List<String> tagList3 = new ArrayList<String>(tagList2);
+			
+			//셔플을 이용해서 섞어줌
+			Collections.shuffle(tagList3);
+			//다시배열에 담아주고 메인페이지로 보내줌
+			//String[] tagArr2= tagList3.toArray(new String[0]);
+			
+			ArrayList<String> tagOut = new ArrayList<String>();
+			tagOut.add(tagList3.get(0));
+			tagOut.add(tagList3.get(1));
+			tagOut.add(tagList3.get(2));
+			model.addAttribute("tagOut", tagOut);
+			
+			//만약 인덱스에 담긴값이  null값이라면 index out of bounds가 
+			//발생하기 때문에 빈배열에 "no registered tags"태그가 없습니다 문구를 담아서 반환	
+		}catch (Exception e) {			
+			String[] tagArr;
+			tagArr = new String[1];
+			tagArr[0] ="no registered tags";
+			model.addAttribute("tagOut", tagArr);
+		}
+		
 		model.addAttribute("list", list);
 		model.addAttribute("pi", pi);
-		
+
 		return "solution/solutionList";
 	}
 	
@@ -74,27 +141,35 @@ public class SolutionController {
 	
 	//게시글 작성
 	@RequestMapping("write.so")
-	public String insertSolution(Solution s) {
+	public String insertSolution(Solution s, HttpSession session, String sfSysName) {
 		
-		int userNo=1;
+		int userNo = ((Member)session.getAttribute("loginUser")).getUserNo();
+		
 		s.setUserNo(userNo);
 		
 		int result = solutionService.insertSolution(s);
 		
-		if(result>0) {
+		if(sfSysName != null) {
+			
+			int result2 = solutionService.updateSolutionNo(s);
+
+			session.setAttribute("alertMsg","게시물이 작성되었습니다.");
 			
 			return "redirect:list.so";
 			
-		}else { //실패
+		}else {
 			
-			System.out.println("글작성 실패");
+			if(result>0) {
+				session.setAttribute("alertMsg","게시물이 작성되었습니다.");
+				
+				return "redirect:list.so";
+			}
 		}
 		
-		return "solution/solutionWrite";
+		return "redirect:/";
 	}
-	
+		
 
-	
 	//게시글 상세페이지
 	@RequestMapping("detail.so")
 	public ModelAndView selectSolution(int sno, ModelAndView mv, HttpServletRequest request) {
@@ -102,20 +177,34 @@ public class SolutionController {
 		int result = solutionService.increaseCount(sno);
 				
 		int loginNo = 0;
+		String loginId = null;
 		if(request.getSession().getAttribute("loginUser") !=null) {
 			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+			loginId = ((Member) request.getSession().getAttribute("loginUser")).getUserId();
 		}
 		int heartYn = solutionService.sHeartCheck(sno, loginNo);
+		int solPoliceYn = solutionService.solPoliceCheck(sno, loginNo);
 		
 		if(result > 0) { 
 			
 			Solution s = solutionService.selectSolution(sno);
+			
+			ArrayList<Solution> ts = solutionService.teacherSolution(s.getSubject());
+			
+			Solution s2 = new Solution();
+			s2.setSubject(s.getSubject());
+			s2.setUserNo(s.getUserNo());
+			ArrayList<Solution> ss = solutionService.studentSolution(s2);
+			
 			int heartCount = solutionService.sHeartCount(sno);
 			
-			//메소드 체이닝 (단 view정보가 뒤에 와야함)
+			mv.addObject("ts",ts);
+			mv.addObject("ss",ss);
 			mv.addObject("s",s);
 			mv.addObject("heartYn", heartYn);
+			mv.addObject("solPoliceYn", solPoliceYn);
 			mv.addObject("loginNo", loginNo);
+			mv.addObject("loginId", loginId);
 			mv.addObject("heartCount",heartCount).setViewName("solution/solutionDetail");
 
 		}else {
@@ -132,7 +221,8 @@ public class SolutionController {
 									HttpSession session) {
 		
 		int result = solutionService.deleteSolution(sno);
-		
+		int result2 = solutionService.solDeletePolice(sno);
+		 
 		if(result>0) { 
 			if(!filePath.equals("")) {
 				String realPath = session.getServletContext().getRealPath(filePath);
@@ -200,8 +290,6 @@ public class SolutionController {
 			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
 		}
 		
-		
-		
 		if(!file.getOriginalFilename().equals("") || !file.isEmpty()) {
 			
 			String changeName = saveFile(file,session);
@@ -211,13 +299,7 @@ public class SolutionController {
 			scf.setScfSysName("resources/uploadFiles/"+changeName);
 			scf.setScNo(scNo);
 			int result1 = solutionService.insertSolCmtFiles(scf);
-			if(result1>0) {
-				System.out.println("파일 첨부 성공");
-			}
-		}else {
-			System.out.println("파일 첨부 안함");
 		}
-        
 		
 		sc.setUserNo(loginNo);
 
@@ -228,10 +310,8 @@ public class SolutionController {
 		re.addAttribute("sno", sc.getSolutionNo());
 		
 		if(result2 > 0) {
-			System.out.println("댓글 저장 성공");
 			return "redirect:detail.so";
 		}else {
-			System.out.println("댓글 저장 실패");
 			return "redirect:detail.so";
 		}
 
@@ -242,16 +322,12 @@ public class SolutionController {
 	public ModelAndView deleteCmt(ModelAndView mv,
 									int scNo,
 									int solutionNo,
-									String filePath,
 									HttpSession session) {
 		
 		int result = solutionService.deleteCmt(scNo);
+		int result2 = solutionService.cmtDeletePolice(scNo);
 		
 		if(result>0) { 
-//			if(!filePath.equals("")) {
-//				String realPath = session.getServletContext().getRealPath(filePath);
-//				new File(realPath).delete();
-//			}
 			session.setAttribute("alertMsg", "댓글 삭제 성공");
 			
 			mv.setViewName("redirect:detail.so?sno="+solutionNo);
@@ -275,12 +351,7 @@ public class SolutionController {
 		sh.setUser_no(loginNo);
 	
 		int result = solutionService.sHeartInsert(sh);
-		
-		if(result>0) {
-			System.out.println("추천 성공");
-		}else { 
-			System.out.println("추천 실패");
-		}
+			
 		return "redirect:detail.so?sno="+solutionNo;
 	}
 	
@@ -299,19 +370,16 @@ public class SolutionController {
 
 		int result = solutionService.sHeartDelete(sh);
 		
-		if(result>0) { 
-			System.out.println("추천 취소");
-		}else {
-			System.out.println("추천 취소 실패");
-		}
 		return "redirect:detail.so?sno="+solutionNo;
 	}
 	
-	@RequestMapping(value="/uploadImage", produces = "application/json; charset=utf8")
+	//섬머노트 이미지 업로드
+	@RequestMapping(value="/uploadFile", produces = "application/json; charset=utf8")
 	@ResponseBody
-	public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile, HttpServletRequest request )  {
+	public String uploadFile(@RequestParam("file") MultipartFile multipartFile
+											,SolutionFiles sf
+											,HttpServletRequest request )  {
 		JsonObject jsonObject = new JsonObject();
-		
 		
         /*
 		 * String fileRoot = "C:\\summernote_image\\"; // 외부경로로 저장을 희망할때.
@@ -319,19 +387,27 @@ public class SolutionController {
 		
 		// 내부경로로 저장
 		String contextRoot = new HttpServletRequestWrapper(request).getRealPath("/");
-		String fileRoot = contextRoot+"resources/uploadFiles/";
+		String fileRoot = contextRoot+"resources/solUploadFiles/";
 		
 		String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
 		String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
 		String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
-		
+
 		File targetFile = new File(fileRoot + savedFileName);	
 		try {
 			InputStream fileStream = multipartFile.getInputStream();
 			FileUtils.copyInputStreamToFile(fileStream, targetFile);	//파일 저장
-			jsonObject.addProperty("url", "resources/uploadFiles/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
+			jsonObject.addProperty("url", "/moong/resources/solUploadFiles/"+savedFileName); // contextroot + resources + 저장할 내부 폴더명
 			jsonObject.addProperty("responseCode", "success");
-				
+			jsonObject.addProperty("sfSysName", savedFileName);
+			
+			sf.setSfOriginName(originalFileName);
+			sf.setSfSysName(savedFileName);
+			
+			//qf를 db에 저장시켜준다
+			//나중에 작성 버튼 클릭 시 sysName가지고 가서 해당 사진의 참조 qna번호 업데이트 시켜줄것
+			int result = solutionService.insertSolutionFiles(sf);
+			
 		} catch (IOException e) {
 			FileUtils.deleteQuietly(targetFile);	//저장된 파일 삭제
 			jsonObject.addProperty("responseCode", "error");
@@ -340,4 +416,49 @@ public class SolutionController {
 		String a = jsonObject.toString();
 		return a;
 	}
+	
+	//게시글 수정하기페이지
+	@RequestMapping("modifyForm.so")
+	public ModelAndView solutionModify(int sno, ModelAndView mv, HttpServletRequest request) {
+		
+		int result = solutionService.increaseCount(sno);
+				
+		int loginNo = 0;
+		if(request.getSession().getAttribute("loginUser") !=null) {
+			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
+		}
+		int heartYn = solutionService.sHeartCheck(sno, loginNo);
+		
+		if(result > 0) { 
+			
+			Solution s = solutionService.selectSolution(sno);
+			int heartCount = solutionService.sHeartCount(sno);
+			
+			mv.addObject("s",s);
+			mv.addObject("heartYn", heartYn);
+			mv.addObject("loginNo", loginNo);
+			mv.addObject("heartCount",heartCount).setViewName("solution/solutionModify");
+
+		}else {
+			mv.addObject("errorMsg","게시글 조회 실패").setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	//수정하기
+	@RequestMapping("modify.so")
+	public String updateSolution(int solutionNo, Solution s, HttpSession session) {
+
+		s.setSolutionNo(solutionNo);
+		int result = solutionService.updateSolution(s);
+
+		if(result>0) {
+			session.setAttribute("alertMsg", "수정 되었습니다");
+			
+			return "redirect:/list.so";
+		}
+		
+	return "redirect:/";
+	}
+	
 }
