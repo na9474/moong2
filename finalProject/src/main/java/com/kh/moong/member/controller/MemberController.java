@@ -66,7 +66,6 @@ public class MemberController {
 		Member loginUser = memberService.loginMember(m);
 
 		
-		
 		if(loginUser == null) {
 			session.setAttribute("alertMsg", "로그인에 실패하였습니다.");
 			return "redirect:login.me";
