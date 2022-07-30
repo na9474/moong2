@@ -43,8 +43,8 @@ public class MemberController {
 							  ,HttpSession session
 							  ,Model model) {
 		// 암호화 작업
-//		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
-//		m.setUserPwd(encPwd);
+		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
+		m.setUserPwd(encPwd);
 		
 		int result = memberService.insertMember(m);
 		

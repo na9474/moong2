@@ -180,9 +180,9 @@ header nav ul li{
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">관리자 페이지</a>
                         <div class="dropdown-menu">
 					      <a class="dropdown-item" href="#">회원승인</a>
-					      <a class="dropdown-item" href="#">회원리스트</a>
+					      <a class="dropdown-item" href="memberList.ad">회원리스트</a>
 					      <a class="dropdown-item" href="list.po">신고리스트</a>
-					      <a class="dropdown-item" href="#">QnA</a>
+					      <a class="dropdown-item" href="qnaListView.qu">QnA</a>
 					      <a class="dropdown-item" href="chart.ch">차트</a>
 					    </div>
                   </li>
@@ -236,7 +236,7 @@ header nav ul li{
 			                       <input type="hidden" name="userNo" value=${loginUser.userNo }>
 			                       </form>
 			                       <li class="nav-item">
-				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"><!-- <i class="fa-solid fa-check" style="color:red;"></i> &nbsp;--> <i class="fa-solid fa-bell"></i> 알림</a>
+				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkSendUrl"></i> &nbsp; <i class="fa-solid fa-bell"></i> 알림</a>
 				                       </li>
 				                       <script>
 				                       		function teacherAlarmList(){
@@ -247,6 +247,11 @@ header nav ul li{
 			                       </c:otherwise>
 		                       </c:choose>
 		                       <c:choose>
+		                       <c:when test="${loginUser.approval eq 'N' || loginUser.approval eq 'D'}">
+		                       	<li class="nav-item">
+		                        	<a class="nav-link" href="myPageMain.me">마이페이지</a>
+								</li>
+		                       </c:when>
 		                       <c:when test="${loginUser.teacher eq 'Y' }">            
 		                   		<li class="nav-item">
 		                        	<a class="nav-link" href="teaMyPage.me">마이페이지</a>
@@ -272,8 +277,10 @@ header nav ul li{
                 </c:choose>
         </nav>
     </header>
-    <c:if test="${not empty loginUser && loginUser.userId ne 'admin' && loginUser.student eq 'Y'}">
-    <script>
+	<c:choose>
+	
+	<c:when test="${loginUser.student eq 'Y'}">
+	<script>
     	var repeat1 = null;
     	var repeat2 = null;
     	var delay = 3000;
@@ -354,6 +361,72 @@ header nav ul li{
           });
 		});
     </script>
-    </c:if>
+	</c:when>
+	
+	<c:when test="${loginUser.teacher eq 'Y'}">
+		<script>
+    	var repeat3 = null;
+    	var repeat4 = null;
+    	var delay2 = 3000;
+    	
+    	$(function(){
+			checkSendUrl1()
+			checkSendUrl2()
+			var repeat3 =setInterval(checkSendUrl,delay2);
+			var repeat4 =setInterval(checkSendUr2,delay2);
+		})
+		
+		//선생님한테온 url초대요청이 있는가? alert창
+			function checkSendUrl1(){ 
+			$.ajax({
+				url : "checkSendUrl.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+	 				if(result>0){ //받은 초대요청 O
+
+						alert("새로운 과외요청이 있습니다.");
+	 					clearInterval(repeat3);
+			
+				}else{ //받은 초대요청 X
+					
+				}
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+		}
+
+		//선생님한테온 url초대요청이 있는가? check표시
+		function checkSendUrl2(){
+			$.ajax({
+				url : "checkSendUrl2.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+	 				if(result>0){ //받은 초대요청 O
+						$('#checkSendUrl').css('visibility','visible');
+			clearInterval(repeat4);
+				}else{ //받은 초대요청 X
+					
+				}
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+
+		}
+		
+		
+    
+	  
+    </script>
+	</c:when>
+	</c:choose>
+   
+    
+   
+
+	
 </body>
 </html>

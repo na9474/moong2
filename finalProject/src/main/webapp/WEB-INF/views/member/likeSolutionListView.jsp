@@ -119,7 +119,7 @@
 
 		</ul>
 		<br>
-         <table align="center" class="table table-hover" >
+         <table align="center" class="table table-hover" id="likeSolutionTable">
             <thead>
                 <tr align="center">
                   <th style="width:15% ;">과목</th>
@@ -139,6 +139,7 @@
                 		<td>${loginUser.userName }</td>
                 		<td>${s.count }</td>
                 		<td>${s.createDate }</td>
+                		<td style="display:none;" id="sno">${s.solutionNo }</td>
                 	</tr>
                 </c:forEach>
             	
@@ -182,7 +183,16 @@
 	</div>
 	</div>
 
+		<script>
+			$(function() {
+				$("#likeSolutionTable>tbody>tr").click(
+						function() {
+							location.href = 'detail.so?sno='
+									+ $(this).children("#sno").text();
+						})
 
+			})
+		</script>
 
 </body>
 </html>

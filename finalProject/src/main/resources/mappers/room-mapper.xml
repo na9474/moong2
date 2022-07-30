@@ -32,4 +32,11 @@
 		SELECT *
 		FROM ROOM
 	</select>
+	
+	<!-- 선생님에게 보여줄 url -->
+	<select id="selectUrl" resultMap="roomResultSet">
+	SELECT ROOM_URL
+	FROM ROOM
+	WHERE ROOM_NO =#{groupNo}
+	</select>
 </mapper>

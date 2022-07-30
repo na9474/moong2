@@ -36,6 +36,7 @@
 	</typeAliases>	
 
 	<mappers>
+		<mapper resource="/mappers/lesson-mapper.xml"/>
 		<mapper resource="/mappers/room-mapper.xml"/>
 		<mapper resource="/mappers/solution-mapper.xml"/>
 		<mapper resource="/mappers/solutionfiles-mapper.xml"/>
@@ -51,6 +52,7 @@
 		<mapper resource="/mappers/police-mapper.xml"/>
 		<mapper resource="/mappers/policecmt-mapper.xml"/>
 		<mapper resource="/mappers/chart-mapper.xml"/>
+		<mapper resource="/mappers/admin-mapper.xml"/>
 	</mappers>
 
 </configuration>

@@ -263,23 +263,85 @@ public class MatchingController {
 	}
 	
 	
+	//선생 - 학생매칭취소 (해당학생 다른선생초대가능)
+	@RequestMapping("matcingCancel.ma")
+	public ModelAndView matchingCancel(ModelAndView mv, int userNo,HttpSession session,int groupNo) {
+		
+		int result1 = ms.updateSendUrl(groupNo);
+		int result2 = ms.talarmStatusUpdate(groupNo);
+		if(result1*result2>0) {
+					session.setAttribute("alertMsg", "매칭이 취소되었습니다.");
+					mv.setViewName("redirect:teacherAlarmList.ma?userNo="+userNo);
+		}else {
+			mv.addObject("errorMsg","매칭취소update실패").setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
 	//선생 - 알람리스트
 
 	@RequestMapping("teacherAlarmList.ma")
 	public ModelAndView teacherAlarmList( ModelAndView mv,int userNo) {
 		
-		ArrayList<Talarm> t = ms.checkGroupNo(userNo);
-		
-		if(t == null) {
-			mv.addObject("t",t).setViewName("matching/teacherAlarmList");
-		}else {
-			mv.setViewName("matching/teacherAlarmList");
-		}
-		
-		
-		
+		ArrayList<Talarm> list = ms.checkGroupNo(userNo);
+			
+			mv.addObject("list",list).setViewName("matching/teacherAlarmList");
 		return mv;
 	}
+	
+	//선생 - 알람리스트 그룹정보확인 AJAX
+	@ResponseBody
+	@RequestMapping(value ="matchingInfo.ma",produces="application/json; charset=UTF-8")
+	public String matchingInfo(int groupNo) {
+		
+		Matching m = ms.matchingInfo(groupNo);
+		
+		
+		return new Gson().toJson(m);
+	}
+	
+	//선생 - 채팅방 URL확인 AJAX
+	
+	@ResponseBody
+	@RequestMapping(value ="matchingURL.ma",produces="application/json; charset=UTF-8")
+	public String matchingURL(int groupNo) {
+		
+		Room r = ms.matchingURL(groupNo);
+		
+		
+		return new Gson().toJson(r);
+	}
+	
+	// 선생 - url등록온거 요청 확인 후 alert창
+		
+		@ResponseBody
+		@RequestMapping(value ="checkSendUrl1.ma",produces="application/json; charset=UTF-8")
+		public String checkSendUrl1(int userNo) {
+			
+			int result1 = ms.checkSendUrl(userNo);
+			if(result1>0) {
+						//alert Y 로 바꿈 ->알람 띄우지 않음 
+			ms.checkSendUrlUpdate(userNo);
+				
+			}else {
+				
+			}
+		
+			
+			return new Gson().toJson(result1);
+		}
+		
+		// 선생 - url등록온거 요청 확인 후 check표시
+		
+				@ResponseBody
+				@RequestMapping(value ="checkSendUrl2.ma",produces="application/json; charset=UTF-8")
+				public String checkSendUrl2(int userNo) {
+					
+					int result1 = ms.checkSendUrl2(userNo);
+				
+					return new Gson().toJson(result1);
+				}
+	
 	
 	// 관리자 - 매칭그룹 채팅방 url 목록 불러오기
 	@RequestMapping("adRoomList.rm")
@@ -313,4 +375,5 @@ public class MatchingController {
 			return "redirect:adRoomList.rm";
 		}
 	}
+
 }

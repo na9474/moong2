@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 public class Lesson {
 	
-	private int lNo;
+	private int leNo;
 	private int studentNo;
 	private int teacherNo;
 	private String subject;

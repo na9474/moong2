@@ -29,7 +29,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="ANSWER_CONTENT" property="answerContent"/>
 		<result column="ANSWER_DATE" property="answerDate"/>
 		<result column="ANSWER_STATUS" property="answerStatus"/>
-	
+		
+		<result column="QACOUNT" property="qaCount"/>
 	</resultMap>
 
 
@@ -45,14 +46,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- QnA 목록 -->
 	<select id="selectList" resultMap="qnaQuestionResultSet">
-			SELECT ROWNUM, B.*
+		SELECT ROWNUM, B.*
 		FROM( 
 		SELECT DISTINCT Q.QNA_NO, TITLE,QUESTION_CONTENT,QUESTION_DATE, Q.QUESTION_STATUS,Q.USER_NO, QT.TYPE_NAME, QA.QNA_NO AS "A_NO"
 		FROM QNA_QUESTION Q
-		JOIN MEMBER M ON Q.USER_NO = M.USER_NO
-		WHERE Q.QUESTION_STATUS = 'Y'
-		ORDER BY QUESTION_DATE DESC
-		)
 		<if test="userNo != 1">
         JOIN MEMBER M ON (Q.USER_NO = M.USER_NO)
 		</if>
@@ -63,8 +60,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         AND Q.USER_NO = #{userNo}
 		</if>
 		ORDER BY QUESTION_DATE DESC) B
+		ORDER BY ROWNUM DESC
 	</select>
 	
+	<!-- 댓글 개수 -->
+	<select id="qaCount" resultMap="qnaAnswerResultSet">
+	SELECT COUNT(*) AS "QACOUNT", QNA_NO
+    FROM QNA_ANSWER 
+    GROUP BY QNA_NO
+    </select>
+    
 	<!-- QnA Type -->
 	<select id="selectQnaType" resultMap="qnaTypeResultSet">
 		SELECT * 
@@ -101,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 상세보기 -->
 	<select id="selectQuestion" resultMap="qnaQuestionResultSet">
-	SELECT Q.QNA_NO, TITLE,QUESTION_CONTENT,QUESTION_DATE, Q.QUESTION_STATUS, QT.TYPE_NAME,M.USER_NAME
+	SELECT Q.QNA_NO, TITLE,QUESTION_CONTENT,QUESTION_DATE, Q.QUESTION_STATUS, QT.TYPE_NAME,M.USER_NAME,Q.USER_NO
 	FROM QNA_QUESTION Q
     JOIN QNA_TYPE QT ON (Q.TYPE_NO = QT.TYPE_NO)
     JOIN MEMBER M ON (Q.USER_NO = M.USER_NO)

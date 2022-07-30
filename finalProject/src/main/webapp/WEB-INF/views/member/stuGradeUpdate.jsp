@@ -96,7 +96,17 @@
         margin: auto;
         width: 600px;
     }
-
+	
+	#rc{
+	
+    	width: 400px;
+    	height: 500px;
+    	margin: auto;
+        margin-bottom: 10px;
+        /*공란색칠*/
+        background-color: orange;
+    	 
+    }
 
     
 </style>
@@ -147,9 +157,11 @@
 		</tbody>
 
     </table>
+    <br>
+    <div id="rc"><img style="height:500px; width:400px;" src="${reportCard.rcSysName }"></div>
     <br><br>
 
-		<button onclick="location.href='stuGradeUpdateForm.me'" style="float: right; margin:auto">수정하기</button>
+		<button onclick="location.href='stuGradeUpdateForm.me'" style="float: right; margin:auto;"  class="moong-yellow">수정하기</button>
 
     </div>
         

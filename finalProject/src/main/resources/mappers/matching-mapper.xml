@@ -33,6 +33,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <result column="GROUP_NO" property="groupNo"/>
 <result column="ALERT" property="alert"/>
 <result column="ALARM" property="alarm"/>
+<result column="ENROLL_DATE" property="enrollDate"/>
+<result column="STATUS" property="status"/>
 </resultMap>
 
 <!-- 같은 과목으로 매칭이 있는지 확인 -->
@@ -41,7 +43,8 @@ SELECT COUNT(*)
 FROM MATCHING
 WHERE USER_NO = #{userNo}
 AND SUBJECT = #{subject}
-AND STATUS = 'Y'
+AND  (STATUS ='C'
+OR STATUS ='Y')
 </select>
 
 <!-- 동일한 조건으로 등록된 매칭이 있는지 확인 -->
@@ -206,6 +209,8 @@ ORDER BY CHIEF DESC
 SELECT MA_NO,GROUP_NO,SUBJECT,PEOPLE,GENDER,FEE,ENROLLDATE,STATUS,RANDOM,URL,ALERT2
 FROM MATCHING
 WHERE USER_NO=#{userNo}
+AND  (STATUS ='C'
+OR STATUS ='Y')
 </select>
 
 <!-- 알람을 위한 select -->
@@ -312,21 +317,100 @@ WHERE GROUP_NO = #{groupNo}
 						USER_NO,
 						GROUP_NO,
 						ALERT,
-						ALARM)
+						ALARM,
+						ENROLL_DATE,
+						STATUS)
 				VALUES(
 				SEQ_TANO.NEXTVAL,
 				#{userNo},
 				#{groupNo},
 				'N',
-				'N'
+				'N',
+				SYSDATE,
+				'Y'
 						)
 	
 </insert>
+
+<select id="matchingInfo" resultMap="matchingResultSet"  parameterType="int">
+ SELECT SUBJECT,AREA,PEOPLE,YEAR,MA_DAY
+FROM MATCHING M
+JOIN STUDENT S USING(USER_NO)
+WHERE GROUP_NO =#{groupNo}
+AND CHIEF = 'Y'
+</select>
+
+
+
 
 <select id="checkGroupNo" resultType="_int">
 	SELECT GROUP_NO
 	FROM TALARM
 	WHERE USER_NO = #{userNo}
+	AND STATUS ='Y'
 </select>
 
+
+<select id="allUserNo"  resultMap="matchingResultSet">
+	SELECT USER_NO
+	FROM MATCHING
+	WHERE GROUP_NO = #{groupNo}
+</select>
+
+<select id="MatchingChiefInfo" resultMap="matchingResultSet">
+ SELECT SUBJECT
+ FROM MATCHING
+ WHERE GROUP_NO = #{groupNo}
+ AND CHIEF = 'Y'
+</select>
+
+
+<update id="deleteAlarmList" parameterType="talarm">
+
+	UPDATE TALARM
+	SET STATUS = 'N'
+	WHERE GROUP_NO = #{groupNo}
+
+</update>
+
+<update id="deleteMatching2" parameterType="matching">
+	UPDATE MATCHING
+	SET STATUS ='N'
+	WHERE GROUP_NO = #{groupNo}
+</update>
+<update id="updateSendUrl" parameterType="matching">
+	UPDATE MATCHING
+	SET SENDURL ='N'
+	WHERE GROUP_NO =#{groupNo}
+</update>
+
+<update id="talarmStatusUpdate" parameterType="talarm">
+	UPDATE TALARM
+	SET STATUS = 'N'
+	WHERE GROUP_NO = #{groupNo}
+</update>
+
+
+<select id="checkSendUrl" resultType="_int">
+	SELECT COUNT(*)
+	FROM TALARM
+	WHERE USER_NO =#{userNo}
+	AND ALERT ='N'
+	AND STATUS='Y'
+</select>
+
+<update id="checkSendUrlUpdate" parameterType="talarm">
+	UPDATE TALARM
+	SET ALERT = 'Y'
+	WHERE USER_NO = #{userNo}
+	AND STATUS ='Y'
+</update>
+
+<select id="checkSendUrl2" resultType="_int">
+	SELECT COUNT(*)
+	FROM TALARM
+	WHERE USER_NO =#{userNo}
+	AND ALARM ='N'
+	AND STATUS='Y'
+</select>
 </mapper>
