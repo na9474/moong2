@@ -85,11 +85,11 @@
 	</insert>
 
 	<!-- 아이디 중복 체크 -->
-<!-- 	<select id="idOk" resultType="_int"> -->
-<!-- 		SELECT COUNT(*) -->
-<!-- 	  	FROM MEMBER -->
-<!-- 	  	WHERE USER_ID = #{userId} -->
-<!-- 	</select> -->
+	<select id="idOk" resultType="_int">
+		SELECT COUNT(*)
+	  	FROM MEMBER
+	  	WHERE USER_ID = #{userId}
+	</select>
 
 	<!-- 아이디 찾기 -->
 	<select id="selectFindId" resultMap="memberResultSet">
