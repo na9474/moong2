@@ -125,10 +125,10 @@
     
     <!-- 선생 과외스타일 -->
     <select id="styleTeacher" resultType="com.kh.moong.charts.model.vo.Chart">
-       SELECT LE_STYLE "LABEL",
+       SELECT TEACHINGSTYLE "LABEL",
        COUNT(*) "COUNTS"
        FROM LESSON_ENROLL
-       GROUP BY LE_STYLE
+       GROUP BY TEACHINGSTYLE
     </select>
 
 </mapper>
