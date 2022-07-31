@@ -78,7 +78,7 @@
                     <thead>
                         <tr>
                             <td>과목</td>
-                            <td>등급</td>
+                           
                             <td>이름</td>
                             <td>성별</td>
                             <td>담당학년</td>
@@ -117,7 +117,7 @@
                     							<td>영어</td>
                     						</c:otherwise>
                     					</c:choose>
-                    					<td>${l.rating}</td>
+                    					
 			                    		<td>${l.userName}</td>
 			                    		<c:choose>
 				                    		<c:when test="${l.gender eq 'M'}">
@@ -141,7 +141,7 @@
 			                    				<td>상관없음</td>
 			                    			</c:otherwise>
 			                     		</c:choose>
-			                    		<td><button class="btn moong-yellow detailLe" style="margin:0px;" ">상세보기</button></td>
+			                    		<td><button class="btn moong-yellow detailLe" style="margin:0px;" >상세보기</button></td>
 			                    	</tr>
                     			</c:forEach>
                     	</c:otherwise>

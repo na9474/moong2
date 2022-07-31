@@ -1,7 +1,6 @@
 package com.kh.moong.matching.controller;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -19,6 +17,7 @@ import com.kh.moong.matching.model.service.MatchingService;
 import com.kh.moong.matching.model.service.MatchingServiceNam;
 import com.kh.moong.matching.model.vo.Matching;
 import com.kh.moong.matching.model.vo.Room;
+import com.kh.moong.matching.model.vo.Talarm;
 
 @Controller
 public class MatchingController {
@@ -205,9 +204,6 @@ public class MatchingController {
 		Matching m = null;
 		if(result>0) {//선생님한테 url보내기 가능 조건 가져가서 비교 
 			 m= ms.cheifCheck2(userNo);
-			
-		}else {
-			
 		}
 		
 	
@@ -218,35 +214,153 @@ public class MatchingController {
 	// 학생 - 매칭된 그룹 채팅방 url 보여주기
 	@RequestMapping("roomList.rm")
 	public String roomList(Room r, Model model) {
+		
 		ArrayList<Room> rmList = msn.roomList(r);
 		model.addAttribute("rmList", rmList);
 		
 		return "room/roomList";
 	}
 	
+	// 학생 - 매칭완료 확인후 그룹채팅방 url보여주기
+	@RequestMapping("checkUrl.ma")
+	public ModelAndView checkUrl(int userNo, ModelAndView mv) {
+		
+		int result = ms.checkUrl(userNo);
+		
+		if(result>0) {
+			mv.setViewName("redirect:roomList.rm?userNo="+userNo);
+		}else {
+			mv.addObject("errorMsg","오류오류").setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
 	
-	//선생 - 채팅방 url 보내기  
+	
+	//학생 ->선생 - 채팅방 url 보내기  
 	@RequestMapping("sendurl.ma")
-	public ModelAndView sendUrl(int groupNo, ModelAndView mv) {
+	public ModelAndView sendUrl(Talarm t,int leNo, ModelAndView mv,HttpSession session) {
 		
-		//해당그룹의 sendURL 'N'
-		int result = ms.sendUrl(groupNo);
+		//해당그룹의 sendURL 'Y'
+		int result1 = ms.sendUrl(t.getGroupNo());
 		
 		
-		if(result>0) {//update 성공
-			//선생님에게 알림 -> 링크 보여주기 
-			 //해당유저가 가지고 있는 url 가져오기 
-				Room r = ms.selectUrl(groupNo);
-				System.out.println(r.getRoomUrl());
+		if(result1>0) {//update 성공
+			//선생님에게 알림  
+			 int result2 =ms.insertTAlarm(t);
+			 if(result2>0) {
+				 session.setAttribute("alertMsg", "초대요청을 보냈습니다.");
+					mv.setViewName("redirect:detail.le?leNo="+leNo);
+			 }else {
+				 mv.addObject("errorMsg","오류오류 talarm insert실패").setViewName("common/errorPage");
+			 }
+				
 		}else {//update 실패
+			mv.addObject("errorMsg","오류오류 sendurl변경실패").setViewName("common/errorPage");
+		}
+		
+		return mv;
+	}
+	
+	
+	//선생 - 학생매칭취소 (해당학생 다른선생초대가능)
+	@RequestMapping("matcingCancel.ma")
+	public ModelAndView matchingCancel(ModelAndView mv, int userNo,HttpSession session,int groupNo) {
+		
+		int result1 = ms.updateSendUrl(groupNo);
+		int result2 = ms.talarmStatusUpdate(groupNo);
+		int result3 = ms.urlAlertUpdate(groupNo);
+		if(result1*result2*result3>0) {
+					session.setAttribute("alertMsg", "매칭이 취소되었습니다.");
+					mv.setViewName("redirect:teacherAlarmList.ma?userNo="+userNo);
+		}else {
+			mv.addObject("errorMsg","매칭취소update실패").setViewName("common/errorPage");
+		}
+		return mv;
+	}
+	
+	//선생 - 알람리스트
+
+	@RequestMapping("teacherAlarmList.ma")
+	public ModelAndView teacherAlarmList( ModelAndView mv,int userNo) {
+		
+		ArrayList<Talarm> list = ms.checkGroupNo(userNo);
+			
+			mv.addObject("list",list).setViewName("matching/teacherAlarmList");
+		return mv;
+	}
+	
+	//선생 - 알람리스트 그룹정보확인 AJAX
+	@ResponseBody
+	@RequestMapping(value ="matchingInfo.ma",produces="application/json; charset=UTF-8")
+	public String matchingInfo(int groupNo) {
+		
+		Matching m = ms.matchingInfo(groupNo);
+		
+		
+		return new Gson().toJson(m);
+	}
+	//학생 -선생님이 취소한요청확인
+	
+	@ResponseBody
+	@RequestMapping(value ="sendUrlAlert.ma",produces="application/json; charset=UTF-8")
+	public String sendUrlAlert(int userNo) {
+		
+		int groupNo = ms.selectGroupNo(userNo);
+		
+		int result = ms.checkSendUrlCount(userNo);
+		
+		if(result*groupNo>0) {
+			int result2 = ms.urlAlertUpdate2(groupNo);
 			
 		}
 		
-		
-		 
-		
-		return null;
+		return new Gson().toJson(result);
 	}
+	
+	
+	//선생 - 채팅방 URL확인 AJAX
+	
+	@ResponseBody
+	@RequestMapping(value ="matchingURL.ma",produces="application/json; charset=UTF-8")
+	public String matchingURL(int groupNo) {
+		
+		Room r = ms.matchingURL(groupNo);
+		
+		
+		return new Gson().toJson(r);
+	}
+	
+	// 선생 - url등록온거 요청 확인 후 alert창
+		
+		@ResponseBody
+		@RequestMapping(value ="checkSendUrl1.ma",produces="application/json; charset=UTF-8")
+		public String checkSendUrl1(int userNo) {
+			
+			int result1 = ms.checkSendUrl(userNo);
+			if(result1>0) {
+						//alert Y 로 바꿈 ->알람 띄우지 않음 
+			ms.checkSendUrlUpdate(userNo);
+				
+			}else {
+				
+			}
+		
+			
+			return new Gson().toJson(result1);
+		}
+		
+		// 선생 - url등록온거 요청 확인 후 check표시
+		
+				@ResponseBody
+				@RequestMapping(value ="checkSendUrl2.ma",produces="application/json; charset=UTF-8")
+				public String checkSendUrl2(int userNo) {
+					
+					int result1 = ms.checkSendUrl2(userNo);
+				
+					return new Gson().toJson(result1);
+				}
+	
 	
 	// 관리자 - 매칭그룹 채팅방 url 목록 불러오기
 	@RequestMapping("adRoomList.rm")
@@ -280,6 +394,13 @@ public class MatchingController {
 			return "redirect:adRoomList.rm";
 		}
 	}
+	
+	
+	
+	
+	
+	
+	
 	
 //	// 관리자 - 매칭그룹 채팅방 url 삭제하기(체크박스)
 //	@RequestMapping(value="deleteUrl.rm", method=RequestMethod.POST)

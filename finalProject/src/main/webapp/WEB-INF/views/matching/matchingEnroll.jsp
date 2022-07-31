@@ -12,6 +12,7 @@
 <link rel="icon" type="image/png" href="./resources/img/logo-dark.png"/>
 <style>
  /*영역지정*/
+ 
         #matching-outer {
             width: 1650px;
             height: 650px;
@@ -108,18 +109,25 @@
             margin-bottom: 5px;
             padding: 5px;
             font-size:20px;
-            font-weight:500;
+            
+            background:rgb(251, 176, 76);
+            border-radius: 10px;
+            
           }
           #resultDay{
            z-index: -3;
            text-align: center;
           }
           .resultDayIn:hover{
+            color:white;
             cursor: pointer;
+           transition: 0.5s;
             
           }
           /*입력폼관련*/
-
+            #footer{
+                margin-top:130px
+            }
     </style>
 </head>
 
@@ -317,9 +325,9 @@
                 </table>
                
                 <div id="form-btn">
-                <button type="reset" style="float: left; " class="btn moong-dark" >초기화</button>
+                <button type="reset" style="float: left; " class="btn moong-dark" id="reSet" >초기화</button>
                 <c:choose>
-                    <c:when test="${loginUser.student} eq 'Y'">
+                    <c:when test="${loginUser.student eq 'Y'}">
                         <button type="submit" style="float: right;" id="ok" class="btn moong-yellow" >매칭시작</button>
                     </c:when>
                     <c:otherwise>
@@ -330,10 +338,20 @@
                 
                 </div>
             </form>
+            
         </div>
+         
     </div>
+    <jsp:include page="../common/footer.jsp"/>
     	<script>
-
+			
+    	  
+    	  $("#reSet").click(function(){
+    		  $('#resultDay').children('.resultDayIn').remove();
+    		  $('#day').val("");
+    		  $('#area').val("");
+    	  })
+    		
            $("#studentCertification").click(function(){
                 alert("학생회원만 사용할 수 있습니다.")
            })
@@ -514,5 +532,6 @@
 
                    
                  </script>
+                
 </body>
 </html>

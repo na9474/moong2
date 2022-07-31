@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.kh.moong.matching.model.dao.MatchingDao;
 import com.kh.moong.matching.model.vo.Matching;
 import com.kh.moong.matching.model.vo.Room;
+import com.kh.moong.matching.model.vo.Talarm;
 
 @Service
 public class MatchingServiceImpl implements MatchingService{
@@ -142,6 +143,109 @@ public class MatchingServiceImpl implements MatchingService{
 		
 		return matchingDao.selectUrl(sqlSession,groupNo);
 	}
+
+
+	@Override
+	public int checkUrl(int userNo) {
+		
+		return matchingDao.checkUrl(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int insertTAlarm(Talarm t) {
+		
+		return matchingDao.insertTAlarm(sqlSession,t);
+	}
+
+
+	@Override
+	public ArrayList<Talarm> checkGroupNo(int userNo) {
+		
+		return matchingDao.checkGroupNo(sqlSession,userNo);
+	}
+
+
+	@Override
+	public Matching matchingInfo(int groupNo) {
+		
+		return matchingDao.matchingInfo(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public Room matchingURL(int groupNo) {
+		
+		return matchingDao.matchingURL(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int updateSendUrl(int groupNo) {
+		
+		return matchingDao.updateSendUrl(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int talarmStatusUpdate(int groupNo) {
+		
+		return matchingDao.talarmStatusUpdate(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int checkSendUrl(int userNo) {
+		
+		return matchingDao.checkSendUrl(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int checkSendUrlUpdate(int userNo) {
+		
+		return matchingDao.checkSendUrlUpdate(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int checkSendUrl2(int userNo) {
+		
+		return matchingDao.checkSendUrl2(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int urlAlertUpdate(int groupNo) {
+		
+		return matchingDao.urlAlertUpdate(sqlSession,groupNo);
+	}
+
+
+	@Override
+	public int selectGroupNo(int userNo) {
+		
+		return matchingDao.selectGroupNo(sqlSession,userNo);
+	}
+
+
+	@Override
+	public int checkSendUrlCount(int userNo) {
+		
+		return matchingDao.checkSendUrlCount(sqlSession,userNo);
+	}
+
+
+
+
+	@Override
+	public int urlAlertUpdate2(int groupNo) {
+		
+		return matchingDao.urlAlertUpdate2(sqlSession,groupNo);
+	}
+
+
+	
 
 
 

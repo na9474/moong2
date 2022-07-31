@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.kh.moong.matching.model.vo.Matching;
 import com.kh.moong.matching.model.vo.Room;
+import com.kh.moong.matching.model.vo.Talarm;
 
 @Repository
 public class MatchingDao {
@@ -112,6 +113,86 @@ public Room selectUrl(SqlSessionTemplate sqlSession, int groupNo) {
 	
 	return sqlSession.selectOne("RoomMapper.selectUrl",groupNo);
 }
+
+public int checkUrl(SqlSessionTemplate sqlSession, int userNo) {
+
+	return sqlSession.update("MatchingMapper.checkUrl",userNo);
+}
+
+public int insertTAlarm(SqlSessionTemplate sqlSession, Talarm t) {
+	
+	return sqlSession.insert("MatchingMapper.insertTAlarm",t);
+}
+
+public ArrayList<Talarm> checkGroupNo(SqlSessionTemplate sqlSession, int userNo) {
+	ArrayList<Talarm> t = null;
+		
+	try {
+		 t= (ArrayList)sqlSession.selectList("MatchingMapper.checkGroupNo",userNo);
+		 return t;
+	}catch(NullPointerException e) {
+		return t;
+	}
+	
+	
+}
+
+public Matching matchingInfo(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.matchingInfo",groupNo);
+}
+
+public Room matchingURL(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.selectOne("RoomMapper.selectUrl",groupNo);
+}
+
+public int updateSendUrl(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.updateSendUrl",groupNo);
+}
+
+public int talarmStatusUpdate(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.talarmStatusUpdate",groupNo);
+}
+
+public int checkSendUrl(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.checkSendUrl",userNo);
+}
+
+public int checkSendUrlUpdate(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.update("MatchingMapper.checkSendUrlUpdate",userNo);
+}
+
+public int checkSendUrl2(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.checkSendUrl2",userNo);
+}
+
+public int urlAlertUpdate(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.urlAlertUpdate",groupNo);
+}
+
+public int selectGroupNo(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.selectGroupNo",userNo);
+}
+
+public int checkSendUrlCount(SqlSessionTemplate sqlSession, int userNo) {
+	
+	return sqlSession.selectOne("MatchingMapper.checkSendUrlCount",userNo);
+}
+
+public int urlAlertUpdate2(SqlSessionTemplate sqlSession, int groupNo) {
+	
+	return sqlSession.update("MatchingMapper.urlAlertUpdate2",groupNo);
+}
+
+
 
 
 }
