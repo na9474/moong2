@@ -17,6 +17,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="USER_ID" property="userId"/>
 	</resultMap>
 	
+	<select id="selectTags" resultType="string">
+		SELECT DISTINCT(TAG) FROM SOLUTION
+	</select>
+	
 	<select id="selectListCount" resultType="_int">
 		SELECT COUNT(*)
 		FROM SOLUTION
@@ -48,12 +52,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='subject == "수학"'>
             and s.subject = '수학'
         </if>
-        <if test='tag == "수능"'>
-            and s.tag = '수능'
+        <if test='tag neq null and id neq ""'>
+            and s.tag = #{tag}
         </if>
-        <if test='tag == "자주나오는문제"'>
-            and s.tag = '자주나오는문제'
-        </if>
+
 		ORDER BY CREATE_DATE DESC)
 	</select>
 	
@@ -97,5 +99,69 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		SET STATUS='N'
 		WHERE SOLUTION_NO = #{solutionNo}
 	</update>
+	
+	<insert id="insertSolutionFiles" parameterType="solutionFiles">
+		INSERT INTO SOLUTION_FILES(
+						  SF_NO
+						 ,SF_ORIGINNAME
+						 ,SF_SYSNAME
+						 ,SOLUTION_NO
+						 )
+		VALUES(
+				SEQ_SFNO.NEXTVAL
+				,#{sfOriginName}
+				,#{sfSysName}
+				,0
+				)
+	</insert>
+	
+	<update id="updateSolutionNo">
+		UPDATE SOLUTION_FILES
+		SET SOLUTION_NO = #{solutionNo}
+		WHERE SF_SYSNAME = #{sfSysName}
+	</update>
+	
+	<update id="updateSolution">
+		UPDATE SOLUTION
+		SET TITLE = #{title},	
+			SOLUTION_CONTENTS = #{solutionContents},
+			SUBJECT = #{subject},
+			TAG = #{tag}
+		WHERE SOLUTION_NO = #{solutionNo}
+	</update>
+	
+	<select id="selectTag" resultType="string">
+		SELECT TAG 
+		FROM SOLUTION
+		WHERE STATUS = 'Y'
+	</select>
+	
+	<select id="teacherSolution" resultMap="solutionResultSet">
+		SELECT ROWNUM, A.*
+    	FROM
+        (SELECT S.* ,M.USER_ID
+        FROM SOLUTION S
+        JOIN MEMBER M ON S.USER_NO=M.USER_NO
+            WHERE S.STATUS = 'Y'
+                AND SUBJECT = #{subject}
+                AND SOLUTION_NO NOT IN (SELECT SOLUTION_NO FROM SOLUTION_CMT)
+        ORDER BY DBMS_RANDOM.RANDOM) A
+        WHERE <![CDATA[ROWNUM<=3]]>
+	</select>
+	
+	<select id="studentSolution" resultMap="solutionResultSet">
+        SELECT ROWNUM, A.*
+            FROM
+                (SELECT S.* ,M.USER_ID
+                FROM SOLUTION S
+                JOIN MEMBER M ON S.USER_NO=M.USER_NO
+		    WHERE S.STATUS = 'Y'
+		    	AND SUBJECT = #{subject}
+		        AND S.USER_NO IN 
+		        (SELECT USER_NO FROM STUDENT WHERE YEAR = 
+		            (SELECT YEAR FROM STUDENT WHERE USER_NO = #{userNo}))
+		             ORDER BY DBMS_RANDOM.RANDOM) A
+		WHERE <![CDATA[ROWNUM<=3]]>
+	</select>
 	
 </mapper>

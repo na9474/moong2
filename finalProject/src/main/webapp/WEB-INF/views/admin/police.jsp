@@ -33,33 +33,8 @@
 	<br>
 	<br>
     <div class="container-md p-4 bg-white rounded">
-     <!-- 신고리스트 페이지 -->
-     	
-<!--      	<ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist"> -->
-<!-- 		  <li class="nav-item" role="presentation"> -->
-<!-- 		    <a class="nav-link active btn btn-outline-dark btn-sm" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" style="color:black">게시물</a> -->
-<!-- 		  </li> -->
-<!-- 		  <li class="nav-item" role="presentation"> -->
-<!-- 		    <a class="nav-link btn btn-outline-dark btn-sm" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false" style="color:black">댓글</a> -->
-<!-- 		  </li> -->
-<!-- 		</ul> -->
-<!-- 		<div class="tab-content" id="pills-tabContent"> -->
-<!-- 		  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab"> -->
-		  
-		  
-		  
-		  
-		  
-<!-- 		  </div> -->
-		  
-		  
-		  
-<!-- 		  <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">...</div> -->
-     
-     
      
         <a class="btn moong-dark" href="list.po">게시물</a>
-<!-- 		<button id="policeBtn2" type="submit" class="btn moong-dark">댓글</button> -->
 		<a class="btn moong-dark" href="cmtList.po">댓글</a>
 		<br><br>
 
@@ -125,11 +100,7 @@
 			</ul>
 		</div>
               
-
-
-
     </div>
-    
     
 </body>
 </html>

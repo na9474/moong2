@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,9 +58,9 @@
     }
     #idc{
         
-        width: 500px;
-        height: 700px;
-        margin: auto;
+              width: 400px;
+    	height: 500px;
+    	margin: auto;
         margin-bottom: 10px;
         /*공란색칠*/
         background-color: orange;
@@ -137,7 +139,12 @@
                     </tr>
                     <tr>
                         <td>성별 : </td>
-                        <td>${loginUser.gender }</td>
+						<c:if test="${loginUser.gender eq 'M' }">
+                        <td>남</td>
+                        </c:if>
+                        <c:if test="${loginUser.gender eq 'F' }">
+                        <td>여</td>
+                        </c:if>
                     </tr>
                     <tr>
                         <td>이메일 : </td>
@@ -170,7 +177,7 @@
 
                 <div style="margin:auto; height: 800px;">
                     <div class="mid">재학 증명서</div>
-                    <div id="idc"></div>
+
                     <div>첨부파일 :  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="file" name="idCard" required> </div>
                     
                 </div>
