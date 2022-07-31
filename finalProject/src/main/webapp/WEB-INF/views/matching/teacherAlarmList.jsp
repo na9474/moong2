@@ -63,6 +63,7 @@
      <jsp:include page="../common/header.jsp"/>
     <div id="alarm-outer">
         <div id="subtit">
+        
           	  매칭 초대  알람 <br>
             
             <span style="font-size: 20px; visibility:hidden;" id="alarmspan">초대된 매칭이 있습니다.</span>
