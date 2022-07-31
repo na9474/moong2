@@ -24,8 +24,8 @@
 		    <div>
 		    	<b><span style="color:red;">*</span><span class="rN"> 안내사항 !</span></b><br>
 		    	<span class="rN1">
-		    		랜덤매칭 성사 후 채팅방이 생성되는 데에 다소 시간이 소요될 수 있습니다.<br>
-		    		이 점 양해 바랍니다.
+		    		카카오톡 오픈채팅방에서 랜덤매칭된 학생들을 만날 수 있습니다.<br>
+		    		카카오톡이 없으면 지금 설치해주세요!
 		    	</span>
 		    </div>
 		    <br><br>

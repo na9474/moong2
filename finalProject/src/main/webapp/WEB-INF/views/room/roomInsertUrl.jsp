@@ -17,23 +17,11 @@
 	<div id="ir_wrap">
 		<div class="title"><h2>채팅방 링크</h2></div>
 	    <br><br>
-<!-- 	    <div> -->
-<!-- 	    	<span id="room"> -->
-<!-- 	    		<select name="sOption"> -->
-<!-- 	    			<option value="all">전체</option> -->
-<!-- 	    			<option value="rno">방 번호</option> -->
-<!-- 	    			<option value="url">링크</option> -->
-<!-- 	    		</select> -->
-<!-- 	    		<input type="text" class="search" name="k" value=""> -->
-<!-- 	    		<input type="submit" value="검색"> -->
-<!-- 		    </span> -->
-<!-- 	    </div> -->
-	    <br>
 	    <div id="table-scroll">
 		    <table align="center" id="matchingTable">
 		    	<thead>
 		    		<tr>
-		    			<th width="80px;">매칭그룹번호</th>
+		    			<th width="80px;">매칭번호</th>
 		    			<th width="400px;">채팅방 링크</th>
 		    			<th width="60px;">&nbsp;</th>
 		    		</tr>
@@ -47,9 +35,11 @@
 				    				<td><a href="${a.roomUrl }" id="at">${a.roomUrl }</a></td>
 				    			</c:if>
 			    			</c:forEach>
+						    <td>
 			    			<c:if test="${loginUser.userId eq 'admin'}">
-						    	<td><button type="button" id="in" class="in" data-toggle="modal" data-target="#insertUrl">추가</button></td>
+						    	<button type="button" id="ab" class="in inb" data-toggle="modal" data-target="#insertUrl">추가</button>
 						    </c:if>
+						    </td>
 			    		</tr>
 		    		</c:forEach>
 		    	</tbody>
@@ -61,7 +51,7 @@
     		$('.in').click(function(){
     			 var a = $(this).parents().children(".roomNo").text();
     			$("#groupNo").val(a);
-    		})
+    		});
     	})
     </script>
     
@@ -82,11 +72,17 @@
                     </div>
                     <!-- Modal Footer -->
                 	<div class="modal-footer" align="center">
-                        <button type="submit" id="in">추가</button>
+                        <button type="submit" id="in" class="inb">추가</button>
                 	</div>
                 </form>
             </div>
         </div>
     </div>
+    
+	<script>
+		$(function(){
+			
+		});
+	</script>
 </body>
 </html>

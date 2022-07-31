@@ -152,7 +152,7 @@
         }
         .mo {
         	background-color: rgb(251, 176, 76);
-        	color: rgb(49, 48, 47);
+        	color: white;
         }
         .cd {
         	font-size: 14px;
@@ -397,6 +397,11 @@
         });
     	
       
+        // 후기
+        $(function(){
+        	reviewList();	
+        });
+        
     	// 후기 쓰기
         function addReview(){
         	if($("#reply").val().trim().length != 0){
@@ -431,11 +436,6 @@
         }
         </c:if>
         
-        
-        // 후기
-        $(function(){
-        	reviewList();	
-        });
         
         // 후기 목록
         function reviewList(){

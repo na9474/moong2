@@ -65,7 +65,8 @@ public class MemberController {
 
 		Member loginUser = memberService.loginMember(m);
 		
-		if(loginUser.getUserNo() == 1) {// 관리자가 로그인했을 때
+		// 관리자가 로그인했을 때(관리자 비번 암호화안돼있음 - 1234)
+		if(loginUser.getUserNo() == 1) {
 			session.setAttribute("loginUser", loginUser);
 			return "redirect:/";
 		}
@@ -108,14 +109,14 @@ public class MemberController {
 		}
 	
 	// 아이디 중복 체크
-//	@RequestMapping("idCheck.me")
-//	@ResponseBody
-//	public String idCheck(String checkId) {
-//		
-//		int count = memberService.idCheck(checkId);
-//			
-//		return (count > 0) ? "NOPE" : "YEAH";
-//	}
+	@RequestMapping("idCheck.me")
+	@ResponseBody
+	public String idCheck(String checkId) {
+		
+		int count = memberService.idCheck(checkId);
+			
+		return (count > 0) ? "NOPE" : "YEAH";
+	}
 	
 	// 아이디 | 비밀번호 찾기 포워딩
 	@RequestMapping("findIdPw.me")

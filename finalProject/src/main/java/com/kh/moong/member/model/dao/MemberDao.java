@@ -33,9 +33,9 @@ public class MemberDao {
 //	}
 
 	// 아이디 유효성 검사
-//	public int idCheck(SqlSessionTemplate sqlSession, String userId) {
-//		return sqlSession.selectOne("memberMapper.idOk",userId);
-//	}
+	public int idCheck(SqlSessionTemplate sqlSession, String userId) {
+		return sqlSession.selectOne("memberMapper.idOk",userId);
+	}
 	
 	// 아이디 찾기
 	public Member selectFindId(SqlSessionTemplate sqlSession, Member m) {

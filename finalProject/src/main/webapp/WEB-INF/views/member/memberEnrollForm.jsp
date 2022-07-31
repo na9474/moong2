@@ -124,13 +124,16 @@
 								if(e == "NOPE"){  // 입력한 아이디값이 DB에 저장된 아이디와 일치하여 'NOPE'이 반환된 경우
 									$("#chkArea,#check").show();
 									$("#check").css("color", "red").text("이미 사용중이거나 탈퇴한 아이디입니다.");
+									$("#pw,#rpw").attr("disabled", true);
 								} else if(!idReg.test($idchk.val())){  // 아이디 정규식과 입력한 아이디값이 일치하지 않을 때
 									$("#chkArea,#check").show();
 									$("#check").css("color", "red").text("5~20자 영문 소문자와 숫자로만 입력하세요.");
+									$("#pw,#rpw").attr("disabled", true);
 								} else if(e == "YEAH") {  // 입력한 아이디값이 DB에 저장된 아이디와 일치하는 것이 없어 'YEAH'가 반환된 경우
 									$("#chkArea,#check").show();
 									$("#check").css("color", "rgb(251, 176, 76)").text("사용 가능한 아이디입니다.");
-								}
+									$("#pw,#rpw").attr("disabled", false);
+								} 
 							}
 						});
 					} else {  // 입력한 아이디값의 길이가 5글자 미만일 때
@@ -151,29 +154,35 @@
 					if(!pwdReg.test(pwd)){
 						$("#chkArea2,#check2").show();
 						$("#check2").css("color","red").text("8~15자 영문 대/소문자와 숫자, 특수문자(!, @, #, $, %, ^, *)만 입력하세요.");
+						$("#rpw").attr("disabled", true);
 					}
 					// 숫자와 영문자를 문자열 내의 모든 패턴에서 찾을 때(영문자는 대소문자 가리지 않고 비교)
 					if(chkNum < 0 || chkEng < 0){
 						$("#chkArea2,#check2").show();
 						$("#check2").css("color","red").text("영문자와 숫자를 모두 사용하세요.");
+						$("#rpw").attr("disabled", true);
 					}
 					// 영문자와 숫자를 연속 3번 이상 사용했을 때
 					if(/(\w)\1\1/.test(pwd)){
 						$("#chkArea2,#check2").show();
 						$("#check2").css("color","red").text("비밀번호에 같은 문자를 3번 이상 사용할 수 없습니다.");
+						$("#rpw").attr("disabled", true);
 					}
 					// 입력한 비밀번호값에서 입력한 아이디값과 일치하는 시작인덱스값이 있을 때
 					if(pwd.search(id) > -1){
 						$("#chkArea2,#check2").show();
 						$("#check2").css("color","red").text("비밀번호에 아이디를 포함할 수 없습니다.");
+						$("#rpw").attr("disabled", true);
 					}
 					// 비밀번호 입력란이 비어있을 때
 					if($("#pw").val() == ""){
 						$("#chkArea2,#check2").hide();
+						$("#rpw").attr("disabled", true);
 					}
 					// 비밀번호 정규식과 일치할 때
 					if(pwdReg.test(pwd)){
 						$("#chkArea2,#check2").hide();
+						$("#rpw").attr("disabled", false);
 					}
 				}
 				
@@ -184,9 +193,11 @@
 							$("#chkArea3,#check3").show();
 							$("#check3").css("color","red").text("비밀번호가 일치하지 않습니다.");
 							$(".enroll_btn").prop("disabled",true);
+							$("#name").attr("disabled", true);
 						} else {  // 각 값이 같을 때
 							$("#chkArea3,#check3").show();
 							$("#check3").css("color","rgb(251, 176, 76)").text("비밀번호가 일치합니다.");
+							$("#name").attr("disabled", false);
 						}
 					} else {  // 입력한 비밀번호 재확인값의 길이가 8글자 미만일 때
 						$("#chkArea3").hide();
@@ -231,28 +242,32 @@
 						$resultMsg.css("color","rgb(251, 176, 76)").html("인증번호가 일치합니다.");
 						$("#email").prop("readonly", true);
 						$(".enroll_btn").prop("disabled",false); // 회원가입 버튼 활성화
+						$("#birth").attr("disabled", false);
 					} else {
 						$resultMsg.css("color","red").html("인증번호가 일치하지 않습니다.");
+						$("#birth").attr("disabled", true);
 					}
 				});
 				
 				// -------- 이메일 인증 유효시간 -------- //
-				var time = 180;
-				var min = "";
-				var sec = "";
 				
-				var t = setInterval(function(){
-					min = parseInt(time/60);
-					sec = time%60;
-					
-					$("#timer").html("유효시간 "+min+":"+sec);
-					time--;
-					
-					if(time < 0){  // 유효시간 끝난 후 입력 막기
-						clearInterval(t);
-						$("#auth").prop("disabled",true);
-					}
-				}, 1000);
+					var time = 180;
+					var min = "";
+					var sec = "";
+				
+					var t = setInterval(function(){
+						min = parseInt(time/60);
+						sec = time%60;
+						
+						$("#timer").html("유효시간 "+min+":"+sec);
+						time--;
+						
+						if(time < 0){  // 유효시간 끝난 후 입력 막기
+							clearInterval(t);
+							$("#auth").prop("disabled",true);
+						}
+					}, 1000);
+				
 			});
 		</script>
     </div>
