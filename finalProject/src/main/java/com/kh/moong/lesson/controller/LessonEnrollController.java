@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
@@ -13,18 +14,23 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.google.gson.Gson;
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.common.template.Pagination;
 import com.kh.moong.lesson.model.service.LessonEnrollService;
 import com.kh.moong.lesson.model.vo.Districts;
+import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
 import com.kh.moong.matching.model.service.MatchingService;
 import com.kh.moong.member.model.service.MemberServiceLee;
 import com.kh.moong.member.model.vo.IdPicture;
+import com.kh.moong.member.model.vo.Teacher;
 
 @Controller
 public class LessonEnrollController {
@@ -196,6 +202,24 @@ public class LessonEnrollController {
 			return mv;
 		}
 		
+		//나이 게산 메소드
+		public int getAge(java.sql.Date birth) {
+			
+			//현재 년도 구하기
+			Calendar now = Calendar.getInstance(); //년월일시분초
+			Integer currentYear = now.get(Calendar.YEAR);
+			
+			//태어난년도를 위한 세팅
+			SimpleDateFormat format = new SimpleDateFormat("yyyy");
+			String stringBirthYear = format.format(birth); //년도만받기
+			
+			//태어난 년도
+			Integer birthYear = Integer.parseInt(stringBirthYear);
+			
+			 // 현재 년도 - 태어난 년도 => 나이 (만나이X)		 
+			return (currentYear - birthYear +1);
+		}
+		
 		
 		//모든 선생님 과외정보 페이지 공통
 		//등록한 과외정부 세부보기
@@ -204,11 +228,17 @@ public class LessonEnrollController {
 					
 					LessonEnroll l = ls.selectLesson(leNo);
 					int userNo = Integer.parseInt(l.getUserNo());
-					IdPicture ip =memberService.selectIp(userNo);
+					IdPicture ip1 = ls.selectIp(userNo);
+					Teacher t = ls.selectMember(userNo);
+					
+					java.sql.Date birth = t.getBirth();
+					int age = getAge(birth);
+					
+					
 					//조회성공
 					if(l.getLeNo()>0) {
 						
-						mv.addObject("idPicture",ip).addObject("l",l).setViewName("lesson/lessonDetail");
+						mv.addObject("idPicture",ip1).addObject("l",l).addObject("t",t).addObject("age",age).setViewName("lesson/lessonDetail");
 					//조회실패
 					}else {
 						mv.addObject("errorMsg","조회실패").setViewName("common/errorPage");
@@ -327,7 +357,63 @@ public class LessonEnrollController {
 			
 			
 			
+			// 후기 쓰기(한 번 작성하면 재작성X)
+			@RequestMapping(value="revinsert.rv", produces="application/json; charset=UTF-8")
+			@ResponseBody
+			public String insertReview(LessonReview lr) {
+				LessonReview wr = ls.isWriteReview(lr);
+				String rv = "";
+				
+				if(wr == null) {
+					int result = ls.insertReview(lr);
+					
+					if(result > 0) {
+						rv = "Y";
+					} else {
+						rv = "N";
+					}
+					return new Gson().toJson(rv);
+					
+				} else {
+					rv = "nn";
+					
+					return new Gson().toJson(rv);
+				}
+			}
 			
+			// 후기 목록
+			@RequestMapping(value="revlist.rv", produces="application/json; charset=UTF-8")
+			@ResponseBody
+			public String reviewList(int refLeNo) {
+				
+				ArrayList<LessonReview> rvList = ls.reviewList(refLeNo);
+
+				return new Gson().toJson(rvList);
+			}
+			
+			// 해당 선생님의 과외학생인지
+			@RequestMapping(value="revCount.rv", produces="application/json; charset=UTF-8")
+			@ResponseBody
+			public String countStudent(Lesson les) {
+				int stuCount = ls.countStudent(les);
+				return new Gson().toJson(stuCount);
+			}
+			
+			// 후기 수정
+			@RequestMapping(value="modifyRev.rv", produces="application/json; charset=UTF-8")
+			@ResponseBody
+			public String modiReview(LessonReview lr) {
+				int result = ls.modiReview(lr);
+				
+				String modiRv = "";
+				
+				if(result > 0) {
+					modiRv = "Y";
+				} else {
+					modiRv = "N";
+				}
+				return new Gson().toJson(modiRv);
+			}
 }
 
 

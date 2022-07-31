@@ -180,7 +180,8 @@
     </table>
     <br><br>
 
-    <button type="submit">수정하기</button> <button type="reset">취소</button>
+    <button type="submit" class="moong-yellow">수정하기</button> 
+    <button type="reset" class="moong-dark">취소</button>
     </form>
     </div>
         

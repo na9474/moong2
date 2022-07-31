@@ -96,6 +96,13 @@
         width: 600px;
     }
 
+     /*버튼 */
+	.find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
     
 </style>
 </head>
@@ -121,7 +128,12 @@
                     </tr>
                     <tr>
                         <td>성별 : </td>
-                        <td>${loginUser.gender }</td>
+                        <c:if test="${loginUser.gender eq 'M' }">
+                        <td>남</td>
+                        </c:if>
+                        <c:if test="${loginUser.gender eq 'F' }">
+                        <td>여</td>
+                        </c:if>
                     </tr>
                     <tr>
                         <td>나이 : </td>
@@ -152,9 +164,14 @@
                 </table>
 
                 <div class="line"></div>
+        <div class="find-btn">
                 
-		<button onclick="location.href='stuUpdate.me'" style="float: right; margin:auto">수정하기</button>
-		<button onclick="location.href='stuDelete.me'" style="float: right; margin:auto">탈퇴하기</button>
+			<button onclick="location.href='stuUpdate.me'" style="margin:auto"class="moong-dark find-btn1">수정하기</button>
+			<button onclick="location.href='stuDelete.me'" style="margin:auto"class="moong-dark find-btn1">탈퇴하기</button>
+        
+       		<button onclick="location.href='pwUpdateForm.me'" style="float:right;" class="moong-yellow">비밀번호 변경</button>
+        </div>
+        
         </div>
     </div>
         

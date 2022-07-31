@@ -179,7 +179,15 @@ public int urlAlertUpdate(SqlSessionTemplate sqlSession, int groupNo) {
 
 public int selectGroupNo(SqlSessionTemplate sqlSession, int userNo) {
 	
-	return sqlSession.selectOne("MatchingMapper.selectGroupNo",userNo);
+
+		
+		try {
+			return sqlSession.selectOne("MatchingMapper.selectGroupNo",userNo); 
+			
+		}catch(NullPointerException e) {
+			return 0;
+		}
+	
 }
 
 public int checkSendUrlCount(SqlSessionTemplate sqlSession, int userNo) {

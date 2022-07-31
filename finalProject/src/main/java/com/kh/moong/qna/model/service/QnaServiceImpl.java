@@ -84,4 +84,10 @@ public class QnaServiceImpl implements QnaService {
 		return qnaDao.updateQfQnaNo(sqlSession,qq);
 	}
 
+	//댓글 개수
+	@Override
+	public ArrayList<QnaAnswer> qaCount() {
+		return qnaDao.qaCount(sqlSession);
+	}
+
 }

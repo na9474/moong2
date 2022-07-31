@@ -97,18 +97,25 @@
         width: 600px;
     }
 
+	.rCount{
+		color : grey;
+	}
     
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
+	<c:if test="${loginUser.userNo ne 1 }">
 	<jsp:include page="../common/myPageNavi.jsp"/>
-	
+ 	</c:if>
  <div class="outer" align="center">
         <br><br><br><br>
         <div>
         <h4><b>QnA 목록</b></h4>
+        
+        <c:if test="${loginUser.userNo ne 1}">
         <button onclick="location.href='qnaEnrollForm.qu' " class="moong-yellow" style="float: right; margin:auto">QnA작성</button>
+        </c:if>
         <br><br>
          <table align="center" class="table table-hover" id="boardList">
             <thead>
@@ -123,9 +130,15 @@
             <tbody>
                 <c:forEach var="q" items="${list }">
                 <tr align="center">
-                    <td id="qnaNo">${q.qnaNo }</td>
+                    <td>${q.rownum }</td>
                     <td>${q.typeName }</td>
-                    <td align="left">${q.title }</td>
+                    <td align="left">${q.title } 
+                    	<c:forEach var="a" items="${alist }">
+                    		<c:if test="${a.qnaNo eq q.qnaNo }">
+                    		<span class="rCount"><span class="rCount"> ( </span>${a.qaCount }<span class="rCount"> )</span></span>
+                    		</c:if>	
+                    	</c:forEach>
+                    </td>
                     <td>${q.questionDate }</td>
                  
                   	<c:if test="${q.qaNo eq 0 }">
@@ -134,6 +147,7 @@
                     <c:if test="${q.qaNo ne 0 }">
                     <td>답변 완료</td>
                     </c:if> 
+                    <td style="display:none;" id="qnaNo">${q.qnaNo }</td>
                 </tr>
                 </c:forEach>
             </tbody>
@@ -145,8 +159,8 @@
     <br><br>
      
      <!--페이징-->
-  <div id="pagingArea">
-                <ul class="pagination">
+  <div id="pagingArea" style="margin:auto;">
+                <ul class="pagination" >
 	                <c:choose>
 						<c:when test="${ pi.currentPage eq 1 }">
 	                    <li class="page-item disabled"><a class="btn moong-dark" href="#"><</a></li>
@@ -185,6 +199,9 @@
             			location.href = 'qnaDetailView.qu?qnaNo=' + $(this).children("#qnaNo").text();
             		})
             	})
+
+
+            	
             </script>
 
 </body>

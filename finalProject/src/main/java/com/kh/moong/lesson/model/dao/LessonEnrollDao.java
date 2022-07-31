@@ -7,9 +7,13 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.kh.moong.common.model.vo.PageInfo;
-import com.kh.moong.lesson.model.vo.Districts;
+import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
+import com.kh.moong.member.model.vo.IdPicture;
+import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.member.model.vo.Teacher;
 
 @Repository
 public class LessonEnrollDao {
@@ -78,7 +82,37 @@ public class LessonEnrollDao {
 
 	
 
-
 	
+	
+	
+	public int insertReview(SqlSessionTemplate sqlSession, LessonReview lr) {
+		return sqlSession.insert("lessonEnrollMapper.insertReview", lr);
+	}
+
+	public ArrayList<LessonReview> reviewList(SqlSessionTemplate sqlSession, int leNo) {
+		return (ArrayList)sqlSession.selectList("lessonEnrollMapper.reviewList", leNo);
+	}
+
+	public int countStudent(SqlSessionTemplate sqlSession, Lesson les) {
+		return sqlSession.selectOne("lessonEnrollMapper.countStudent", les);
+	}
+
+	public LessonReview isWriteReview(SqlSessionTemplate sqlSession, LessonReview lr) {
+		return sqlSession.selectOne("lessonEnrollMapper.isWriteReview", lr);
+	}
+
+	public int modiReview(SqlSessionTemplate sqlSession, LessonReview lr) {
+		return sqlSession.update("lessonEnrollMapper.modiReview", lr);
+	}
+
+	public IdPicture selectIp(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapperLee.selectIp", userNo);
+	}
+
+	public Teacher selectMember(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapper.selectMemberLesson",userNo);
+	}
 
 }

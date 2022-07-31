@@ -54,7 +54,9 @@
         color: rgb(248, 238, 225);
     }
     /*리스트 부분 끝*/
-
+	
+	
+	
 
 </style>
 <body>
@@ -71,8 +73,8 @@
                     <thead>
                         <tr>
                        		<td>No</td>
-                            <td >과외 그룹정보</td>
-                            <td >채팅방URL</td>
+                            <td>과외 그룹정보</td>
+                            <td>채팅방URL</td>
                             <td>과외 시작</td>
                             <td>매칭 취소</td>
                         </tr>
@@ -90,10 +92,10 @@
                     		<tr>
                     			<td>1</td>
                  				<td style="display:none"class="gNo">${t}</td>
-	                			<td><button data-toggle="modal" data-target="#matchingInfo" class="matchingInfo">정보확인</button></td>
-	                			<td><button data-toggle="modal" data-target="#matchingURL" class="matchingURL">링크확인</button></td>
-	                			<td><button class="lessonStart">시작</button></td>
-	                			<td><button class="matchingCnacel">취소</button></td>
+	                			<td><button data-toggle="modal" data-target="#matchingInfo" class="matchingInfo btn moong-yellow">정보확인</button></td>
+	                			<td><button data-toggle="modal" data-target="#matchingURL" class="matchingURL btn moong-dark">링크확인</button></td>
+	                			<td><button class="lessonStart btn moong-yellow">시작</button></td>
+	                			<td><button class="matchingCnacel btn moong-yellow" style="background-color:red;">취소</button></td>
 	                		</tr>
                     	</c:forEach>
                     </c:otherwise>

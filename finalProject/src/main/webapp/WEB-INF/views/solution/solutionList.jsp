@@ -79,12 +79,11 @@
 		<br>
 		<div class="row optionbox">
 			<div class="col-5">
-				<form id="searchForm" method="post" action="list.so"
-					enctype="multipart/form-data" accept-charset="utf-8" id="searchForm">
-
+				<form id="searchForm" method="post" action="list.so" enctype="multipart/form-data" accept-charset="utf-8">
+					
 					<div class="row optionbox2">
 						<div class="col-2" id="scbox">
-							<select id="selectBox">
+							<select id="selectBox" name="search_cat">
 								<option value="title">제목</option>
 								<option value="solution_contents">내용</option>
 								<option value="user_id">작성자</option>
@@ -105,15 +104,14 @@
 					enctype="multipart/form-data" accept-charset="utf-8">
 					<input type="hidden" name="subject" id="inputSubject"> 
 					<input type="hidden" name="tag" id="inputTag">
-					<button id="subBtnKor" type="submit" class="btn moong-yellow btn-sm">#국어</button>
-					<button id="subBtnEng" type="submit" class="btn moong-yellow btn-sm">#영어</button>
-					<button id="subBtnMat" type="submit" class="btn moong-yellow btn-sm">#수학</button>
-					<button id="tagBtn1" type="submit" class="btn moong-yellow btn-sm">#수능</button>
-					<button id="tagBtn2" type="submit" class="btn moong-yellow btn-sm">#자주나오는문제</button>
+					<button type="submit" id="subBtnKor" class="btn moong-yellow btn-sm">국어</button>
+					<button type="submit" id="subBtnEng" class="btn moong-yellow btn-sm">영어</button>
+					<button type="submit" id="subBtnMat" class="btn moong-yellow btn-sm">수학</button>
+					<c:forEach var="t" items="${tagOut}">
+						<button type="submit" class="tagBtn btn moong-yellow btn-sm">#${t}</button>
+					</c:forEach>
 				</form>
 			</div>
-
-
 
 		</div>
 		<br>
@@ -156,17 +154,19 @@
 
 		<br>
 
-		<div class="row bottombox">
-			<div class="col-10"></div>
-			<div class="col-2">
-				<a class="btn moong-dark" href="writeForm.so">작성</a>
+		<c:if test="${not empty loginUser }">
+			<div class="row bottombox">
+				<div class="col-10"></div>
+				<div class="col-2">
+					<a class="btn moong-dark" href="writeForm.so">작성</a>
+				</div>
 			</div>
-		</div>
+		</c:if>
 
 		<div id="pagingArea">
 			<ul class="pagination">
 				<c:choose>
-					<c:when test="${ pi.currentPage eq 1 }">
+					<c:when test="${pi.currentPage eq 1}">
 						<li class="page-item disabled"><a class="btn moong-dark"
 							href="#"><</a></li>
 					</c:when>
@@ -182,7 +182,7 @@
 				</c:forEach>
 
 				<c:choose>
-					<c:when test="${pi.currentPage eq pi.maxPage }">
+					<c:when test="${pi.currentPage eq pi.maxPage}">
 						<li class="page-item disabled"><a class="btn moong-dark"
 							href="#">></a></li>
 					</c:when>
@@ -207,6 +207,8 @@
 	</div>
 
 	<script>
+
+		
 		$("#subBtnKor").on("click", function() {
 			$("#inputSubject").val("국어");
 			$(this).submit();
@@ -219,14 +221,12 @@
 			$("#inputSubject").val("수학");
 			$(this).submit();
 		})
-		$("#tagBtn1").on("click", function() {
-			$("#inputTag").val("수능");
+		$(".tagBtn").on("click", function() {
+			var tag = $(this).html().substring(1);
+			$("#inputTag").val(tag);
 			$(this).submit();
 		})
-		$("#tagBtn2").on("click", function() {
-			$("#inputTag").val("자주나오는문제");
-			$(this).submit();
-		})
+
 	</script>
 
 </body>

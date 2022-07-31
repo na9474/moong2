@@ -158,11 +158,23 @@ public class MemberServiceImplLee implements MemberServiceLee {
 		return memberDao.teaUpate(sqlSession,tea);
 	}
 
-	//학생 정보
-//	@Override
-//	public int studentInfo(int userNo) {
-//		return memberDao.studentInfo(sqlSession,userNo);
-//	}
+	//비밀번호 변경
+	@Override
+	public int updatePwd(Member m) {
+		return memberDao.updatePwd(sqlSession,m);
+	}
+
+	//Member에 담긴 회원 정보
+	@Override
+	public Member selectMember(int userNo) {
+		return memberDao.selectMember(sqlSession, userNo);
+	}
+
+	//member의 modifyDate, approval 수정
+	@Override
+	public int updateMember(int userNo) {
+		return memberDao.updateMember(sqlSession,userNo);
+	}
 
 
 

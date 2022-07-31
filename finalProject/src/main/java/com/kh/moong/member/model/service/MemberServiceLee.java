@@ -79,8 +79,15 @@ public interface MemberServiceLee {
 	//선생님 정보 수정
 	int teaUpdate(Teacher tea);
 
-//	//학생 정보
-//	int studentInfo(int userNo);
+	//비밀번호 변경
+	int updatePwd(Member m);
+
+	//Member에 담긴 회원 정보
+	Member selectMember(int userNo);
+
+	//member의 modifyDate, approval 수정
+	int updateMember(int userNo);
+
 
 
 	

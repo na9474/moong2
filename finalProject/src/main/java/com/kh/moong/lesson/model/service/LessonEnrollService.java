@@ -4,8 +4,13 @@ import java.util.ArrayList;
 
 import com.kh.moong.common.model.vo.PageInfo;
 import com.kh.moong.lesson.model.vo.Districts;
+import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
+import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
+import com.kh.moong.member.model.vo.IdPicture;
+import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.member.model.vo.Teacher;
 
 public interface LessonEnrollService {
 
@@ -33,6 +38,20 @@ public interface LessonEnrollService {
 
 	
 
+	
+	int insertReview(LessonReview lr);
+
+	ArrayList<LessonReview> reviewList(int leNo);
+
+	int countStudent(Lesson les);
+
+	LessonReview isWriteReview(LessonReview lr);
+
+	int modiReview(LessonReview lr);
+
+	IdPicture selectIp(int userNo);
+
+	Teacher selectMember(int userNo);
 	
 
 }

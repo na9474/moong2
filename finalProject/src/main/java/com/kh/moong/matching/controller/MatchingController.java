@@ -307,16 +307,33 @@ public class MatchingController {
 	public String sendUrlAlert(int userNo) {
 		
 		int groupNo = ms.selectGroupNo(userNo);
+
 		
-		int result = ms.checkSendUrlCount(userNo);
 		
-		if(result*groupNo>0) {
-			int result2 = ms.urlAlertUpdate2(groupNo);
-			
+		int result;
+		if(groupNo>0) {
+		 result = ms.checkSendUrlCount(groupNo);
+		
+		}else {
+			 result = 0;
 		}
+		
+		
+		
+		return new Gson().toJson(result*groupNo);
+	}
+	
+	@ResponseBody
+	@RequestMapping(value ="urlAlertUpdate2.ma",produces="application/json; charset=UTF-8")
+	public String urlAlertUpdate2(int userNo) {
+		
+		int groupNo = ms.selectGroupNo(userNo);
+		
+		int result = ms.urlAlertUpdate2(groupNo);
 		
 		return new Gson().toJson(result);
 	}
+	
 	
 	
 	//선생 - 채팅방 URL확인 AJAX
@@ -394,42 +411,5 @@ public class MatchingController {
 			return "redirect:adRoomList.rm";
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-//	// 관리자 - 매칭그룹 채팅방 url 삭제하기(체크박스)
-//	@RequestMapping(value="deleteUrl.rm", method=RequestMethod.POST)
-//	@ResponseBody
-//	public int deleteUrl(Room r, HttpSession session, 
-//			      @RequestParam(value="out[]") List<String> chArr) {
-//		int rs = 0;
-//		int roomNo = 0;
-//		
-//		for(String i : chArr) {
-//			roomNo = Integer.parseInt(i);
-//			r.setRoomNo(roomNo);
-//			msn.deleteUrl(r);
-//		}
-//		rs = 1;
-//		return rs;
-//	}
-//	
-//	// 관리자 - 매칭그룹 채팅방 url 수정하기
-//	@RequestMapping(value="modifyUrl.rm", method=RequestMethod.POST)
-//	public String modifyUrl(Room r, Model model, HttpSession session) {
-//		int rs = msn.modifyUrl(r);
-//		
-//		if(rs > 0) {
-//			session.setAttribute("alertMsg", "채팅방 링크가 수정되었습니다.");
-//			return "redirect:adRoomList.rm";
-//		} else {
-//			session.setAttribute("alertMsg", "채팅방 링크 수정에 실패하였습니다.");
-//			return "redirect:adRoomList.rm";
-//		}
-//	}
+
 }

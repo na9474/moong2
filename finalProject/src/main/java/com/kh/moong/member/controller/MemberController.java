@@ -43,8 +43,8 @@ public class MemberController {
 							  ,HttpSession session
 							  ,Model model) {
 		// 암호화 작업
-//		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
-//		m.setUserPwd(encPwd);
+		String encPwd = bcryptPasswordEncoder.encode(m.getUserPwd());
+		m.setUserPwd(encPwd);
 		
 		int result = memberService.insertMember(m);
 		
@@ -63,19 +63,15 @@ public class MemberController {
 								,HttpSession session
 								,Model model) {
 
+		System.out.println(bcryptPasswordEncoder.encode(m.getUserPwd()));
 		Member loginUser = memberService.loginMember(m);
-
 		
+		if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
 		
-		if(loginUser == null) {
-			model.addAttribute("errorMsg", "로그인에 실패하였습니다.");
-			return "common/errorPage";
-		}else {
 			if(loginUser.getStudent().equals("Y")) {//로그인한 회원이 학생회원이면 학생정보 보냄
 				
 				Student student = memberService.loginStudentInfo(loginUser.getUserNo());
 				session.setAttribute("s", student);
-				
 			}
 				
 			if(loginUser.getTeacher().equals("Y")) {//로그인한 회원이 선생회원이면 선생정보 보냄
@@ -85,6 +81,9 @@ public class MemberController {
 			
 			session.setAttribute("loginUser", loginUser);
 			return "redirect:/";
+		}else {
+			session.setAttribute("alertMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			return "redirect:login.me";
 		}
 		
 	}
@@ -104,15 +103,15 @@ public class MemberController {
 			return mailService.joinEmail(email);
 		}
 	
-	// 아이디 중복 체크
-//	@RequestMapping("idCheck.me")
-//	@ResponseBody
-//	public String idCheck(String checkId) {
-//		
-//		int count = memberService.idCheck(checkId);
-//			
-//		return (count > 0) ? "NOPE" : "YEAH";
-//	}
+	
+	@RequestMapping("idCheck.me")
+	@ResponseBody
+	public String idCheck(String checkId) {
+		
+		int count = memberService.idCheck(checkId);
+		
+		return (count > 0) ? "NOPE" : "YEAH";
+	}
 	
 	// 아이디 | 비밀번호 찾기 포워딩
 	@RequestMapping("findIdPw.me")

@@ -34,12 +34,12 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	
-	// 아이디 유효성 검사
-//	@Override
-//	public int idCheck(String userId) {
-//		
-//		return memberDao.idCheck(sqlSession,userId);
-//	}
+	
+	@Override
+	public int idCheck(String userId) {
+		
+		return memberDao.idCheck(sqlSession,userId);
+	}
 	
 	// 아이디 찾기
 	@Override

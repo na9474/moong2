@@ -57,5 +57,22 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	JOIN MEMBER m ON s.user_no = m.user_no
 		WHERE SC_NO = #{scNo}
 	</select>
+
+	<insert id="insertSolCmtFiles" parameterType="SolutionCmtFiles">
+		INSERT INTO SOLUTION_CMT_FILES(
+						  SCF_NO
+						 ,SCF_ORIGINNAME
+						 ,SCF_SYSNAME
+						 ,SC_NO
+						 )
+		VALUES(
+				SEQ_SFNO.NEXTVAL
+				,#{scfOriginName}
+				,#{scfSysName}
+				,#{scNo}
+				)
+	</insert>
+	
+	
 	
 </mapper>
