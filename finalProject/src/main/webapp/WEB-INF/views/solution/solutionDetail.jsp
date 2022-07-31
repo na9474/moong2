@@ -267,7 +267,13 @@
             <input type="hidden" name="sno" value="${s.solutionNo}">
             <input type="hidden" name="filePath" value="${sf.sfSysName}">
         </form>
-            
+          
+        <div class="row tag">
+        	<div class="col-12">
+        		${s.tag}
+        	</div>
+        </div>
+           
         <br><br>
         <h4>답변(<span id="cmtCount">0</span>)</h4>
         <br>

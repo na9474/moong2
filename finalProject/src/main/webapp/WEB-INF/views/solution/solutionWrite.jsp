@@ -96,7 +96,7 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text" id="inputGroup-sizing-sm">해시태그</span>
                     </div>
-                    <input type="text" name="tag" id="tag" class="form-control" placeholder="#태그를 입력하세요 (최대5개)">
+                    <input type="text" name="tag" id="tag" class="form-control" placeholder="#태그를 입력하세요 (구분은 #으로 해주세요/최대5개)">
                 </div>
             </div>
         </div>
