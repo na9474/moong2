@@ -52,6 +52,7 @@ public class MatchingController {
 			mv.setViewName("redirect:enroll.ma");
 			
 		} else { // 같은 과목으로 등록된 매칭이 없음
+			
 			// 날짜 배열 순서대로온거 ,제거
 			 String maDay = m.getMaDay().replaceAll(",", "");
 			 m.setMaDay(maDay);
