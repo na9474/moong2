@@ -89,7 +89,7 @@
 	        </span>
         <hr>
         <div>
-	       	<div style="height:400px;"> 
+	       	<div>
 	        ${qq.questionContent }
 	        </div>
 	        <hr>

@@ -14,7 +14,7 @@
 </head>
 <body>
     <jsp:include page="../common/header.jsp"/>
-
+        
     <div class="title"><h2>L&nbsp; O&nbsp; G&nbsp; I&nbsp; N</h2></div>
 
     <br><br>
