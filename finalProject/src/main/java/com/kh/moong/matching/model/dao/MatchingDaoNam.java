@@ -1,6 +1,9 @@
 package com.kh.moong.matching.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.stereotype.Repository;
@@ -19,6 +22,7 @@ public class MatchingDaoNam {
 	}
 
 	public int insertUrl(SqlSessionTemplate sqlSession, Room r) {
+		System.out.println(r);
 		return sqlSession.insert("RoomMapper.insertUrl", r);
 	}
 

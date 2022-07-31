@@ -404,8 +404,6 @@ public class SolutionController {
 			sf.setSfOriginName(originalFileName);
 			sf.setSfSysName(savedFileName);
 			
-			//qf를 db에 저장시켜준다
-			//나중에 작성 버튼 클릭 시 sysName가지고 가서 해당 사진의 참조 qna번호 업데이트 시켜줄것
 			int result = solutionService.insertSolutionFiles(sf);
 			
 		} catch (IOException e) {
@@ -427,17 +425,13 @@ public class SolutionController {
 		if(request.getSession().getAttribute("loginUser") !=null) {
 			loginNo = ((Member) request.getSession().getAttribute("loginUser")).getUserNo();
 		}
-		int heartYn = solutionService.sHeartCheck(sno, loginNo);
 		
 		if(result > 0) { 
 			
 			Solution s = solutionService.selectSolution(sno);
-			int heartCount = solutionService.sHeartCount(sno);
 			
 			mv.addObject("s",s);
-			mv.addObject("heartYn", heartYn);
-			mv.addObject("loginNo", loginNo);
-			mv.addObject("heartCount",heartCount).setViewName("solution/solutionModify");
+			mv.addObject("loginNo", loginNo).setViewName("solution/solutionModify");
 
 		}else {
 			mv.addObject("errorMsg","게시글 조회 실패").setViewName("common/errorPage");

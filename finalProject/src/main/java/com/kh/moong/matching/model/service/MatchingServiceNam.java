@@ -1,6 +1,7 @@
 package com.kh.moong.matching.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.moong.matching.model.vo.Matching;
 import com.kh.moong.matching.model.vo.Room;

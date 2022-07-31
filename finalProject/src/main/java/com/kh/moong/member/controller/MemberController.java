@@ -63,8 +63,13 @@ public class MemberController {
 								,HttpSession session
 								,Model model) {
 
-		System.out.println(bcryptPasswordEncoder.encode(m.getUserPwd()));
 		Member loginUser = memberService.loginMember(m);
+		
+		// 관리자가 로그인했을 때(관리자 비번 암호화안돼있음 - 1234)
+		if(loginUser.getUserNo() == 1) {
+			session.setAttribute("loginUser", loginUser);
+			return "redirect:/";
+		}
 		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
 		
@@ -82,10 +87,9 @@ public class MemberController {
 			session.setAttribute("loginUser", loginUser);
 			return "redirect:/";
 		}else {
-			session.setAttribute("alertMsg", "아이디 또는 비밀번호가 일치하지 않습니다.");
-			return "redirect:login.me";
+			session.setAttribute("alertMsg","아이디 또는 비밀번호가 일치하지 않습니다. 다시 확인해 주세요.");
+			return "member/login";
 		}
-		
 	}
 	
 	@RequestMapping("logout.me")
@@ -103,13 +107,13 @@ public class MemberController {
 			return mailService.joinEmail(email);
 		}
 	
-	
+	// 아이디 중복 체크
 	@RequestMapping("idCheck.me")
 	@ResponseBody
 	public String idCheck(String checkId) {
 		
 		int count = memberService.idCheck(checkId);
-		
+			
 		return (count > 0) ? "NOPE" : "YEAH";
 	}
 	

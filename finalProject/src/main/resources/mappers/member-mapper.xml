@@ -93,6 +93,7 @@
 		SELECT COUNT(*)
 	  	FROM MEMBER
 	  	WHERE USER_ID = #{userId}
+
 	</select> 
 
 	<!-- 아이디 찾기 -->

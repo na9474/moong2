@@ -1,6 +1,9 @@
 package com.kh.moong.matching.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -382,8 +386,8 @@ public class MatchingController {
 	// 관리자 - 매칭그룹 채팅방 url 목록 불러오기
 	@RequestMapping("adRoomList.rm")
 	public String adRoomList(Matching ma, Model model) {
-		ArrayList<Matching> adRmList = msn.adRoomList(ma);
-		ArrayList<Room> list = msn.aRoomList();
+		ArrayList<Matching> adRmList = msn.adRoomList(ma); // 매칭번호
+		ArrayList<Room> list = msn.aRoomList(); // 채팅방 링크
 		model.addAttribute("adRmList", adRmList);
 		model.addAttribute("list", list);
 		
@@ -411,5 +415,4 @@ public class MatchingController {
 			return "redirect:adRoomList.rm";
 		}
 	}
-
 }

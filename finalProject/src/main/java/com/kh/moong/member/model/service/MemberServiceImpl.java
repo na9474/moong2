@@ -34,7 +34,7 @@ public class MemberServiceImpl implements MemberService{
 	}
 
 	
-	
+	// 아이디 유효성 검사
 	@Override
 	public int idCheck(String userId) {
 		
@@ -62,6 +62,18 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public Teacher loginTeacherInfo(int userNo) {
 		return memberDao.loginTeacherInfo(sqlSession,userNo);
+	}
+
+	@Override
+	public int updateMember(Member m) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteMember(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 	
 }
