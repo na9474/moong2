@@ -81,8 +81,8 @@ public class MemberController {
 			session.setAttribute("loginUser", loginUser);
 			return "redirect:/";
 		}else {
-			session.setAttribute("alertMsg", "로그인에 실패하였습니다.");
-			return "redirect:login.me";
+			session.setAttribute("alertMsg","아이디 또는 비밀번호가 일치하지 않습니다. 다시 확인해 주세요.");
+			return "member/login";
 		}
 		
 	}

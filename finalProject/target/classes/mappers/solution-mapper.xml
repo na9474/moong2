@@ -111,7 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				SEQ_SFNO.NEXTVAL
 				,#{sfOriginName}
 				,#{sfSysName}
-				,0
+				,#{solutionNo}
 				)
 	</insert>
 	
