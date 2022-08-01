@@ -82,13 +82,13 @@
 					<td> - </td>
 					</c:if>
 					<c:if test="${m.approval eq 'Y' }">
-					<td>가입 완료</td>
+					<td style="color:blue">가입 완료</td>
 					</c:if>
 					<c:if test="${m.approval eq 'N' }">
 					<td>가입 대기 중</td>
 					</c:if>
 					<c:if test="${m.approval eq 'D' }">
-					<td>가입 거절</td>
+					<td style="color:red">가입 거절</td>
 					</c:if>
 				</tr>
 			</c:forEach>
