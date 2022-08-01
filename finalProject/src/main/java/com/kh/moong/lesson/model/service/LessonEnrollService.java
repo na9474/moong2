@@ -8,6 +8,9 @@ import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
+import com.kh.moong.member.model.vo.IdPicture;
+import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.member.model.vo.Teacher;
 
 public interface LessonEnrollService {
 
@@ -45,6 +48,10 @@ public interface LessonEnrollService {
 	LessonReview isWriteReview(LessonReview lr);
 
 	int modiReview(LessonReview lr);
+
+	IdPicture selectIp(int userNo);
+
+	Teacher selectMember(int userNo);
 	
 
 }

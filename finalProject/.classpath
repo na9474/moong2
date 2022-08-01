@@ -36,6 +36,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/user1/Downloads/simplecaptcha-1.2.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="C:/Users/user1/Downloads/simplecaptcha-1.2.1.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

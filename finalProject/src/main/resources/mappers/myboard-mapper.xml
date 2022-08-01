@@ -53,7 +53,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 			TITLE,
 			CONTENT,
 			COUNT,
-			LIKE_COUNT,
 			ENROLL_DATE,
 			BC.CATEGORY_NAME
 	FROM BOARD B

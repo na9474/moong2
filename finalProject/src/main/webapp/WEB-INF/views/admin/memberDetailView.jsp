@@ -202,11 +202,13 @@
                 </c:if>
                 
 
+		<c:if test="${m.approval eq 'N' || m.approval eq 'D' }">
         <div class="find-btn">
         	<br>
 			<button onclick="location.href='joinApproval.ad?uNo=${m.userNo}'" style="margin:auto"class="moong-dark find-btn1">가입 승인</button>
 			<button onclick="location.href='joinRefusal.ad?uNo=${m.userNo }'"  style="margin:auto"class="moong-dark find-btn1">가입 거절</button>       
         </div>
+        </c:if>
         
         </div>
     </div>

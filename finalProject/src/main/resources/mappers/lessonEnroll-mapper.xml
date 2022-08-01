@@ -228,4 +228,8 @@ ORDER BY T.RATING
 	AND RE_UNO = #{reUno}
 </update>
 
+
+
+
+
 </mapper>
