@@ -31,4 +31,7 @@ public interface PoliceService {
 	
 	//댓글 신고 리스트
 	ArrayList<PoliceCmt> policeCmtList(PageInfo pi);
+	
+	//user가 해당 게시물을 신고했는지 확인
+	int cmtPoliceCheck(int scNo, int user_no);
 }
