@@ -52,6 +52,8 @@ public interface LessonEnrollService {
 	IdPicture selectIp(int userNo);
 
 	Teacher selectMember(int userNo);
+
+	int selectAllSearchLessonCount(Search s);
 	
 
 }

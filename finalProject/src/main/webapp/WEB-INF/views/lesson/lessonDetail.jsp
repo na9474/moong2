@@ -228,7 +228,7 @@
   					$(function(){
                 		var feestr = "${l.area}"
                         	
-                        	var text = feestr.replaceAll(",","");
+                        	var text = feestr.replaceAll(",","  &nbsp; &nbsp; &nbsp;");
                 		$('#changeArea').append(text);
                 	})
   					</script>
@@ -256,7 +256,7 @@
   					$(function(){
                 		var feestr = "${l.leDay}"
                         	
-                        	var text = feestr.replaceAll(",","");
+                        	var text = feestr.replaceAll(","," ");
                 		$('#changeDay').append(text);
                 	})
   					</script>

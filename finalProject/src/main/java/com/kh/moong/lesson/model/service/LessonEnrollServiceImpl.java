@@ -127,5 +127,13 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 		return lessonEnrollDao.selectMember(sqlSession,userNo);
 	}
 
+	@Override
+	public int selectAllSearchLessonCount(Search s) {
+		
+		return lessonEnrollDao.selectAllSearchLessonCount(sqlSession,s);
+	}
+
+
+
 	
 }

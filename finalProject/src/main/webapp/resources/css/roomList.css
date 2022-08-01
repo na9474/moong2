@@ -97,12 +97,12 @@ input[type=submit] {
 }
 
 #table-scroll { /*스크롤*/
+	margin: auto;
+	width: 50%;
 	height: 410px;
+	border: 1px solid lightgrey;
     overflow: auto;
     -ms-overflow-style: none;
-}
-#table-scroll::-webkit-scrollbar{
-    display: none;
 }
 
 .out { /*체크박스*/

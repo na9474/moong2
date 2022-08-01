@@ -115,4 +115,9 @@ public class LessonEnrollDao {
 		return sqlSession.selectOne("memberMapper.selectMemberLesson",userNo);
 	}
 
+	public int selectAllSearchLessonCount(SqlSessionTemplate sqlSession, Search s) {
+		
+		return sqlSession.selectOne("lessonEnrollMapper.selectAllSearchLessonCount",s);
+	}
+
 }
