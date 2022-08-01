@@ -141,6 +141,11 @@ public class MemberDaoLee {
 		return sqlSession.update("memberMapperLee.updateMember", userNo);
 	}
 
+	public String selectRefusalText(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapperLee.selectRefusalText", userNo);
+	}
+
 	
 	
 

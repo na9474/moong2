@@ -88,6 +88,8 @@ public interface MemberServiceLee {
 	//member의 modifyDate, approval 수정
 	int updateMember(int userNo);
 
+	String selectRefusalText(int userNo);
+
 
 
 	

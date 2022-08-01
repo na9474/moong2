@@ -47,6 +47,11 @@ public class MemberContollerLee {
 		int age = getAge(birth);
 		model.addAttribute("age",age);
 
+		int userNo = loginUser.getUserNo();
+		String refusalText = memberService.selectRefusalText(userNo);
+		
+		
+		
 		if(loginUser.getApproval().equals("N") && (loginUser.getStudent().equals("Y") || loginUser.getTeacher().equals("Y"))) {
 			
 			session.setAttribute("alertMsg", "회원가입 승인 대기 중입니다.");
@@ -54,8 +59,8 @@ public class MemberContollerLee {
 			return "member/myPageMain";
 		}
 		if(loginUser.getApproval().equals("D")) {
-			
-			session.setAttribute("alertMsg", "회원가입 거절되었습니다. 정보를 다시 입력해주세요.");
+			refusalText += "의 사유로 회원가입이 거부되었습니다. 정보를 다시 입력해주세요.";
+			session.setAttribute("alertMsg",refusalText);
 			
 			return "member/myPageMain";
 		}

@@ -206,7 +206,7 @@
         <div class="find-btn">
         	<br>
 			<button onclick="location.href='joinApproval.ad?uNo=${m.userNo}'" style="margin:auto"class="moong-dark find-btn1">가입 승인</button>
-			<button onclick="location.href='joinRefusal.ad?uNo=${m.userNo }'"  style="margin:auto"class="moong-dark find-btn1">가입 거절</button>       
+			<button data-toggle="modal" data-target="#no"  class="moong-dark find-btn1">가입 거절</button>       
         </div>
         </c:if>
         
@@ -218,6 +218,28 @@
 	</div>
 
 
-
+	 <div class="modal fade" id="no">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+              
+                <div class="modal-header">
+                    <h4 class="modal-title">거절 사유</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+               <form method="get" action="joinRefusal.ad">
+                <div class="modal-body" align="center">
+               		
+               			<textarea name="refusalText" id="" style="resize:none;" required></textarea>
+               			<input type="hidden" name="uNo" value="${m.userNo}">
+                   </div>
+                    
+                	<div class="modal-footer" align="center">
+                        <button  class="btn moong-yellow"  type="submit">확인</button>
+                	</div>
+                	</form>
+                
+            </div>
+        </div>
+    </div> 
 </body>
 </html>

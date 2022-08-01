@@ -34,6 +34,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="MODIFIY_DATE" property="modifyDate"/>
 		<result column="APPROVAL" property="approval"/>
 		<result column="STATUS" property="status"/>
+		<result column="REFUSAL_TEXT" property="refusalText"/>
 	</resultMap>
 	
 	<resultMap type="reportCard" id="reportCardResultSet">
@@ -356,6 +357,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	</update>
 	
-	
+	<select id="selectRefusalText" resultType="string">
+		SELECT REFUSAL_TEXT
+		FROM MEMBER 
+		WHERE USER_NO =#{userNo}
+	</select>
 	
 </mapper>

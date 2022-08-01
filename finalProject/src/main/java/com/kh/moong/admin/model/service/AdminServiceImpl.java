@@ -73,4 +73,10 @@ public class AdminServiceImpl implements AdminService {
 		return adminDao.deleteIc(sqlSession,userNo);
 	}
 
+	@Override
+	public int insertRefusalText(Member updatem) {
+		
+		return adminDao.insertRefusalText(sqlSession,updatem);
+	}
+
 }

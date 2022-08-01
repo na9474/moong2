@@ -176,6 +176,12 @@ public class MemberServiceImplLee implements MemberServiceLee {
 		return memberDao.updateMember(sqlSession,userNo);
 	}
 
+	@Override
+	public String selectRefusalText(int userNo) {
+		
+		return memberDao.selectRefusalText(sqlSession,userNo);
+	}
+
 
 
 
