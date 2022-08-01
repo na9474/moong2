@@ -52,8 +52,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <if test='subject == "수학"'>
             and s.subject = '수학'
         </if>
-        <if test='tag neq null and id neq ""'>
-            and s.tag = #{tag}
+        <if test="tag!=null and !tag.equals('')">
+            and s.tag like '%#${tag}%'
         </if>
 
 		ORDER BY CREATE_DATE DESC)
@@ -111,7 +111,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				SEQ_SFNO.NEXTVAL
 				,#{sfOriginName}
 				,#{sfSysName}
-				,0
+				,#{solutionNo}
 				)
 	</insert>
 	
