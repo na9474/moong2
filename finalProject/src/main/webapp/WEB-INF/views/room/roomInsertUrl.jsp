@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
@@ -32,12 +33,20 @@
 			    			<td id="roomNo" class="roomNo">${ar.groupNo}</td>
 			    			<c:forEach var="a" items="${list }">
 				    			<c:if test="${ar.groupNo eq a.roomNo }">
+				    				<c:set var="ru" value="${a.roomUrl}"/>
 				    				<td><a href="${a.roomUrl }" id="at">${a.roomUrl }</a></td>
 				    			</c:if>
 			    			</c:forEach>
 						    <td>
 			    			<c:if test="${loginUser.userId eq 'admin'}">
-						    	<button type="button" id="ab" class="in inb" data-toggle="modal" data-target="#insertUrl">추가</button>
+			    				<c:choose>
+								    <c:when test="${fn:contains(ru, 'http')}">
+								    	
+								    </c:when>
+				    				<c:otherwise>
+							    		<button type="button" id="ab" class="in inb" data-toggle="modal" data-target="#insertUrl">추가</button>
+				    				</c:otherwise>
+			    				</c:choose>
 						    </c:if>
 						    </td>
 			    		</tr>
@@ -78,11 +87,5 @@
             </div>
         </div>
     </div>
-    
-	<script>
-		$(function(){
-			
-		});
-	</script>
 </body>
 </html>
