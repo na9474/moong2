@@ -60,6 +60,11 @@ public class PoliceServiceImpl implements PoliceService {
 		return policeDao.policeCmtList(sqlSession, pi);
 	}
 	
+	@Override
+	public int cmtPoliceCheck(int scNo, int user_no) {
+		return policeDao.cmtPoliceCheck(sqlSession, scNo, user_no);
+	}
+	
 	
 	
 }

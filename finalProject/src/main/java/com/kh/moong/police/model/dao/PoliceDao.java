@@ -1,6 +1,7 @@
 package com.kh.moong.police.model.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.session.RowBounds;
 import org.mybatis.spring.SqlSessionTemplate;
@@ -63,6 +64,14 @@ public class PoliceDao {
 	RowBounds rowBounds = new RowBounds(offset,limit);
 	
 	return (ArrayList)sqlSession.selectList("policeCmtMapper.policeCmtList",null,rowBounds);
+	}
+	
+	// user가 해당 댓글을 신고했는지 확인
+	public int cmtPoliceCheck(SqlSessionTemplate sqlSession, int scNo, int user_no) {
+		HashMap<String, Integer> param = new HashMap<String, Integer>();
+		param.put("scNo", scNo);
+		param.put("user_no", user_no);
+		return sqlSession.selectOne("policeCmtMapper.cmtPoliceCheck", param);
 	}
 	
 }
