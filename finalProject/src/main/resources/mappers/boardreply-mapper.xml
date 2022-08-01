@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardReplyMapper">
+
+	<resultMap type="boardReply" id="boardReplyResultSet">
+		<result column="R_NO" property="rNo"/>
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="CONTENT" property="content"/>
+		<result column="BR_DATE" property="brDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="USER_ID" property="userId"/>
+	</resultMap>
+
+	<select id="replyList" resultMap="boardReplyResultSet">
+	 
+		SELECT RE.*, M.USER_ID
+			FROM BOARD_REPLY RE
+			JOIN MEMBER M ON RE.USER_NO=M.USER_NO
+		WHERE BOARD_NO = #{boardNo}
+		AND RE.STATUS = 'Y'
+		ORDER BY BR_DATE DESC 
+
+<!-- 		SELECT USER_NO, -->
+<!-- 			   CONTENT, -->
+<!-- 			   TO_CHAR(BR_DATE, 'YYYY-MM-DD') AS "BR_DATE" -->
+<!-- 		FROM BOARD_REPLY -->
+<!-- 		WHERE BOARD_NO = #{boardNo} -->
+<!-- 		AND STATUS = 'Y' -->
+<!-- 		ORDER BY BR_DATE DESC -->
+	</select>
+	
+	<insert id="insertReply" parameterType="boardReply">
+		INSERT INTO BOARD_REPLY (R_NO,CONTENT,BOARD_NO,USER_NO)
+		VALUES(SEQ_BRNO.NEXTVAL,#{content},#{boardNo},#{userNo})
+	</insert>
+	
+	<update id="deleteReply" parameterType="boardReply">
+		UPDATE BOARD_REPLY
+		SET STATUS = 'N'
+		WHERE R_NO = #{rNo}
+	</update>
+
+</mapper>
