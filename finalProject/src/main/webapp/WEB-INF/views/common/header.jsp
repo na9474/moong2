@@ -161,7 +161,7 @@ header nav ul li{
                 	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">
                 		
 		                 	 <li class="nav-item">
-		                    	<a class="nav-link" href="#">자유 게시판</a>
+		                    	<a class="nav-link" href="list.bo">자유 게시판</a>
 		                  	 </li>
                 	</c:when>
                 	<c:when test="${loginUser.teacher eq 'Y' || loginUser.userId eq 'admin' }">
@@ -169,7 +169,7 @@ header nav ul li{
 		                    	<a class="nav-link" href="list.le?userNo=${loginUser.userNo}">과외 등록</a>
 		                  	 </li>
 		                 	 <li class="nav-item">
-		                    	<a class="nav-link" href="#">자유 게시판</a>
+		                    	<a class="nav-link" href="list.bo">자유 게시판</a>
 		                  	 </li>
                 	</c:when>
                   </c:choose>
