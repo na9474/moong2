@@ -15,9 +15,15 @@ public class MyLessonDao {
 		return (ArrayList)sqlSession.selectList("myLessonMapper.lessonList", loginUser);
 	}
 
-	//레슨 종료
-	public int updateLessonEnd(SqlSessionTemplate sqlSession, int lNo) {
-		return sqlSession.update("myLessonMapper.updateLessonEnd",lNo);
+	
+	public Lesson selectLesson(SqlSessionTemplate sqlSession, int lNo) {
+		
+		return sqlSession.selectOne("myLessonMapper.selectLesson",lNo);
+	}
+
+	public int updateLessonEnd(SqlSessionTemplate sqlSession, Lesson l) {
+		
+		return sqlSession.update("myLessonMapper.updateLessonEnd",l);
 	}
 
 

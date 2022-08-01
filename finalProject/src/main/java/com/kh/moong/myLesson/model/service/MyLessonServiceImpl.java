@@ -26,8 +26,14 @@ public class MyLessonServiceImpl implements MyLessonService {
 
 	//레슨 종료
 	@Override
-	public int updateLessonEnd(int lNo) {
-		return myLessonDao.updateLessonEnd(sqlSession,lNo);
+	public int updateLessonEnd(Lesson l) {
+		return myLessonDao.updateLessonEnd(sqlSession,l);
+	}
+
+	@Override
+	public Lesson selectLesson(int lNo) {
+		
+		return myLessonDao.selectLesson(sqlSession,lNo);
 	}
 	
 

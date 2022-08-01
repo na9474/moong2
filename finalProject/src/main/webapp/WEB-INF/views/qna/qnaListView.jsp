@@ -101,6 +101,8 @@
 		color : grey;
 	}
     
+	#pagingArea {width:fit-content; margin:auto;}
+    
 </style>
 </head>
 <body>
@@ -175,7 +177,7 @@
 					</c:forEach>
                    
                     <c:choose>
-                    	<c:when test="${pi.currentPage eq pi.maxPage }">
+                    	<c:when test="${pi.currentPage eq pi.maxPage  ||  pi.maxPage eq 0}">
 		                    <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
                     	</c:when>
                     	<c:otherwise>

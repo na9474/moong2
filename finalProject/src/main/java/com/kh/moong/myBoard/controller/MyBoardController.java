@@ -50,7 +50,6 @@ public class MyBoardController {
 		model.addAttribute("pi",pi);
 
 		
-		
 		return "member/myBoardListView";
 	}
 	

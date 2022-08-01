@@ -31,13 +31,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 전체 회원 목록 -->
 	<select id="memberList" resultMap="memberResultSet">
 	SELECT B.* FROM
-	(SELECT *
-		FROM MEMBER
+	(SELECT * 
+		FROM MEMBER 
 		WHERE USER_NO != 1
 		ORDER BY MODIFY_DATE DESC) B
 	ORDER BY DECODE(B.APPROVAL,'N','D','Y')
-	
 	</select>
+	
 	
 	<!-- 가입승인 -->
 	<update id="joinApproval">
