@@ -65,12 +65,6 @@ public class MemberController {
 
 		Member loginUser = memberService.loginMember(m);
 		
-		// 관리자가 로그인했을 때(관리자 비번 암호화안돼있음 - 1234)
-		if(loginUser.getUserNo() == 1) {
-			session.setAttribute("loginUser", loginUser);
-			return "redirect:/";
-		}
-		
 		if(loginUser != null && bcryptPasswordEncoder.matches(m.getUserPwd(), loginUser.getUserPwd())) {
 		
 			if(loginUser.getStudent().equals("Y")) {//로그인한 회원이 학생회원이면 학생정보 보냄
