@@ -63,5 +63,17 @@ public class MemberServiceImpl implements MemberService{
 	public Teacher loginTeacherInfo(int userNo) {
 		return memberDao.loginTeacherInfo(sqlSession,userNo);
 	}
+
+	@Override
+	public int updateMember(Member m) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int deleteMember(String userId) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

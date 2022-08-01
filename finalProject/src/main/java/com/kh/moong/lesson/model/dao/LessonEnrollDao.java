@@ -11,6 +11,9 @@ import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
+import com.kh.moong.member.model.vo.IdPicture;
+import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.member.model.vo.Teacher;
 
 @Repository
 public class LessonEnrollDao {
@@ -100,6 +103,16 @@ public class LessonEnrollDao {
 
 	public int modiReview(SqlSessionTemplate sqlSession, LessonReview lr) {
 		return sqlSession.update("lessonEnrollMapper.modiReview", lr);
+	}
+
+	public IdPicture selectIp(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapperLee.selectIp", userNo);
+	}
+
+	public Teacher selectMember(SqlSessionTemplate sqlSession, int userNo) {
+		
+		return sqlSession.selectOne("memberMapper.selectMemberLesson",userNo);
 	}
 
 }

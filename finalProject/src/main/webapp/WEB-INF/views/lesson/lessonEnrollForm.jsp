@@ -19,6 +19,9 @@
         margin: auto;
         margin-top:20px;
     }
+    #footer{
+    	margin-top: 70px;
+    }
     /*영역잡기 끝*/
 
     /*페이지 제목*/
@@ -26,7 +29,7 @@
             font-size: 35px;
             font-weight: 800;
             margin-top: 100px;
-            margin-bottom: 100px;
+            margin-bottom: 60px;
     }
     /*페이지 제목 끝*/
          #result>span{
@@ -39,6 +42,10 @@
             margin-top: 5px;
             margin-bottom: 5px;
             padding: 5px;
+            font-size:15px;
+            
+            background:rgb(251, 176, 76);
+            border-radius: 10px;;
           }
           #result{
            z-index: -3;
@@ -50,7 +57,7 @@
 
 
           #resultDay>span{
-            display: inline-block;
+             display: inline-block;
             width: auto;
             margin-left: 20px;
             z-index: -1;
@@ -59,6 +66,10 @@
             margin-top: 5px;
             margin-bottom: 5px;
             padding: 5px;
+            font-size:15px;
+            
+            background:rgb(251, 176, 76);
+            border-radius: 10px;
           }
           #resultDay{
            z-index: -3;
@@ -79,8 +90,23 @@
                 width: 150px;
                 font-weight:500;
             }
-
-
+	.footnote{
+		color:gray;
+	}
+	#lessonEnrollTb{
+	border-top: 2px solid black;
+    border-collapse: collapse;
+	}
+	th, td {
+	
+    border-bottom: 2px solid black;
+    padding: 10px;
+    padding-bottom:20px;
+  }
+  .td-r{
+   border-right: 2px solid black;
+  }
+	
    /*테이블 꾸미기 끝*/
 </style>
 <body>
@@ -91,7 +117,7 @@
         </div>
         <form method="post" action="insert.le" enctype="multipart/form-data" onsubmit="return checkForm()">
             <input type="hidden" name="userNo" value="${loginUser.userNo }">
-        <table border="1" id="lessonEnrollTb">
+        <table  id="lessonEnrollTb" >
             <tr>
                 <td class="td-r">과목</td>
                 <td>
@@ -128,8 +154,7 @@
                 </td>
     
             </tr>
-
-           
+		  			
             <script>
                 //지역선택 스크립트문
                 function handleOnChange(e) {
@@ -197,10 +222,15 @@
              </script>
            
             <tr>
-                <td class="td-r">과외비</td>
-                <td><input type="text" id="fee1"  style="width: 300px; height: 35px; font-size:20px;" onkeyup="numberWithCommas(this.value)" maxlength="7" required ><input type="hidden"  id="fee2"  name="fee"></td>
+                <td  class="td-r" rowspan="2">과외비</td>
+                <td style="border:none"><input type="text" id="fee1"  style="width: 300px; height: 35px; font-size:20px;" onkeyup="numberWithCommas(this.value)" maxlength="7" required ><input type="hidden"  id="fee2"  name="fee"></td>
             </tr>
+            <tr>
+           
+                        <td  class="footnote" >&nbsp;&nbsp;&nbsp;<i class="fa-solid fa-play"></i>최소입력금액은 3만원입니다.</td>
+             </tr>
             <script>
+            	
                 function numberWithCommas(x) {
                  	x = x.replace(/[^0-9]/g,'');   // 입력값이 숫자가 아니면 공백
                     x = x.replace(/,/g,'');          // ,값 공백처리
@@ -359,7 +389,22 @@
             	<th class="td-r">첨부파일</th>
                 <td><input type="file" id="upfile" name="upfile" accept="video/*" required></td>
             </tr>
-          
+          		<script>
+          		$("input[name=upfile]").off().on("change", function(){
+
+          			if (this.files && this.files[0]) {
+
+          				var maxSize = 500 * 1024 * 1024;
+          				var fileSize = this.files[0].size;
+
+          				if(fileSize > maxSize){
+          					alert("첨부파일 사이즈는 500MB 이내로 등록 가능합니다.");
+          					$(this).val('');
+          					return false;
+          				}
+          			}
+          		});
+          		</script>
           
         </table>
         <div id="btfm">
@@ -381,11 +426,15 @@
 				}else if($('#leDay').val() == ""){
 					alert("요일을 선택해주세요")
 					return false;
+				}else if($('#fee2').val() <= 29999){
+					alert("최소 금액은 30,000원 입니다.")
+					return false;
 				}
 			}
 		</script>
         
         </div>
+         <jsp:include page="../common/footer.jsp"/>
        
 </body>
 </html>

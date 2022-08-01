@@ -12,6 +12,9 @@ import com.kh.moong.lesson.model.vo.Lesson;
 import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
+import com.kh.moong.member.model.vo.IdPicture;
+import com.kh.moong.member.model.vo.Member;
+import com.kh.moong.member.model.vo.Teacher;
 
 @Service
 public class LessonEnrollServiceImpl implements LessonEnrollService{
@@ -111,4 +114,18 @@ public class LessonEnrollServiceImpl implements LessonEnrollService{
 	public int modiReview(LessonReview lr) {
 		return lessonEnrollDao.modiReview(sqlSession, lr);
 	}
+
+	@Override
+	public IdPicture selectIp(int userNo) {
+		
+		return lessonEnrollDao.selectIp(sqlSession, userNo);
+	}
+
+	@Override
+	public Teacher selectMember(int userNo) {
+		
+		return lessonEnrollDao.selectMember(sqlSession,userNo);
+	}
+
+	
 }
