@@ -243,6 +243,7 @@ public class SolutionController {
 		
 		ArrayList<SolutionCmt> list = solutionService.cmtListAll(sno);
 		
+		System.out.println(list);
 		return new Gson().toJson(list); 
 	}
 	//현재 넘어온 첨부파일 자체를 서버 폴더에 저장시키는 역할

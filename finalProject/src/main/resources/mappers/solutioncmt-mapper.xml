@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="SCF_NO" property="scfNo"/>
 		<result column="SCF_ORIGINNAME" property="scfOriginName"/>
 		<result column="SCF_SYSNAME" property="scfSysName"/>
+		<result column="USER_NAME" property="userName"/>
 	</resultMap>
 	
 	<select id="getScNo" resultType="_int">
@@ -22,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="cmtListAll" resultMap="solutionCmtResultSet">
-        SELECT SC.*, M.USER_ID
+        SELECT SC.*, M.USER_NAME 
             FROM SOLUTION_CMT SC
             JOIN MEMBER M ON SC.USER_NO=M.USER_NO
         WHERE SOLUTION_NO = #{solutionNo}
@@ -31,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="listAll" resultMap="solutionCmtResultSet">
-		SELECT SC.*, M.USER_ID, CF.SCF_NO, CF.SCF_ORIGINNAME, CF.SCF_SYSNAME
+		SELECT SC.*, M.USER_NAME, CF.SCF_NO, CF.SCF_ORIGINNAME, CF.SCF_SYSNAME
             FROM SOLUTION_CMT SC
             JOIN MEMBER M ON SC.USER_NO=M.USER_NO
             LEFT JOIN SOLUTION_CMT_FILES CF ON SC.SC_NO=CF.SC_NO

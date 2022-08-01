@@ -111,7 +111,16 @@
                             	</c:otherwise>
                             </c:choose>
                             
-                            <td>${l.tyear}</td>
+                            <c:choose>
+                            <c:when test="${l.tyear eq 4 }">
+                            		<td>상관없음</td>
+                            </c:when>
+                            <c:otherwise>
+                             <td>${l.tyear}</td>
+                            </c:otherwise>
+                            </c:choose>
+                           
+                            
                             <td><button class="btn btn-warning" style="margin:0px;" onclick="">상세보기</button></td>
                         </tr>
                         </c:forEach>

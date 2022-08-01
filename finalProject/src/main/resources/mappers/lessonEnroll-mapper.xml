@@ -150,6 +150,17 @@ AND L.STATUS = 'Y'
 AND ${searchCat} LIKE '%'||#{searchText}||'%'
 ORDER BY T.RATING
 </select>
+
+<select id="selectAllSearchLessonCount" resultType="_int">
+SELECT COUNT(*)
+FROM LESSON_ENROLL L
+JOIN MEMBER M  ON (L.USER_NO = M.USER_NO)
+JOIN TEACHER T ON (M.USER_NO = T.USER_NO)
+WHERE M.STATUS = 'Y'
+AND L.STATUS = 'Y'
+AND ${searchCat} LIKE '%'||#{searchText}||'%'
+ORDER BY T.RATING
+</select>
  
  
  

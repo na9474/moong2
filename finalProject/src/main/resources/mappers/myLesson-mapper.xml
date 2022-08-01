@@ -9,17 +9,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="STUDENT_NO" property="studentNo"/>
 		<result column="TEACHER_NO" property="teacherNo"/>
 		<result column="SUBJECT" property="subject"/>
-		<result column="START_DATE" property="startDate"/>
+		<result column="STARTDATE" property="startDate"/>
 		<result column="END_DATE" property="endDate"/>
 		<result column="STATUS" property="status"/>
 		<result column="USER_NAME" property="userName"/>
 	</resultMap>
 	
 	<select id="lessonList" resultMap="lessonResultSet" >
-		SELECT STUDENT_NO, TEACHER_NO, M.USER_NAME, SUBJECT, START_DATE, END_DATE, L.STATUS, L_NO
+		
+		
+		SELECT STUDENT_NO,TEACHER_NO,USER_NAME,SUBJECT,END_DATE,STATUS,L_NO,STARTDATE
+    FROM  (SELECT STUDENT_NO,
+       TEACHER_NO,
+       M.USER_NAME,
+       L.START_DATE ,
+       SUBJECT,
+       START_DATE AS "STARTDATE",
+       END_DATE,
+       L.STATUS, 
+       L_NO,
+       ROW_NUMBER() OVER(PARTITION BY SUBJECT ORDER BY START_DATE  DESC) AS RN
 		FROM LESSON L
-		JOIN MEMBER M ON (M.USER_NO = TEACHER_NO)
-		<choose>
+        JOIN MEMBER M ON (M.USER_NO = TEACHER_NO)
+			<choose>
 			<when test= 'teacher == "N"'>
 				WHERE STUDENT_NO = #{userNo}
 			</when>
@@ -27,15 +39,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 				WHERE TEACHER_NO = #{userNo}
 			</otherwise>
 		</choose>
+		)
+        WHERE RN =1
+		
 	</select>
-	
 	<!-- 레슨 종료 -->
 	<update id="updateLessonEnd">
 	UPDATE LESSON
 	SET END_DATE = SYSDATE,
 		STATUS = 'N'
-	WHERE L_NO = #{lNo}
+	WHERE SUBJECT = #{subject},
+	AND TEACHER_NO = #{teacherNo},
+	AND START_DATE = #{startDate}
 	
 	</update>
+	
+	
+	
+	<select id="selectLesson" resultMap="lessonResultSet">
+	SELECT SUBJECT,START_DATE,TEACHER_NO
+	FROM LESSON
+	WHERE L_NO = #{lNo}
+	</select>
 
 </mapper>

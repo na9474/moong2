@@ -26,7 +26,10 @@
             margin-bottom: 100px;
     }
     /*페이지 제목 끝*/
-
+	#pagingArea{
+	width:fit-content; 
+	margin:auto;
+	}
 
 
 </style>
@@ -58,7 +61,15 @@
 				<tr align="center">
 					<td>${m.userNo }</td>		
 					<td>${m.userName }</td>
-					<td>${m.gender }</td>
+					<c:choose>
+					<c:when test="${m.gender eq 'M' }">
+					<td>여자</td>
+					</c:when>
+					<c:otherwise>
+					<td>남자</td>
+					</c:otherwise>
+					</c:choose>
+					
 					<td>${m.enrollDate }</td>
 
 					<c:if test="${m.student eq 'Y' }">

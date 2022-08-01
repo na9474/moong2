@@ -320,18 +320,31 @@ public class LessonEnrollController {
 			@RequestMapping("search.le")
 			public ModelAndView SearchLessonEnroll(@RequestParam(value = "cpage", defaultValue = "1") int currentPage,Search s,ModelAndView mv) {
 				
+				mv.addObject("sText",s.getSearchText());
 				
 				if(s.getSearchText().equals("수학")) {
+					
 					s.setSearchText("MATH");
 				}else if(s.getSearchText().equals("국어")) {
 					s.setSearchText("KO");
 				}else if(s.getSearchText().equals("영어")) {
+					
 					s.setSearchText("ENG");
 				}
 					
 				
+				if(s.getSearchText().equals("상관없음") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("4");
+				}else if(s.getSearchText().equals("1학년") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("1");
+				}else if(s.getSearchText().equals("2학년") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("2");
+				}else if(s.getSearchText().equals("3학년") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("3");
+				}
 				
-				int listCount = ls.selectAllLessonCount();
+				
+				int listCount = ls.selectAllSearchLessonCount(s);
 				
 				
 				int pageLimit = 10;
@@ -346,7 +359,7 @@ public class LessonEnrollController {
 				
 				
 				mv.setViewName("lesson/teacherLessonList");
-				mv.addObject("sText",s.getSearchText());
+				mv.addObject("scat",s.getSearchCat());
 				mv.addObject("pi",pi);
 				mv.addObject("list",list);
 				

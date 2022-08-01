@@ -17,5 +17,6 @@ public class SolutionCmt {
 		private int scfNo;
 		private String scfOriginName;
 		private String scfSysName;
+		private String userName;
 
 }

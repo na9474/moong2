@@ -10,7 +10,9 @@ public interface MyLessonService {
 	ArrayList<Lesson> lessonList(Member loginUser);
 
 	//레슨 종료
-	int updateLessonEnd(int lNo);
+	int updateLessonEnd(Lesson l);
+
+	Lesson selectLesson(int lNo);
 
 
 

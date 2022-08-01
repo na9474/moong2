@@ -38,6 +38,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	ORDER BY DECODE(B.APPROVAL,'N','D','Y')
 	</select>
 	
+	
 	<!-- 가입승인 -->
 	<update id="joinApproval">
 	UPDATE MEMBER

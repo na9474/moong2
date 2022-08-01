@@ -38,7 +38,9 @@ public class MyLessonController {
 					@RequestParam(value="no",defaultValue="0") int lNo,
 					HttpSession session
 							) {
-		int result = myLessonService.updateLessonEnd(lNo);
+		Lesson l = myLessonService.selectLesson(lNo);
+		
+		int result = myLessonService.updateLessonEnd(l);
 		
 		if(result>0) {
 			session.setAttribute("alertMsg", "레슨이 종료 되었습니다");

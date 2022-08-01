@@ -119,10 +119,10 @@
         <br><br>
 		<ul class="nav nav-tabs">
 		  <li class="nav-item">
-		    <a class="nav-link active" href="myBoardListView.me">자유게시판</a>
+		    <a class="nav-link active" href="myBoardListView.me" >자유게시판</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="mySolutionListView.me">문제풀이게시판</a>
+		    <a class="nav-link" href="mySolutionListView.me" >문제풀이게시판</a>
 		  </li>
 
 		</ul>
