@@ -157,11 +157,5 @@ public class SolutionServiceImpl implements SolutionService {
 	public int solPoliceCheck(int solution_no, int user_no) {
 		return solutionDao.solPoliceCheck(sqlSession, solution_no, user_no);
 	}
-	
-	@Override
-	public int cmtPoliceCheck(int sc_no, int user_no) {
-		return solutionDao.cmtPoliceCheck(sqlSession, sc_no, user_no);
-	}
 
-	
 }

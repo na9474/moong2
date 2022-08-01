@@ -104,14 +104,19 @@ public class PoliceController {
 		pc.setUserNo(loginNo);
 		pc.setScNo(scNo);
 		
-		int result = policeService.addPoliceCmt(pc);
-		
-		if(result>0) {
-			session.setAttribute("alertMsg", "신고 완료");
-		}else {			
-			System.out.println("신고 실패");
-		}
-		
+		int check = policeService.cmtPoliceCheck(scNo, loginNo);
+				
+				if(check>0) {
+					session.setAttribute("alertMsg","이미 신고한 댓글입니다.");
+				}else {
+					
+					int result = policeService.addPoliceCmt(pc);
+					
+					if(result>0) {
+						session.setAttribute("alertMsg", "신고 완료");
+					}
+				}
+					
 		return "redirect:detail.so?sno="+solutionNo;
 	}
 	
