@@ -264,7 +264,7 @@ header nav ul li{
 			                   	</li> 
 		                   		</c:when>
 		                   		<c:when test="${loginUser.userId eq 'admin' }">
-		                   		
+		                   		 
 		                   		</c:when>
 		                   		<c:otherwise>
                                 <li class="nav-item">
