@@ -91,7 +91,4 @@ public interface SolutionService {
 	//user가 해당 게시물을 신고했는지 확인
 	int solPoliceCheck(int solution_no, int user_no);
 	
-	//user가 해당 게시물을 신고했는지 확인
-	int cmtPoliceCheck(int sc_no, int user_no);
-	
 }

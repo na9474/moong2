@@ -172,12 +172,4 @@ public class SolutionDao {
 		return sqlSession.selectOne("policeMapper.solPoliceCheck", param);
 	}
 	
-	// user가 해당 댓글을 신고했는지 확인
-	public int cmtPoliceCheck(SqlSessionTemplate sqlSession, int sc_no, int user_no) {
-		HashMap<String, Integer> param = new HashMap<String, Integer>();
-		param.put("sc_no", sc_no);
-		param.put("user_no", user_no);
-		return sqlSession.selectOne("policeMapper.cmtPoliceCheck", param);
-	}
-	
 }

@@ -66,9 +66,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 해당 user가 해당 댓글을 신고했는지 확인(0/1로 구분) -->
 	<select id="cmtPoliceCheck" resultType="_int">
-		SELECT COUNT(*) AS COUNT
+		SELECT COUNT(*)
 		FROM POLICE_CMT
-		WHERE SC_NO = #{scNo} AND USER_NO = #{userNo}
+		WHERE SC_NO = #{scNo} AND USER_NO = #{user_no}
 	</select>
 	
 </mapper>
