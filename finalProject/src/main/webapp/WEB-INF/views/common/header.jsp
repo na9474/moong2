@@ -263,6 +263,9 @@ header nav ul li{
 		                        	<a class="nav-link" href="stuMyPage.me">마이페이지</a>
 			                   	</li> 
 		                   		</c:when>
+		                   		<c:when test="${loginUser.userId eq 'admin' }">
+		                   		
+		                   		</c:when>
 		                   		<c:otherwise>
                                 <li class="nav-item">
                                 	 <a class="nav-link" href="myPageMain.me">마이페이지</a>
