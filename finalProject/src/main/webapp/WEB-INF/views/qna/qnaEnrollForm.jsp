@@ -44,6 +44,14 @@
             transition: 0.5s;
             
         }
+        
+        /*버튼 */
+		.find-btn{
+			text-align: center;
+		}
+		.find-btn1{
+			display :inline-block;
+		}
     </style>
 </head>
 <body>
@@ -69,9 +77,9 @@
                 </select>
             </div>
             <div class="col-11">
-                <div class="input-group input-group-sm mb-3">
+                <div class="input-group input-group-sm mb-3" style="width:1000px">
                     <div class="input-group-prepend" >
-                      <span class="input-group-text" id="inputGroup-sizing-sm">제목</span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="input-group-text" id="inputGroup-sizing-sm" >제목</span>
                     </div>
                     <input type="text" class="form-control"  name="title" id="title" placeholder="제목을 입력하세요">
                 </div>
@@ -84,10 +92,12 @@
                 <textarea class="summernote" name="questionContent"></textarea>
             </div>
         </div>
-
+		
+		<br>
         <div class="row bottombox">
-            <div class="col-12" id="bottombox">
-                <button type="submit" class="btn moong-dark">작성</button>
+            <div class="col-12 find-btn" id="bottombox">
+                <button type="submit" class="btn moong-dark find-btn1">작성</button>
+                <button type="reset" class="btn moong-yellow find-btn1">취소</button>
             </div>
         </div>
 
@@ -105,58 +115,7 @@
 
 <!--섬머노트-->
      <script>
-/* 	  $(document).ready(function() {
-		$('.summernote').summernote({
-			  height: 800,                 // 에디터 높이
-			  minHeight: null,             // 최소 높이
-			  maxHeight: null,             // 최대 높이
-			  focus: true,                  // 에디터 로딩후 포커스를 맞출지 여부
-			  lang: "ko-KR",					// 한글 설정
-			  placeholder: '최대 2048자까지 쓸 수 있습니다'	//placeholder 설정
-		});
-    });
-     
 
-	// 툴바생략
-	var setting = {
-            height : 800,
-            minHeight : null,
-            maxHeight : null,
-            focus : true,
-            lang : 'ko-KR',
-            toolbar : toolbar,
-            //콜백 함수
-            callbacks : { 
-            	onImageUpload : function(files, editor, welEditable) {
-            // 파일 업로드(다중업로드를 위해 반복문 사용)
-            for (var i = files.length - 1; i >= 0; i--) {
-            uploadSummernoteImageFile(files[i],
-            this);
-            		}
-            	}
-            }
-         };
-        $('.summernote').summernote(setting);
-
-		//이미지 업로드        
-        function uploadSummernoteImageFile(file, el) {
-			data = new FormData();
-			data.append("file", file);
-			$.ajax({
-				data : data,
-				type : "POST",
-				url : "uploadSummernoteImageFile",
-				contentType : false,
-				enctype : 'multipart/form-data',
-				processData : false,
-				success : function(data) {
-					$(el).summernote('editor.insertImage', data.url);
-				},
-				error : function(){
-    				console.log("통신실패")
-    			}
-			});
-		}  */
 
         $(document).ready(function() {
 
@@ -182,12 +141,13 @@
         		  ];
 
         	var setting = {
-                    height : 800,
+                    height : 500,
                     minHeight : null,
                     maxHeight : null,
                     focus : true,
                     lang : 'ko-KR',
                     toolbar : toolbar,
+                    placeholder: '최대 2048자까지 쓸 수 있습니다'	,
                     //콜백 함수
                     callbacks : { 
                     	onImageUpload : function(files, editor, welEditable) {

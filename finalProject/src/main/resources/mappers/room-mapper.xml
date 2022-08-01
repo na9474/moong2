@@ -15,20 +15,12 @@
 	<!-- 매칭된 그룹에 채팅방 링크 보내기 -->
 	<select id="roomList" resultMap="roomResultSet">
 		SELECT ROOM_NO, ROOM_URL, SUBJECT
-		FROM ROOM
+		FROM ROOM R
 		JOIN MATCHING ON (ROOM_NO = GROUP_NO)
 		WHERE USER_NO = #{userNo}
+		AND R.STATUS = 'Y'
 		ORDER BY ROOM_NO DESC
 	</select>
-	
-	<!-- 관리자 - 채팅방 링크 목록 -->
-	<!-- SUBJECT도 조회를 하면 생성된 채팅방 전체가 조회되지 않음 -->
-<!-- 	<select id="adRoomList" resultMap="roomResultSet"> -->
-<!-- 		SELECT ROOM_NO, ROOM_URL -->
-<!-- 		FROM ROOM -->
-<!-- 		WHERE STATUS = 'Y' -->
-<!-- 		ORDER BY ROOM_NO DESC -->
-<!-- 	</select> -->
 	
 	<!-- 관리자 - 채팅방 링크 입력 -->
 	<insert id="insertUrl" parameterType="Room">
@@ -40,6 +32,7 @@
 	<select id="aRoomList" resultMap="roomResultSet">
 		SELECT *
 		FROM ROOM
+		WHERE STATUS = 'Y'
 	</select>
 	
 	<!-- 선생님에게 보여줄 url -->
@@ -49,19 +42,4 @@
 	WHERE ROOM_NO =#{groupNo}
 	</select>
 	
-	
-	
-	<!-- 관리자 - 채팅방 링크 삭제 -->
-<!-- 	<update id="deleteUrl"> -->
-<!-- 		UPDATE ROOM -->
-<!-- 		SET STATUS = 'N' -->
-<!-- 		WHERE ROOM_NO = #{roomNo} -->
-<!-- 	</update> -->
-	
-	<!-- 관리자 - 채팅방 링크 수정 -->
-<!-- 	<update id="modifyUrl"> -->
-<!-- 		UPDATE ROOM -->
-<!-- 		SET ROOM_URL = #{roomUrl} -->
-<!-- 		WHERE ROOM_NO = #{roomNo} -->
-<!-- 	</update> -->
 </mapper>

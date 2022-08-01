@@ -60,10 +60,9 @@
         margin-bottom: 20px;
     }
     #idc{
-        
-        width: 500px;
-        height: 700px;
-        margin: auto;
+        width: 400px;
+    	height: 500px;
+    	margin: auto;
         margin-bottom: 10px;
         /*공란색칠*/
         background-color: orange;
@@ -105,6 +104,14 @@
         margin: auto;
         width: 600px;
     }
+    
+     /*버튼 */
+	.find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
     
 </style>
 </head>
@@ -167,15 +174,18 @@
 
                 <div style="margin:auto; height: 800px;">
                     <div class="mid">재학 증명서</div>
-                    <div id="idc"></div>
+                    <div id="idc"><img style="height:500px; width:400px;" src="${idCard.icSysName }"></div>
                     <div>첨부파일 : ${idCard.icOriginName }</div>
                 </div>
 
                 <div class="line"></div>
-
-		<button onclick="location.href='teaUpdate.me'" style="float: right; margin:auto">수정하기</button>
-		<button onclick="location.href='teaDelete.me'" style="float: right; margin:auto">탈퇴하기</button>
-                
+		
+		<div class="find-btn">
+			<button onclick="location.href='teaUpdate.me'" style="margin:auto"class="moong-dark find-btn1">수정하기</button>
+			<button onclick="location.href='teaDelete.me'" style="margin:auto"class="moong-dark find-btn1">탈퇴하기</button>
+       		 
+       		<button onclick="location.href='pwUpdateForm.me'" style="float:right;" class="moong-yellow">비밀번호 변경</button>
+       	</div>        
 
         </div>
         

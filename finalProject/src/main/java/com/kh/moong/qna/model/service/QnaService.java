@@ -48,5 +48,8 @@ public interface QnaService {
 	//첨부파일의 qnaNo 넣어주기
 	int updateQfQnaNo(QnaQuestion qq);
 
+	//댓글 개수
+	ArrayList<QnaAnswer> qaCount();
+
 
 }

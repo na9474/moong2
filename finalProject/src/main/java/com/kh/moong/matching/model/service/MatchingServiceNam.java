@@ -1,6 +1,7 @@
 package com.kh.moong.matching.model.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.kh.moong.matching.model.vo.Matching;
 import com.kh.moong.matching.model.vo.Room;
@@ -15,8 +16,5 @@ public interface MatchingServiceNam {
 	int updateUrlS(int groupNo);
 
 	ArrayList<Room> aRoomList();
-	
-//	int deleteUrl(Room r);
-//
-//	int modifyUrl(Room r);
+
 }

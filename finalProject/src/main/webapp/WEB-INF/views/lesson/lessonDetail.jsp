@@ -140,8 +140,29 @@
         #replylist>tbody>tr>td{
             border-bottom: 1px solid black;
         }
+        
+        .modiBtn { /*수정, 등록 버튼*/
+        	border: 0;
+        	border-radius: 3px;
+        	font-size: 14px;
+        	color: rgb(104, 103, 102);
+        	padding: 3px;
+        	padding-left: 5px;
+        	padding-right: 5px;
+        }
+        .mo {
+        	background-color: rgb(251, 176, 76);
+        	color: white;
+        }
+        .cd {
+        	font-size: 14px;
+        	color: rgb(104, 103, 102);
+        }
     /*후기 리스트 끝*/
    /*후기부분 끝*/
+   .changeArea{
+   	
+   }
 </style>
 <body>
      <jsp:include page="../common/header.jsp"/>
@@ -159,41 +180,63 @@
                     </tr>
                     <tr>
                         <td>나이 : </td>
-                        <td>20</td>
+                        <td>${age }</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
+                        <c:choose>
+                        <c:when test="${t.gender eq 'M'}">
                         <td>남</td>
-                    </tr>
-                    <tr>
+                        </c:when>
+                        <c:otherwise>
+                        <td>여</td>
+                        </c:otherwise>
+                        </c:choose>
                         
-                        <td>등급 : </td>
-                        <td>다이아</td>
                     </tr>
+                 
                     <tr>
                         <td>이메일 : </td>
-                        <td>tjdtossla12@gmail.com</td>
+                        <td>${t.email }</td>
                     </tr>
                     <tr>
                         <td>한줄자기소개 &nbsp;&nbsp;: &nbsp;&nbsp;</td>
-                        <td colspan="2">대박열심히해야겟다 </td>
+                        <td colspan="2">${t.selfIntroduction} </td>
                     </tr>
                 </table>
                 <div class="line"></div>
                 <table id="teacher-tb2">
                     <tr>
                         <td>출&nbsp;&nbsp;신&nbsp;&nbsp;학&nbsp;&nbsp;교&nbsp; : </td>
-                        <td style="float: left;">xx대학교    </td>
+                        <td style="float: left;">${t.schoolInfo } </td>
                     </tr>
+                    <script>
+                    	
+                    	$(function(){
+                    		var feestr = "${l.fee}"
+                            	feestr.replace(",","")
+                            	var text = feestr.replace(",","")+"원";
+                    		$('#fee').append(text);
+                    	})
+                    	
+                    </script>
                     <tr>
                         <td>시간당 과외비 : </td>
-                        <td style="float: left;" id="fee">${l.fee}원</td>
+                        <td style="float: left;" id="fee"></td>
                     </tr>
-  
+  					<script>
+  					$(function(){
+                		var feestr = "${l.area}"
+                        	
+                        	var text = feestr.replaceAll(",","");
+                		$('#changeArea').append(text);
+                	})
+  					</script>
                     <tr>
                         <td>과외 가능 지역 : </td>
-                        <td style="float: left;" class="changeArea">${l.area}</td>
+                        <td style="float: left;" id="changeArea" class="changeArea"></td>
                     </tr>
+                  
                     <tr>
                         <td>과&nbsp;&nbsp;외&nbsp;&nbsp;&nbsp;&nbsp;과&nbsp;&nbsp;목 :  </td>
                         <c:choose>
@@ -209,9 +252,17 @@
                         </c:choose>
                         
                     </tr>
+                    <script>
+  					$(function(){
+                		var feestr = "${l.leDay}"
+                        	
+                        	var text = feestr.replaceAll(",","");
+                		$('#changeDay').append(text);
+                	})
+  					</script>
                     <tr>
                         <td>과외 가능 요일 : </td>
-                        <td style="float: left;" class="changeDay">${l.leDay}</td>
+                        <td style="float: left;" id="changeDay"class="changeDay"></td>
                     </tr>
                     <tr>
                         <td>경&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;력 : </td>
@@ -240,7 +291,7 @@
 
                 <div class="line"></div>
 
-				<div id="btnArea" style="width:fit-content; margin:auto;"><button class="btn moong-yellow" onclick="location.href='tlist.le?cpage=1'">목록으로</button> 
+				<div id="btnArea" style="width:fit-content; margin:auto;"><button class="btn moong-dark" onclick="location.href='tlist.le?cpage=1'">목록으로</button> 
 				<c:if test="${loginUser.userNo eq l.userNo }">
 				<button class="btn moong-dark" id="updateLe" >수정하기</button>
 				</c:if>
@@ -254,53 +305,37 @@
             <div id="replytit">
                 후기
             </div>
-            <form action="">
+           
             <div id="replyinsert">
-                <div id="replyinsert-1">
-                    <textarea name="" id="reply" cols="55" rows="3" style="resize: none;" >선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다.</textarea>
-                </div>
-                <div id="replyinsert-2">
-                    <button type="submit" disabled>작성하기</button>
-                </div>
             </div>
-        </form>
+        	
             <table  id="replylist">
                 <thead>
                     <tr>
-                        <td style="width: 8%;">이름</td>
-                        <td>내용</td>
-                        <td style="width: 15%;">작성일</td>
+                        <td width="10%">이름</td>
+                        <td width="60%">내용</td>
+                        <td width="15%">작성일</td>
+                        <td width="6%"></td>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>나학생</td>
-                        <td>선생님최고시다..</td>
-                        <td>2022-06-22</td>
-                    </tr>
-                    <tr>
-                        <td>김학생</td>
-                        <td>이선생님 ㄹㅇ 개별로임</td>
-                        <td>2022-06-22</td>
-                    </tr>
                 </tbody>
-                
             </table>
         </div>
-        
     </div>
-    
-
+	
     <script>
-    
+    <c:if test="${!empty loginUser}">
     if('${loginUser.student}' == 'Y'){
     	studentCheifCheck();
     	
     }
     
     function studentCheifCheck(){ 
+    	
 		$.ajax({
 			url : "cheifCheck.ma",
+			
 			data : {userNo : ${loginUser.userNo}},
 			success : function(m){
 				 console.log(m);
@@ -362,7 +397,173 @@
         })
         
         
+        
+        
        
+         // 해당 선생님의 과외 학생이면 작성란O, 아니면 X
+        $(function(){
+        	$.ajax({
+        		url: "revCount.rv",
+        		data: {
+        			studentNo: '${loginUser.userNo}',
+        			subject: '${l.subject}',
+        			teacherNo: '${l.userNo}'
+        		},
+        		success: function(e){
+        			if(e > 0){
+        				var rvArea = "";
+        				
+        				rvArea += "<div id='replyinsert-1'>"
+        						+ "<textarea id='reply' cols='55' rows='3' style='resize: none;' placeholder='선생님의 과외를 들은 학생만 후기를 작성할 수 있습니다.'></textarea>"
+        						+ "</div>"
+        						+ "<div id='replyinsert-2'>"
+        						+ "<button type='button' id='wrBtn' class='btn moong-yellow' onclick='addReview();'>작성하기</button>"
+        						+ "</div>";
+        				
+        				$("#replyinsert").append(rvArea);
+        			} 
+        		},
+        		error: function(){
+        			console.log("통신 실패");
+        		}
+        	});
+        });
+    	
+      
+        // 후기
+        $(function(){
+        	reviewList();	
+        });
+        
+    	// 후기 쓰기
+        function addReview(){
+        	if($("#reply").val().trim().length != 0){
+        		$.ajax({
+        			url: "revinsert.rv",
+        			data: {
+        				refLeno: '${l.leNo}',
+        				reUno: '${loginUser.userNo}',
+        				reText: $("#reply").val(),
+        				reUname: '${loginUser.userName}'
+        			},
+        			success: function(e){
+        				if(e == 'Y'){
+        					
+        					reviewList();
+        					$("#reply").val("");
+        					$("#wrBtn").attr("disabled", true);
+        				}
+        				if(e == "nn"){
+        					alert("후기는 한 번만 작성할 수 있습니다.");
+        					$("#reply").val("");
+        				}
+        			},
+        			error: function(){
+       					console.log("통신 실패");                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+        			}
+        		});
+        	} else {
+        		$("#reply").val("");
+        		alert("후기를 입력하세요.");
+        	}
+        }
+        </c:if>
+        
+        
+        // 후기 목록
+        function reviewList(){
+        	$.ajax({
+        		url: "revlist.rv",
+        		data: {
+        			refLeNo: ${l.leNo}
+        		},
+        		success: function(e){
+        			<c:choose>
+	        			<c:when test="${!empty loginUser}">
+	        				var num1 = ${loginUser.userNo};
+	        			</c:when>
+	        			<c:otherwise>
+	        				var num1= 0;
+	        			</c:otherwise>
+        			</c:choose>
+        			
+        			var num2 =0;
+        			var rvStr = "";
+        			
+        			for(var i=0; i<e.length; i++){
+        				num2 = e[i].reUno;
+        				if(num1 == num2){
+	        				rvStr += "<tr class='rv'>"
+	        				       + "<td>"+e[i].reUname+"</td>"
+	        				       + "<td>"+e[i].reText+"</td>"
+	        				       + "<td class='cd'>"+e[i].createDate+"</td>"
+	       				  		   + "<td><button type='button' class='modiBtn' onclick='modiRv();'>수정</button></td>"
+	       				  	       + "</tr>";
+        				} else {
+        					rvStr += "<tr>"
+	        				       + "<td>"+e[i].reUname+"</td>"
+	        				       + "<td>"+e[i].reText+"</td>"
+	        				       + "<td class='cd'>"+e[i].createDate+"</td>"
+	       				  		   + "<td></td>"
+	       				  	       + "</tr>";
+        				}
+        			}
+        			$("#replylist>tbody").html(rvStr);
+        		},
+        		error: function(){
+        			console.log("통신 실패");
+        		}
+        	});
+        }
+        
+       // 후기 수정버튼 누르면 밑에 수정칸 보이게
+       function modiRv(){
+    	   $(function(){
+	           $(".modiBtn").css("display", "none"); 
+	           
+		       var modiRvStr = "";
+		       
+		       modiRvStr += "<tr>"
+		                  + "<td></td>"
+		                  + "<td><textarea id='modiReply' cols='30' rows='3' style='resize: none;'></textarea></td>"
+		                  + "<td colspan='2'><button type='button' class='modiBtn mo' onclick='modiReview();'>등록</button>"
+		                  + "&nbsp;&nbsp;<button type='button' class='modiBtn' onclick='modiReset();'>취소</button></td>"
+		       			  + "</tr>";
+		       			  
+	       	   $(".rv").after(modiRvStr);
+    	   });
+       }
+       
+       // 후기 수정
+       function modiReview(){
+    	   if($("#modiReply").val().trim().length != 0){
+	    	   $.ajax({
+	    		  url: "modifyRev.rv",
+	    		  data: {
+	    			  refLeno: '${l.leNo}',
+	  				  reUno: '${loginUser.userNo}',
+	  				  reText: $("#modiReply").val()
+	    		  },
+	    		  success: function(e){
+	    			  if(e == 'Y'){
+					      reviewList();
+						  $("#modiReply").val("");
+	  			      }
+	    		  },
+	    		  error: function(){
+	    			  console.log("통신 오류");
+	    		  }
+	    	   });
+    	   } else {
+    		   alert("수정할 후기를 작성하세요.");
+    	   }
+  	   }
+       
+       // 후기 수정 취소
+       function modiReset(){
+    	   reviewList();
+       }
     </script>
+    
 </body>
 </html>

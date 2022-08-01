@@ -159,9 +159,7 @@ header nav ul li{
                   
                   <c:choose>
                 	<c:when test="${loginUser.student eq 'Y' || loginUser.userId eq 'admin'}">
-                			<li class="nav-item">
-		                    	<a class="nav-link" href="#">매칭 리스트</a>
-		                  	 </li>
+                		
 		                 	 <li class="nav-item">
 		                    	<a class="nav-link" href="#">자유 게시판</a>
 		                  	 </li>
@@ -179,10 +177,9 @@ header nav ul li{
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">관리자 페이지</a>
                         <div class="dropdown-menu">
-					      <a class="dropdown-item" href="#">회원승인</a>
-					      <a class="dropdown-item" href="#">회원리스트</a>
+					      <a class="dropdown-item" href="memberList.ad">회원리스트</a>
 					      <a class="dropdown-item" href="list.po">신고리스트</a>
-					      <a class="dropdown-item" href="#">QnA</a>
+					      <a class="dropdown-item" href="qnaListView.qu">QnA</a>
 					      <a class="dropdown-item" href="chart.ch">차트</a>
 					    </div>
                   </li>
@@ -235,9 +232,11 @@ header nav ul li{
 			                       <form id="teacherAlarmList" method="post" action="teacherAlarmList.ma">
 			                       <input type="hidden" name="userNo" value=${loginUser.userNo }>
 			                       </form>
+			                       <c:if test="${loginUser.teacher eq 'Y'}">
 			                       <li class="nav-item">
 				                            <a class="nav-link" href="#" onclick="return teacherAlarmList()"> <i class="fa-solid fa-check" style="color:red; visibility:hidden;" id="checkSendUrl"></i> &nbsp; <i class="fa-solid fa-bell"></i> 알림</a>
 				                       </li>
+				                       </c:if>
 				                       <script>
 				                       		function teacherAlarmList(){
 				                       			$('#teacherAlarmList').submit();
@@ -249,6 +248,11 @@ header nav ul li{
 							   <c:if test="${loginUser.userId ne 'admin'}">
 
 		                       <c:choose>
+		                       <c:when test="${loginUser.approval eq 'N' || loginUser.approval eq 'D'}">
+		                       	<li class="nav-item">
+		                        	<a class="nav-link" href="myPageMain.me">마이페이지</a>
+								</li>
+		                       </c:when>
 		                       <c:when test="${loginUser.teacher eq 'Y' }">            
 		                   		<li class="nav-item">
 		                        	<a class="nav-link" href="teaMyPage.me">마이페이지</a>
@@ -287,9 +291,10 @@ header nav ul li{
     	$(function(){
 			checkMatching();
 			alertMatching();
+			sendUrlAlert();
 			repeat1 = setInterval(checkMatching, delay);
 			repeat2 = setInterval(alertMatching, delay);
-			repeat5 = setInterval(, delay)
+			repeat5 = setInterval(sendUrlAlert, delay)
 		})
 		
 		
@@ -341,7 +346,7 @@ header nav ul li{
 		  $.ajax({
 				url : "alertcp.ma",
 				data : {maNo : x },
-				success : function(){
+				success : function(result){
 					if(result>0){
 					console.log("변경성공")		
 					}else{
@@ -362,6 +367,7 @@ header nav ul li{
 				success : function(result){
 					if(result>0){
 						alert("선생님에게 보낸 매칭요청이 거절되었습니다.")
+						urlAlertUpdate2();
 						clearInterval(repeat5);
 					}else{
 						
@@ -373,6 +379,27 @@ header nav ul li{
 			})
 
 	  }
+	  
+	  function urlAlertUpdate2(){
+		  
+		  $.ajax({
+				url : "urlAlertUpdate2.ma",
+				data : {userNo : ${loginUser.userNo}},
+				success : function(result){
+					if(result>0){
+						console.log("update성공")
+					}else{
+						console.log("update실패")
+					}	
+				},
+				error : function(){
+					console.log("통신실패");
+				}
+			})
+		 
+	  }
+	  
+	  
    		
 		// 접속한 유저가 채팅방 클릭했을 때
 	  	$(function(){
@@ -392,14 +419,14 @@ header nav ul li{
     	$(function(){
 			checkSendUrl1()
 			checkSendUrl2()
-			var repeat3 =setInterval(checkSendUrl,delay2);
-			var repeat4 =setInterval(checkSendUr2,delay2);
+			var repeat3 =setInterval(checkSendUrl1,delay2);
+			var repeat4 =setInterval(checkSendUrl2,delay2);
 		})
 		
 		//선생님한테온 url초대요청이 있는가? alert창
 			function checkSendUrl1(){ 
 			$.ajax({
-				url : "checkSendUrl.ma",
+				url : "checkSendUrl1.ma",
 				data : {userNo : ${loginUser.userNo}},
 				success : function(result){
 	 				if(result>0){ //받은 초대요청 O

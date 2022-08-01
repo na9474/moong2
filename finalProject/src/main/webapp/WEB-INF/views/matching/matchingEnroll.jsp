@@ -126,7 +126,7 @@
           }
           /*입력폼관련*/
             #footer{
-                margin-top:130px
+                margin-top:150px
             }
     </style>
 </head>

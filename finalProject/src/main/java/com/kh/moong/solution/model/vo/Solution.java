@@ -17,4 +17,6 @@ public class Solution {
 		private Date createDate;
 		private String status;
 		private String userId;
+		
+		private String sfSysName;
 }

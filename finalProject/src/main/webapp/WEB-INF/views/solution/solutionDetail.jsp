@@ -46,8 +46,8 @@
             border-top: none;
             border-left: none;
             border-right: none;
-		    width: 800px;
-		    height: 600px;
+		    width: auto;
+		    height: auto;
 		}
 
         #cmtfi{
@@ -113,13 +113,16 @@
     <br><br><br><br><br>
 
         <div class="row topline" id="top-line">
+       		<input type="hidden" id="loginId" value="${loginId}">
         	<input type="hidden" id="loginNo" value="${loginNo}">
 
-            <div class="col-6">
+            <div class="col-5">
                 <h3>${s.title}</h3>
             </div>
 
             <div class="col-3" id="topwr">${s.userId}</div>
+            
+            <div class="col-1" id="topwr">${s.subject}</div>		
 
             <div class="col-2" id="topda">${s.createDate}</div>
 
@@ -152,19 +155,50 @@
             <div class="col-12" id="co-contentText">${s.solutionContents}</div>
         </div>
 
-        <div class="row etc" id=etcBtn>
-            <div class="col-9"></div>
-            <div class="col-1" id="modifybut">
-                <a class="btn moong-dark" onclick="postFormSubmit(1)">수정</a>
-            </div>
-            <div class="col-1" id="deletebut">
-                <a class="btn moong-dark" onclick="postFormSubmit(2)">삭제</a>
-            </div>
-            
-            <div class="col-1" id="policebut">
-				<a class="btn moong-dark" data-toggle="modal" data-target="#police">신고</a>
-            </div>
-        </div>
+	        <div class="row etc" id=etcBtn>
+	            <div class="col-10"></div>
+	            
+			<c:choose>
+	            <c:when test="${loginUser.userNo eq s.userNo || loginUser.userId eq 'admin'}">
+		            <div class="col-1" id="modifybut">
+		                <a class="btn moong-dark" onclick="postFormSubmit(1)">수정</a>
+		            </div>
+		            <div class="col-1" id="deletebut">
+		                <a class="btn moong-dark" onclick="postFormSubmit(2)">삭제</a>
+		            </div>
+	            </c:when>
+	            
+	            <c:when test="${loginNo==0}">
+		            <div class="col-1"></div>
+		            <div class="col-1"></div>
+	            </c:when>
+	            
+	            <c:when test="${solPoliceYn==0}">
+		            <div class="col-1"></div>
+		            <div class="col-1" id="policebut">
+						<a class="btn moong-dark" data-toggle="modal" data-target="#police">신고</a>
+		            </div>
+	           	</c:when>
+	           	
+	           	<c:when test="${solPoliceYn>0}">
+		           	<div class="col-1"></div>
+		            <div class="col-1" id="policebut">
+						<a class="btn moong-dark" data-toggle="modal" data-target="#policeY">신고</a>
+		            </div>
+	           	</c:when>
+	           	
+		    </c:choose>
+	        </div>
+        
+       <script>
+           		function postFormSubmit(num){
+            	if(num==1){
+            		$("#postForm").attr("action","modifyForm.so").submit();
+            	}else{
+            		$("#postForm").attr("action","delete.so").submit();
+            	}
+            }
+        </script>
         
     <div class="modal fade" id="police">
         <div class="modal-dialog modal-lg">
@@ -177,7 +211,7 @@
         
                 <form action="report.so" method="post">
                     <div class="modal-body">
-                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="신고사유를 입력하세요 (30글자)" maxlength='32' id="reason" name="reason"> <br>
+                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="신고사유를 입력하세요 (30글자)" maxlength='32' id="reason" name="reason" required> <br>
                     </div>
                     <div class="modal-footer">
                     	<input type="hidden" id="solutionNo" name="solutionNo" value="${s.solutionNo}">
@@ -200,7 +234,7 @@
         
                 <form action="cmtReport.so" method="post">
                     <div class="modal-body">
-                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="신고사유를 입력하세요 (30글자)" maxlength='32' id="reason" name="reason"> <br>
+                        <input type="text" class="form-control mb-2 mr-sm-2" placeholder="신고사유를 입력하세요 (30글자)" maxlength='32' id="reason" name="reason" required> <br>
                     </div>
                     <div class="modal-footer">
                     	<input type="hidden" name="scNo" id="scNo" class="scNo" value="${pc.scNo}">
@@ -213,22 +247,33 @@
             </div>
         </div>
     </div>
+    
+    <div class="modal fade" id="policeY">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">이미 신고한 게시글 입니다.</h5>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn moong-yellow" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
         
         <form id="postForm" action="" method="post">
             <input type="hidden" name="sno" value="${s.solutionNo}">
             <input type="hidden" name="filePath" value="${sf.sfSysName}">
         </form>
-                  
-        <script>
-           		function postFormSubmit(num){
-            	if(num==1){
-            		$("#postForm").attr("action","updateForm.bo").submit();
-            	}else{
-            		$("#postForm").attr("action","delete.so").submit();
-            	}
-            }
-        </script>
-            
+          
+        <div class="row tag">
+        	<div class="col-12">
+        		${s.tag}
+        	</div>
+        </div>
+           
         <br><br>
         <h4>답변(<span id="cmtCount">0</span>)</h4>
         <br>
@@ -242,7 +287,7 @@
 	 		            	<input type="file" id="file" name="file"> 		
 	 		            </div>
 	 		            <div class="col-8" id="textBox">
-	 		                <input type="text" class="form-control" id="content" name="solutionCmtContents">
+	 		                <input type="text" class="form-control" id="content" name="solutionCmtContents" required>
 	 		                <input type="hidden" name="solutionNo" value="${s.solutionNo}">
 	 		            </div>
 	 		            <div class="col-1" id="scbutton">
@@ -295,39 +340,74 @@
         </div>
         <div class="col-12" id="tolist"></div>
         <br><br>
-        <h4>관련 문제풀이</h4>
-
-        <table class="table table-hover" id="table-line">
-            <thead id="tit-line">
-              <tr>
-                <th scope="col">번호</th>
-                <th scope="col">과목</th>
-                <th scope="col">제목</th>
-                <th scope="col">작성자</th>
-                <th scope="col">조회수</th>
-                <th scope="col">작성일</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th scope="row">2</th>
-                <td>수학</td>
-                <td>1+1=</td>
-                <td>피타고라스</td>
-                <td>9999</td>
-                <td>2222-22-22</td>
-              </tr>
-              <tr>
-                <th scope="row">1</th>
-                <td>국어</td>
-                <td>진달래꽃</td>
-                <td>김소월</td>
-                <td>9999</td>
-                <td>2222-22-22</td>
-              </tr>
-              
-            </tbody>
-        </table>
+        
+        <c:choose>
+        	<c:when test="${loginUser.teacher eq 'Y'}">
+		        <h4>미답변 문제풀이</h4>
+		        <table class="table table-hover" id="table-line">
+		            <thead id="tit-line">
+						<tr>
+							<th class="col-1" cope="col">번호</th>
+							<th class="col-1" scope="col">과목</th>
+							<th class="col-4" scope="col">제목</th>
+							<th class="col-2" scope="col">작성자</th>
+							<th class="col-2" scope="col">조회수</th>
+							<th class="col-2" scope="col">작성일</th>
+						</tr>
+		            </thead>
+		            <tbody>
+						<c:forEach var="t" items="${ts}">
+							<tr>
+								<th id="sno">${t.solutionNo}</th>
+								<td>${t.subject}</td>
+								<td>${t.title}</td>
+								<td>${t.userId}</td>
+								<td>${t.count}</td>
+								<td>${t.createDate}</td>
+							</tr>
+						</c:forEach>
+		            </tbody>
+		        </table>
+	        </c:when>
+	        
+	        <c:when test="${loginUser.student eq 'Y'}">
+		        <h4>유사한 문제풀이</h4>
+		        <table class="table table-hover" id="table-line">
+		            <thead id="tit-line">
+						<tr>
+							<th class="col-1" cope="col">번호</th>
+							<th class="col-1" scope="col">과목</th>
+							<th class="col-4" scope="col">제목</th>
+							<th class="col-2" scope="col">작성자</th>
+							<th class="col-2" scope="col">조회수</th>
+							<th class="col-2" scope="col">작성일</th>
+						</tr>
+		            </thead>
+		            <tbody>
+						<c:forEach var="u" items="${ss}">
+							<tr>
+								<th id="sno">${u.solutionNo}</th>
+								<td>${u.subject}</td>
+								<td>${u.title}</td>
+								<td>${u.userId}</td>
+								<td>${u.count}</td>
+								<td>${u.createDate}</td>
+							</tr>
+						</c:forEach>
+		            </tbody>
+		        </table>
+	        </c:when>
+	    </c:choose>
+	    
+    		<script>
+			$(function() {
+				$("#table-line>tbody>tr").click(
+						function() {
+							location.href = 'detail.so?sno='
+									+ $(this).children("#sno").text();
+						})
+			})
+		</script>
         
     <script>
 	    window.onload = function() {
@@ -340,7 +420,6 @@
     		
     		if($("#content").val().trim().length != 0){
     			$("#addCmtForm").submit();
-    	        	
     		}else{
     			$("#content").val("");
     			alert("댓글을 입력해주세요.")
@@ -359,17 +438,18 @@
 					
 					var resultStr="";
 					var loginNo = $("#loginNo").val();
+					var loginId = $("#loginId").val();
 										
 					for(var i=0; i<result.length;i++){
-						
-						if(result[i].userNo==loginNo){
+					
+						if(result[i].userNo==loginNo || loginId=="admin"){
 							if(result[i].scfOriginName == null){
 							resultStr+= "<tr>"
 								+"<td>"+result[i].userId + "</td>"
 								+"<td>"+result[i].solutionCmtContents + "</td>"
 								+"<td></td>"
 								+"<td>"+result[i].createDate + "</td>"
-								+"<td><button class='cmtModiBtn btn moong-yellow'>수정</button><button class='cmtDelBtn btn moong-yellow'>삭제</button>"
+								+"<td><button class='cmtDelBtn btn moong-yellow'>삭제</button>"
 								+"<input type='hidden' name='sc_no' class='input_sc_no' value='"+result[i].scNo+"'>"
 								+"</td>"
 							}else{
@@ -378,7 +458,7 @@
 									+"<td>"+result[i].solutionCmtContents + "</td>"
 									+"<td><a href='"+result[i].scfSysName+"' download='"+result[i].scfOriginName+"'>"+result[i].scfOriginName+"</a></td>"
 									+"<td>"+result[i].createDate + "</td>"
-									+"<td><button class='cmtModiBtn btn moong-yellow'>수정</button><button class='cmtDelBtn btn moong-yellow'>삭제</button>"
+									+"<td><button class='cmtDelBtn btn moong-yellow'>삭제</button>"
 									+"<input type='hidden' name='sc_no' class='input_sc_no' value='"+result[i].scNo+"'>"
 									+"</td>"
 							}
@@ -403,9 +483,7 @@
 									+"</td>"
 							}
 						}
-						
 					}
-					
 					$("#cmtArea>tbody").html(resultStr);
 					//$("#cmtArea>tbody>tr").append(dropTd);
     				$("#cmtCount").text(result.length);
@@ -416,7 +494,6 @@
     			}
     		})
     	}
-    	
     	//댓글 신고
     	$(document).on("click",".cmtPoliceBtn",function(){
     	var a =	$(this).siblings("input").val()
@@ -424,20 +501,12 @@
 		 $('#scNo').val(a);
 		 	console.log( $('#scNo').val(a));
 		     	});
-    	
     	//댓글 삭제
     	$(document).on("click", ".cmtDelBtn", function(){
     		var sc_no = $(this).siblings("input").val();
     		location.href = 'cmtDelete.so?scNo=' + sc_no + '&solutionNo=' +solutionNo;
     	})
-    
-/*    	$(".cmtModiBtn").on("click", function(){
-    		var sc_no = $(this).siblings().find(".input_sc_no").val();
-    		location.href = "cmtDelete.so?scNo="+sc_no+"&solutionNo="+solutionNo;
-    	})
-*/    	
 
-    	
 		//댓글 페이징
     	function reviewPaging(){
     		

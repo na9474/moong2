@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,9 +58,9 @@
     }
     #idc{
         
-        width: 500px;
-        height: 700px;
-        margin: auto;
+              width: 400px;
+    	height: 500px;
+    	margin: auto;
         margin-bottom: 10px;
         /*공란색칠*/
         background-color: orange;
@@ -100,16 +102,25 @@
         margin: auto;
         width: 600px;
     }
+    
+    /*버튼 */
+	.find-btn{
+		text-align: center;
+	}
+	.find-btn1{
+		display :inline-block;
+	}
+    
 
     
 </style>
 </head>
 <body>
 	<jsp:include page="../common/header.jsp"/>
-	<jsp:include page="../common/myPageNavi.jsp"/>
 	
 	  <div id="alarm-outer">
         <div id="subtit">
+		<br>
             	선생님 MyPage 작성
         </div>
 
@@ -124,11 +135,16 @@
                     </tr>
                     <tr>
                         <td>나이 : </td>
-                        <td>${loginUser.birth }</td>
+                        <td>${age }</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
-                        <td>${loginUser.gender }</td>
+						<c:if test="${loginUser.gender eq 'M' }">
+                        <td>남</td>
+                        </c:if>
+                        <c:if test="${loginUser.gender eq 'F' }">
+                        <td>여</td>
+                        </c:if>
                     </tr>
                     <tr>
                         <td>이메일 : </td>
@@ -141,32 +157,16 @@
                     </tr>
                     
                 </table>
-                <div class="line"></div>
-
-                <table id="teacher-tb2">
-                    <tr>
-                        <td>비&nbsp;&nbsp;밀&nbsp;&nbsp;번&nbsp;&nbsp;호&nbsp; : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
-                    </tr>
-                    <tr>
-                        <td>비밀번호 수정 : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
-                    </tr>
-                    <tr>
-                        <td>이&nbsp;&nbsp;&nbsp;&nbsp;메&nbsp;&nbsp;&nbsp;&nbsp;일 : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text">    </td>
-                    </tr>
-                   
-                </table>
+ 
                 <div class="line"></div>
                  <table id="teacher-tb2">
                     <tr>
                         <td>출&nbsp;&nbsp;신&nbsp;&nbsp;학&nbsp;&nbsp;교&nbsp; : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text" name="schoolInfo">    </td>
+                        <td style="float: left;"><input style="width: 175px;" type="text" name="schoolInfo" required>    </td>
                     </tr>
                     <tr>
                         <td>한줄 자기소개 : </td>
-                        <td style="float: left;"><input style="width: 175px;" type="text" name="selfIntroduction">    </td>
+                        <td style="float: left;"><input style="width: 175px;" type="text" name="selfIntroduction" required>    </td>
                     </tr>
                     
                 </table>
@@ -177,7 +177,7 @@
 
                 <div style="margin:auto; height: 800px;">
                     <div class="mid">재학 증명서</div>
-                    <div id="idc"></div>
+
                     <div>첨부파일 :  &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<input type="file" name="idCard" required> </div>
                     
                 </div>
@@ -186,7 +186,9 @@
 
                
                 <br><br><br>
-                <button type="submit" align="center">등록하기</button>
+                <div class="find-btn" >
+                	<button type="submit" class="btn moong-yellow find-btn1"> 등록하기</button>
+        		</div>
         </div>
 
         </form>
