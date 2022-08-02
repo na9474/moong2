@@ -86,7 +86,7 @@
 							<select id="selectBox" name="search_cat">
 								<option value="title">제목</option>
 								<option value="solution_contents">내용</option>
-								<option value="user_id">작성자</option>
+								<option value="user_name">작성자</option>
 							</select>
 						</div>
 						<div class="col-7" id="textbox">
@@ -133,7 +133,7 @@
 						<th id="sno">${b.solutionNo}</th>
 						<td>${b.subject}</td>
 						<td>${b.title}</td>
-						<td>${b.userId}</td>
+						<td>${b.userName}</td>
 						<td>${b.count}</td>
 						<td>${b.createDate}</td>
 					</tr>

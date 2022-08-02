@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="cmtListAll" resultMap="solutionCmtResultSet">
-        SELECT SC.*, M.USER_NAME 
+        SELECT SC.*, M.USER_NAME
             FROM SOLUTION_CMT SC
             JOIN MEMBER M ON SC.USER_NO=M.USER_NO
         WHERE SOLUTION_NO = #{solutionNo}

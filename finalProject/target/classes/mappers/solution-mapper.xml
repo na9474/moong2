@@ -15,6 +15,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="CREATE_DATE" property="createDate"/>
 		<result column="STATUS" property="status"/>
 		<result column="USER_ID" property="userId"/>
+		<result column="USER_NAME" property="userName"/>
 	</resultMap>
 	
 	<select id="selectTags" resultType="string">
@@ -30,12 +31,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="listAll" resultMap="solutionResultSet">
 		SELECT *
 		FROM 
-            (SELECT S.*, M.USER_ID
+            (SELECT S.*, M.USER_NAME
             FROM SOLUTION S
                 JOIN MEMBER M ON S.USER_NO=M.USER_NO
 		WHERE S.STATUS='Y'
-		<if test='search_cat == "user_id"'>
-            and m.user_id like '%${keyword}%'
+		<if test='search_cat == "user_name"'>
+            and m.user_name like '%${keyword}%'
         </if>
 		<if test='search_cat == "title"'>
             and s.title like '%${keyword}%'
