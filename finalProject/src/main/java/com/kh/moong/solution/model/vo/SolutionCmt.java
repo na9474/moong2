@@ -13,6 +13,7 @@ public class SolutionCmt {
 		private String status;
 		private int solutionNo;
 		private String userId;
+		private String userName;
 		
 		private int scfNo;
 		private String scfOriginName;
