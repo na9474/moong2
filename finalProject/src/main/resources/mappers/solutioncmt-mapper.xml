@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<select id="listAll" resultMap="solutionCmtResultSet">
-		SELECT SC.*, M.USER_ID, CF.SCF_NO, CF.SCF_ORIGINNAME, CF.SCF_SYSNAME
+		SELECT SC.*, M.USER_NAME, CF.SCF_NO, CF.SCF_ORIGINNAME, CF.SCF_SYSNAME
             FROM SOLUTION_CMT SC
             JOIN MEMBER M ON SC.USER_NO=M.USER_NO
             LEFT JOIN SOLUTION_CMT_FILES CF ON SC.SC_NO=CF.SC_NO

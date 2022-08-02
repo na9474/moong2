@@ -102,7 +102,7 @@
         float: left;
     }
 
-
+	#pagingArea {width:fit-content; margin:auto;}
     
 </style>
 
@@ -119,10 +119,10 @@
         <br><br>
 		<ul class="nav nav-tabs">
 		  <li class="nav-item">
-		    <a class="nav-link active" href="myBoardListView.me">자유게시판</a>
+		    <a class="nav-link active" href="myBoardListView.me" >자유게시판</a>
 		  </li>
 		  <li class="nav-item">
-		    <a class="nav-link" href="mySolutionListView.me">문제풀이게시판</a>
+		    <a class="nav-link" href="mySolutionListView.me" >문제풀이게시판</a>
 		  </li>
 
 		</ul>
@@ -170,7 +170,7 @@
                     </c:forEach>
                     
                     <c:choose>
-                    <c:when test="${pi.currentPage eq pi.maxPage }">
+                    <c:when test="${pi.currentPage eq pi.maxPage  || pi.maxPage eq 0}">
                     <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
 					</c:when>
 					<c:otherwise>

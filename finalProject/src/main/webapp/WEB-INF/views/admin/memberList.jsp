@@ -26,7 +26,10 @@
             margin-bottom: 100px;
     }
     /*페이지 제목 끝*/
-
+	#pagingArea{
+	width:fit-content; 
+	margin:auto;
+	}
 
 
 </style>
@@ -58,7 +61,15 @@
 				<tr align="center">
 					<td>${m.userNo }</td>		
 					<td>${m.userName }</td>
-					<td>${m.gender }</td>
+					<c:choose>
+					<c:when test="${m.gender eq 'M' }">
+					<td>여자</td>
+					</c:when>
+					<c:otherwise>
+					<td>남자</td>
+					</c:otherwise>
+					</c:choose>
+					
 					<td>${m.enrollDate }</td>
 
 					<c:if test="${m.student eq 'Y' }">
@@ -71,13 +82,13 @@
 					<td> - </td>
 					</c:if>
 					<c:if test="${m.approval eq 'Y' }">
-					<td>가입 완료</td>
+					<td style="color:blue">가입 완료</td>
 					</c:if>
 					<c:if test="${m.approval eq 'N' }">
 					<td>가입 대기 중</td>
 					</c:if>
 					<c:if test="${m.approval eq 'D' }">
-					<td>가입 거절</td>
+					<td style="color:red">가입 거절</td>
 					</c:if>
 				</tr>
 			</c:forEach>

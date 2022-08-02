@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import javax.servlet.http.HttpSession;
@@ -27,6 +28,9 @@ import com.kh.moong.lesson.model.vo.LessonEnroll;
 import com.kh.moong.lesson.model.vo.LessonReview;
 import com.kh.moong.lesson.model.vo.Search;
 import com.kh.moong.matching.model.service.MatchingService;
+import com.kh.moong.member.model.service.MemberServiceLee;
+import com.kh.moong.member.model.vo.IdPicture;
+import com.kh.moong.member.model.vo.Teacher;
 
 @Controller
 public class LessonEnrollController {
@@ -37,6 +41,7 @@ public class LessonEnrollController {
 	@Autowired
 	private MatchingService ms;
 		//첨부파일
+	private MemberServiceLee memberService;
 	
 	
 	public String saveFile(MultipartFile upfile,HttpSession session) {
@@ -109,7 +114,7 @@ public class LessonEnrollController {
 					 
 				if(result>0) { //똑같은 과목으로 생성된 과외가 있음(과외등록불가능)
 					session.setAttribute("alertMsg", "이미 등록된 같은 과목이 있습니다 ");
-					mv.setViewName("lesson/lessonEnrollForm");
+					mv.setViewName("redirect:enrollFrom.le");
 				}else { //똑같은 과목으로 생성된 과외가 없음(과외등록가능) 
 					
 						
@@ -197,6 +202,24 @@ public class LessonEnrollController {
 			return mv;
 		}
 		
+		//나이 게산 메소드
+		public int getAge(java.sql.Date birth) {
+			
+			//현재 년도 구하기
+			Calendar now = Calendar.getInstance(); //년월일시분초
+			Integer currentYear = now.get(Calendar.YEAR);
+			
+			//태어난년도를 위한 세팅
+			SimpleDateFormat format = new SimpleDateFormat("yyyy");
+			String stringBirthYear = format.format(birth); //년도만받기
+			
+			//태어난 년도
+			Integer birthYear = Integer.parseInt(stringBirthYear);
+			
+			 // 현재 년도 - 태어난 년도 => 나이 (만나이X)		 
+			return (currentYear - birthYear +1);
+		}
+		
 		
 		//모든 선생님 과외정보 페이지 공통
 		//등록한 과외정부 세부보기
@@ -204,10 +227,18 @@ public class LessonEnrollController {
 				public ModelAndView selectLesson(int leNo,ModelAndView mv) {
 					
 					LessonEnroll l = ls.selectLesson(leNo);
+					int userNo = Integer.parseInt(l.getUserNo());
+					IdPicture ip1 = ls.selectIp(userNo);
+					Teacher t = ls.selectMember(userNo);
+					
+					java.sql.Date birth = t.getBirth();
+					int age = getAge(birth);
+					
 					
 					//조회성공
 					if(l.getLeNo()>0) {
-						mv.addObject("l",l).setViewName("lesson/lessonDetail");
+						
+						mv.addObject("idPicture",ip1).addObject("l",l).addObject("t",t).addObject("age",age).setViewName("lesson/lessonDetail");
 					//조회실패
 					}else {
 						mv.addObject("errorMsg","조회실패").setViewName("common/errorPage");
@@ -289,9 +320,31 @@ public class LessonEnrollController {
 			@RequestMapping("search.le")
 			public ModelAndView SearchLessonEnroll(@RequestParam(value = "cpage", defaultValue = "1") int currentPage,Search s,ModelAndView mv) {
 				
+				mv.addObject("sText",s.getSearchText());
+				
+				if(s.getSearchText().equals("수학")) {
+					
+					s.setSearchText("MATH");
+				}else if(s.getSearchText().equals("국어")) {
+					s.setSearchText("KO");
+				}else if(s.getSearchText().equals("영어")) {
+					
+					s.setSearchText("ENG");
+				}
+					
+				
+				if(s.getSearchText().equals("상관없음") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("4");
+				}else if(s.getSearchText().equals("1학년") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("1");
+				}else if(s.getSearchText().equals("2학년") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("2");
+				}else if(s.getSearchText().equals("3학년") && s.getSearchCat().equals("T_YEAR")) {
+					s.setSearchText("3");
+				}
 				
 				
-				int listCount = ls.selectAllLessonCount();
+				int listCount = ls.selectAllSearchLessonCount(s);
 				
 				
 				int pageLimit = 10;
@@ -306,7 +359,7 @@ public class LessonEnrollController {
 				
 				
 				mv.setViewName("lesson/teacherLessonList");
-				mv.addObject("sText",s.getSearchText());
+				mv.addObject("scat",s.getSearchCat());
 				mv.addObject("pi",pi);
 				mv.addObject("list",list);
 				

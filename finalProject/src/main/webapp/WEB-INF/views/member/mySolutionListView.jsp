@@ -102,7 +102,7 @@
         float: left;
     }
     
-
+	#pagingArea {width:fit-content; margin:auto;}
     
 </style>
 
@@ -161,7 +161,7 @@
  	<div id="pagingArea">
                 <ul class="pagination">
                 	<c:choose>
-                	<c:when test="${pi.currentPage eq 1  || pi.currentPage eq 0}">
+                	<c:when test="${pi.currentPage eq 1 }">
                     <li class="page-item disabled"><a class="btn moong-dark" href="#"><</a></li>
                     </c:when>
                     <c:otherwise>
@@ -174,7 +174,7 @@
                     </c:forEach>
                     
                     <c:choose>
-                    <c:when test="${pi.currentPage eq pi.maxPage }">
+                    <c:when test="${pi.currentPage eq pi.maxPage  || pi.maxPage eq 0 }">
                     <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
 					</c:when>
 					<c:otherwise>

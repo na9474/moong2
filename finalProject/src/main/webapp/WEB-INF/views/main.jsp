@@ -64,6 +64,9 @@
     color: rgb(49, 48, 47);
     font-weight: 1000;
 }
+#page3img{
+border-radius: 20px;
+}
 /*section2끝*/
 </style>
 <body>
@@ -82,7 +85,7 @@
         
         <section class="section">
             <div id="page3">
-                <div id="page3-1"><img src="${path}/resources/img/page3.png" style="margin-left:300px; width: 500px;" /></div>
+                <div id="page3-1"><img src="${path}/resources/img/newpage13.png" style="margin-left:300px; width: 500px;" id="page3img" /></div>
                 <div id="page3-2">조건을 고르면<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;매칭 시작!</div>
         </section>
         <footer class="section fp-auto-height">

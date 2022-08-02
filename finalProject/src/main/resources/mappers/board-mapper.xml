@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardMapper">
+	<select id="selectListCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM BOARD
+		WHERE STATUS = 'Y'
+	</select>
+
+	<resultMap type="board" id="boardResultSet">
+		<result column="BOARD_NO" property="boardNo"/>
+		<result column="USER_ID" property="userId"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="CATEGORY_NO" property="categoryNo"/>
+		<result column="TITLE" property="title"/>
+		<result column="CONTENT" property="content"/>
+		<result column="COUNT" property="count"/>
+		<result column="ENROLL_DATE" property="enrollDate"/>
+		<result column="STATUS" property="status"/>
+		<result column="BF_ORIGINNAME" property="bfOriginName"/>
+		<result column="BF_SYSNAME" property="bfSysName"/>
+		<result column="R_NO" property="rNo"/>
+		<result column="BR_DATE" property="brDate"/>
+		<result column="CATEGORY_NAME" property="categoryName"/>
+	</resultMap>
+
+	<select id="selectList" resultMap="boardResultSet">
+	      SELECT *
+	      FROM 
+	            (SELECT B.*, C.CATEGORY_NAME
+	            FROM BOARD B
+	                JOIN BOARD_CATEGORY C ON B.CATEGORY_NO=C.CATEGORY_NO
+	      WHERE B.STATUS='Y'
+	      		<if test='search_cat == "user_id"'>
+		            and b.user_id like '%${keyword}%'
+		        </if>
+				<if test='search_cat == "title"'>
+		            and b.title like '%${keyword}%'
+		        </if>
+		        <if test='search_cat == "category_name"'>
+		            and c.category_name like '%${keyword}%'
+		        </if>
+	        ORDER BY ENROLL_DATE DESC)	     
+	</select>
+	
+	<insert id="insertBoard" parameterType="board">
+		INSERT INTO BOARD(
+						  BOARD_NO
+						 ,USER_NO
+						 ,USER_ID
+						 ,CATEGORY_NO
+						 ,TITLE
+						 ,CONTENT
+						 ,BF_ORIGINNAME
+						 ,BF_SYSNAME
+						 )
+		VALUES(
+				SEQ_BNO.NEXTVAL
+				,#{userNo}
+				,#{userId}
+				,#{categoryNo}
+				,#{title}
+				,#{content}
+				,#{bfOriginName}
+				,#{bfSysName}
+				)
+	
+	</insert>
+	
+	<update id="increaseCount" parameterType="_int">
+		UPDATE BOARD
+		SET COUNT = COUNT + 1
+		WHERE STATUS = 'Y'
+		AND BOARD_NO = #{boardNo}
+	</update>
+	
+	<select id="selectBoard" resultMap="boardResultSet">
+		SELECT BOARD_NO
+			  ,TITLE
+			  ,USER_ID
+			  ,CONTENT
+			  ,CATEGORY_NO
+			  ,ENROLL_DATE
+			  ,BF_ORIGINNAME
+			  ,BF_SYSNAME
+		FROM BOARD
+		WHERE BOARD_NO = #{boardNo}
+	</select>
+	
+	<update id="deleteBoard" parameterType="_int">
+		UPDATE BOARD
+		SET STATUS='N'
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateBoard" parameterType="board">
+		UPDATE BOARD
+			SET TITLE = #{title}
+			,CONTENT = #{content}
+			,BF_ORIGINNAME = #{bfOriginName}
+			,BF_SYSNAME = #{bfSysName}
+		WHERE BOARD_NO = #{boardNo}
+	</update>
+	
+	
+</mapper>

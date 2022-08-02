@@ -66,8 +66,8 @@
             <form method="get" action="search.le">
             <select name="searchCat" id="" style="height: 30px; width:70px;">
                     <option value="USER_NAME">이름</option>
-                    <option value="RATING">등급</option>
                     <option value="SUBJECT">과목</option>
+                    <option value="T_YEAR">학년</option>
             </select>
             <input type="hidden" name="cpage" value=1 />
             <input type="text" value="${sText}" name="searchText" style="width:200px;" onKeypress="javascript:if(event.keyCode==13) {search_onclick_submit}"
@@ -78,7 +78,7 @@
                     <thead>
                         <tr>
                             <td>과목</td>
-                            <td>등급</td>
+                           
                             <td>이름</td>
                             <td>성별</td>
                             <td>담당학년</td>
@@ -117,7 +117,7 @@
                     							<td>영어</td>
                     						</c:otherwise>
                     					</c:choose>
-                    					<td>${l.rating}</td>
+                    					
 			                    		<td>${l.userName}</td>
 			                    		<c:choose>
 				                    		<c:when test="${l.gender eq 'M'}">
@@ -141,7 +141,7 @@
 			                    				<td>상관없음</td>
 			                    			</c:otherwise>
 			                     		</c:choose>
-			                    		<td><button class="btn moong-yellow detailLe" style="margin:0px;" ">상세보기</button></td>
+			                    		<td><button class="btn moong-yellow detailLe" style="margin:0px;" >상세보기</button></td>
 			                    	</tr>
                     			</c:forEach>
                     	</c:otherwise>
@@ -150,38 +150,65 @@
                         
                     </tbody>
                 </table>
-                 <div id="pagingArea">
-                <ul class="pagination">
-                
-                	<c:choose>
+             <c:choose>
+             <c:when test="${!empty sText && !empty scat}">
+             <div id="pagingArea" style="margin:auto;">
+                <ul class="pagination" >
+	                <c:choose>
 						<c:when test="${ pi.currentPage eq 1 }">
-	                    <li class="page-item "><button class=" btn moong-dark " disabled><</button></li>
+	                    <li class="page-item disabled"><a class="btn moong-dark" href="#"><</a></li>
 						</c:when>                
 						<c:otherwise>
-						<li class="page-item"><button  class="btn moong-dark" href="tlist.le?cpage=${pi.currentPage-1}"><</button ></li>
+						<li class="page-item"><a class="btn moong-dark" href="search.le?cpage=${pi.currentPage-1}&&searchText=${sText}&&searchCat=${scat}"><</a></li>
 						</c:otherwise>
 	                </c:choose>
                 
-					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}">
-											
-                    <li class="page-item"><button  class="btn moong-dark" href="tlist.le?cpage=${p }">${p}</button ></li>
-					
+					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}" step="1">					
+                    	<li class="page-item"><a class="btn moong-dark" href="search.le?cpage=${p}&&searchText=${sText}&&searchCat=${scat}">${p}</a></li>
 					</c:forEach>
                    
-
                     <c:choose>
-                    	<c:when test="${pi.currentPage eq pi.maxPage || pi.maxPage eq 0}">
-		                    <li class="page-item "><button class="btn moong-dark"  disabled>></button ></li>
+                    	<c:when test="${pi.currentPage eq pi.maxPage }">
+		                    <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
                     	</c:when>
                     	<c:otherwise>
-                    		<li class="page-item"><button  class="btn moong-dark" href="tlist.le?cpage=${pi.currentPage+1}">></button ></li>
+                    		<li class="page-item"><a class="btn moong-dark" href="search.le?cpage=${pi.currentPage+1}&&searchText=${sText}&&searchCat=${scat}">></a></li>
                     	</c:otherwise>
-                    	
-                    
                     </c:choose>
-                </ul>
-            </div>
+                    </ul>
         </div>
+             </c:when>
+             <c:otherwise>
+             <div id="pagingArea" style="margin:auto;">
+                <ul class="pagination" >
+	                <c:choose>
+						<c:when test="${ pi.currentPage eq 1 }">
+	                    <li class="page-item disabled"><a class="btn moong-dark" href="#"><</a></li>
+						</c:when>                
+						<c:otherwise>
+						<li class="page-item"><a class="btn moong-dark" href="tlist.le?cpage=${pi.currentPage-1}"><</a></li>
+						</c:otherwise>
+	                </c:choose>
+                
+					<c:forEach var="p" begin="${pi.startPage}" end="${pi.endPage}" step="1">					
+                    	<li class="page-item"><a class="btn moong-dark" href="tlist.le?cpage=${p}">${p}</a></li>
+					</c:forEach>
+                   
+                    <c:choose>
+                    	<c:when test="${pi.currentPage eq pi.maxPage }">
+		                    <li class="page-item disabled"><a class="btn moong-dark" href="#">></a></li>
+                    	</c:when>
+                    	<c:otherwise>
+                    		<li class="page-item"><a class="btn moong-dark" href="tlist.le?cpage=${pi.currentPage+1}">></a></li>
+                    	</c:otherwise>
+                    </c:choose>
+                    </ul>
+        </div>
+             </c:otherwise>
+             </c:choose>
+         
+        
+        
     </div>
     
     

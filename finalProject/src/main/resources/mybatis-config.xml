@@ -27,13 +27,16 @@
 		<typeAlias type="com.kh.moong.member.model.vo.IdPicture" alias="idPicture"/>
 		<typeAlias type="com.kh.moong.member.model.vo.ReportCard" alias="reportCard"/>
 		<typeAlias type="com.kh.moong.member.model.vo.IdCard" alias="idCard"/>
-		<typeAlias type="com.kh.moong.myBoard.model.vo.Board" alias="board"/>
 		<typeAlias type="com.kh.moong.myLesson.model.vo.Lesson" alias="lesson"/>
 		<typeAlias type="com.kh.moong.matching.model.vo.Matching" alias="matching"/>
 		<typeAlias type="com.kh.moong.matching.model.vo.Talarm" alias="talarm"/>
 		<typeAlias type="com.kh.moong.police.model.vo.Police" alias="police"/>
 		<typeAlias type="com.kh.moong.police.model.vo.PoliceCmt" alias="policeCmt"/>
 		<typeAlias type="com.kh.moong.charts.model.vo.Chart" alias="chart"/>
+		<typeAlias type="com.kh.moong.board.model.vo.Board" alias="board"/>
+		<typeAlias type="com.kh.moong.board.model.vo.BoardLike" alias="boardLike"/>
+		<typeAlias type="com.kh.moong.board.model.vo.BoardReply" alias="boardReply"/>
+		
 	</typeAliases>	
 
 	<mappers>
@@ -53,6 +56,10 @@
 		<mapper resource="/mappers/policecmt-mapper.xml"/>
 		<mapper resource="/mappers/chart-mapper.xml"/>
 		<mapper resource="/mappers/admin-mapper.xml"/>
+		<mapper resource="/mappers/board-mapper.xml"/>
+		<mapper resource="/mappers/boardlike-mapper.xml"/>
+		<mapper resource="/mappers/boardreply-mapper.xml"/>
+		
 	</mappers>
 
 </configuration>

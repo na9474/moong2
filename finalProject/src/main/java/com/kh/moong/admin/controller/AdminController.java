@@ -151,12 +151,20 @@ public class AdminController {
 	//가입 거절
 	@RequestMapping("joinRefusal.ad")
 	public String joinRefusal(
-			@RequestParam(value="uNo",defaultValue="0") int userNo,
+			@RequestParam(value="uNo",defaultValue="0") int userNo,String refusalText,
 			Model model,HttpSession session
 			) {
 		
+		
+		
 		int result = adminService.joinRefusal(userNo);
-
+		
+		Member updatem = new Member();
+		updatem.setRefusalText(refusalText);
+		updatem.setUserNo(userNo);
+		
+		int resultRefusal = adminService.insertRefusalText(updatem);
+		
 		//userNo 의 Member정보 가져오고 ->  학생정보 / 선생님 정보 가져온다
 		Member m = memberService.selectMember(userNo);
 		

@@ -63,4 +63,9 @@ public class AdminDao {
 		return sqlSession.delete("adminMapper.deleteIc",userNo);
 	}
 
+	public int insertRefusalText(SqlSessionTemplate sqlSession, Member updatem) {
+	
+		return sqlSession.update("adminMapper.insertRefusalText",updatem);
+	}
+
 }

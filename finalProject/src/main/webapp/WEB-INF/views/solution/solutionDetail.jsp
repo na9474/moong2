@@ -315,7 +315,7 @@
 			</thead>
 				<div class="cmt-head">
 					<thead>
-						<th id="cmthead">아이디</th>
+						<th id="cmthead">이름</th>
 						<th id="cmthead">내용</th>
 						<th id="cmthead">첨부파일</th>
 						<th id="cmthead">작성일</th>
@@ -434,7 +434,7 @@
     				sno : ${s.solutionNo}
     			},
     			success : function(result){
-					console.log(result);
+					console.log(result[0].userName);
 					
 					var resultStr="";
 					var loginNo = $("#loginNo").val();
@@ -445,7 +445,7 @@
 						if(result[i].userNo==loginNo || loginId=="admin"){
 							if(result[i].scfOriginName == null){
 							resultStr+= "<tr>"
-								+"<td>"+result[i].userId + "</td>"
+								+"<td>"+result[i].userName + "</td>"
 								+"<td>"+result[i].solutionCmtContents + "</td>"
 								+"<td></td>"
 								+"<td>"+result[i].createDate + "</td>"
@@ -454,7 +454,7 @@
 								+"</td>"
 							}else{
 								resultStr+= "<tr>"
-									+"<td>"+result[i].userId + "</td>"
+									+"<td>"+result[i].userName + "</td>"
 									+"<td>"+result[i].solutionCmtContents + "</td>"
 									+"<td><a href='"+result[i].scfSysName+"' download='"+result[i].scfOriginName+"'>"+result[i].scfOriginName+"</a></td>"
 									+"<td>"+result[i].createDate + "</td>"
@@ -465,7 +465,7 @@
 						}else{
 							if(result[i].scfOriginName == null){
 							resultStr+= "<tr>"
-								+"<td>"+result[i].userId + "</td>"
+								+"<td>"+result[i].userName + "</td>"
 								+"<td>"+result[i].solutionCmtContents + "</td>"
 								+"<td></td>"
 								+"<td>"+result[i].createDate + "</td>"
@@ -474,7 +474,7 @@
 								+"</td>"
 							}else{
 								resultStr+= "<tr>"
-									+"<td>"+result[i].userId + "</td>"
+									+"<td>"+result[i].userName + "</td>"
 									+"<td>"+result[i].solutionCmtContents + "</td>"
 									+"<td><a href='"+result[i].scfSysName+"' download='"+result[i].scfOriginName+"'>"+result[i].scfOriginName+"</a></td>"
 									+"<td>"+result[i].createDate + "</td>"

@@ -34,5 +34,8 @@ public interface AdminService {
 
 	//재학증명서 삭제
 	int deleteIc(int userNo);
+	
+	//거절사유
+	int insertRefusalText(Member updatem);
 
 }

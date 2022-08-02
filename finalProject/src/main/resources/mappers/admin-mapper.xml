@@ -18,9 +18,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result column="MODIFIY_DATE" property="modifyDate"/>
 		<result column="APPROVAL" property="approval"/>
 		<result column="STATUS" property="status"/>
+		<result column="REFUSAL_TEXT" property="refusalText"/>
 	</resultMap>
 	
-	
+	<!-- 거절 메시지 -->
+	<update id="insertRefusalText">
+	UPDATE MEMBER
+	SET REFUSAL_TEXT=#{refusalText}
+	WHERE USER_NO = #{userNo}
+	</update>
 	
 	<!-- 전체 회원 수 구하기 -->
 	<select id="selectMemberListCount" resultType="_int">
@@ -30,11 +36,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<!-- 전체 회원 목록 -->
 	<select id="memberList" resultMap="memberResultSet">
-	SELECT * 
-	FROM MEMBER 
-	WHERE USER_NO != 1
-	ORDER BY MODIFY_DATE DESC
+	SELECT B.* FROM
+	(SELECT * 
+		FROM MEMBER 
+		WHERE USER_NO != 1
+		ORDER BY MODIFY_DATE DESC) B
+	ORDER BY DECODE(B.APPROVAL,'N','D','Y')
 	</select>
+	
 	
 	<!-- 가입승인 -->
 	<update id="joinApproval">

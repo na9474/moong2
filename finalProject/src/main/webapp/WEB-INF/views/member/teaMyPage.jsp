@@ -146,11 +146,7 @@
                         <td>여</td>
                         </c:if>
                     </tr>
-                    <tr>
-                        
-                        <td>등급 : </td>
-                        <td>다이아</td>
-                    </tr>
+
                     <tr>
                         <td>이메일 : </td>
                         <td>${loginUser.email }</td>

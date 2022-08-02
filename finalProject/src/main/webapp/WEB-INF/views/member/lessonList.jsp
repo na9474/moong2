@@ -143,7 +143,7 @@
                 		<c:if test="${l.subject eq 'KO' }">
                 		<td>국어</td>
                 		</c:if>
-                		<c:if test="${l.subject eq 'MA' }">
+                		<c:if test="${l.subject eq 'MATH' }">
                 		<td>수학</td>
                 		</c:if>
                 		<c:if test="${l.subject eq 'ENG' }">

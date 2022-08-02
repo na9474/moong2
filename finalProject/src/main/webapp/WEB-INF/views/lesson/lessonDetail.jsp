@@ -160,6 +160,9 @@
         }
     /*후기 리스트 끝*/
    /*후기부분 끝*/
+   .changeArea{
+   	
+   }
 </style>
 <body>
      <jsp:include page="../common/header.jsp"/>
@@ -171,47 +174,69 @@
         <div id="teacher-detail">
                 <table  style="margin: auto;" id="teacher-tb1">
                     <tr>
-                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" >증명사진</td>
+                        <td rowspan="5" style="width:150px; height: 200px; border: 1px solid black;" ><img style="height:200px; width:150px;" src="${idPicture.ipSysName}" ></td>
                         <td>이름 : </td>
                         <td>${l.userName}</td>
                     </tr>
                     <tr>
                         <td>나이 : </td>
-                        <td>20</td>
+                        <td>${age }</td>
                     </tr>
                     <tr>
                         <td>성별 : </td>
+                        <c:choose>
+                        <c:when test="${t.gender eq 'M'}">
                         <td>남</td>
-                    </tr>
-                    <tr>
+                        </c:when>
+                        <c:otherwise>
+                        <td>여</td>
+                        </c:otherwise>
+                        </c:choose>
                         
-                        <td>등급 : </td>
-                        <td>다이아</td>
                     </tr>
+                 
                     <tr>
                         <td>이메일 : </td>
-                        <td>tjdtossla12@gmail.com</td>
+                        <td>${t.email }</td>
                     </tr>
                     <tr>
                         <td>한줄자기소개 &nbsp;&nbsp;: &nbsp;&nbsp;</td>
-                        <td colspan="2">대박열심히해야겟다 </td>
+                        <td colspan="2">${t.selfIntroduction} </td>
                     </tr>
                 </table>
                 <div class="line"></div>
                 <table id="teacher-tb2">
                     <tr>
                         <td>출&nbsp;&nbsp;신&nbsp;&nbsp;학&nbsp;&nbsp;교&nbsp; : </td>
-                        <td style="float: left;">xx대학교    </td>
+                        <td style="float: left;">${t.schoolInfo } </td>
                     </tr>
+                    <script>
+                    	
+                    	$(function(){
+                    		var feestr = "${l.fee}"
+                            	feestr.replace(",","")
+                            	var text = feestr.replace(",","")+"원";
+                    		$('#fee').append(text);
+                    	})
+                    	
+                    </script>
                     <tr>
                         <td>시간당 과외비 : </td>
-                        <td style="float: left;" id="fee">${l.fee}원</td>
+                        <td style="float: left;" id="fee"></td>
                     </tr>
-  
+  					<script>
+  					$(function(){
+                		var feestr = "${l.area}"
+                        	
+                        	var text = feestr.replaceAll(",","  &nbsp; &nbsp; &nbsp;");
+                		$('#changeArea').append(text);
+                	})
+  					</script>
                     <tr>
                         <td>과외 가능 지역 : </td>
-                        <td style="float: left;" class="changeArea">${l.area}</td>
+                        <td style="float: left;" id="changeArea" class="changeArea"></td>
                     </tr>
+                  
                     <tr>
                         <td>과&nbsp;&nbsp;외&nbsp;&nbsp;&nbsp;&nbsp;과&nbsp;&nbsp;목 :  </td>
                         <c:choose>
@@ -227,9 +252,17 @@
                         </c:choose>
                         
                     </tr>
+                    <script>
+  					$(function(){
+                		var feestr = "${l.leDay}"
+                        	
+                        	var text = feestr.replaceAll(","," ");
+                		$('#changeDay').append(text);
+                	})
+  					</script>
                     <tr>
                         <td>과외 가능 요일 : </td>
-                        <td style="float: left;" class="changeDay">${l.leDay}</td>
+                        <td style="float: left;" id="changeDay"class="changeDay"></td>
                     </tr>
                     <tr>
                         <td>경&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;력 : </td>

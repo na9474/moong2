@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper 
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="boardLikeMapper">
+
+	<resultMap type="boardLike" id="boardLikeResultSet">
+		<result column="BL_NO" property="blNo"/>
+		<result column="USER_NO" property="userNo"/>
+		<result column="BOARD_NO" property="boardNo"/>
+	</resultMap>
+
+	<insert id="boardLikeInsert" parameterType="BoardLike">
+		INSERT INTO BOARD_LIKE(
+								BL_NO
+							   ,USER_NO
+							   ,BOARD_NO)
+		VALUES(
+				SEQ_BLNO.NEXTVAL
+				,#{userNo}
+				,#{boardNo}
+				)
+	</insert>
+
+	<delete id="boardLikeDelete">
+		DELETE
+		FROM BOARD_LIKE
+		WHERE BOARD_NO = #{boardNo} AND USER_NO = #{userNo}
+	</delete>
+	
+	<select id="boardLikeCount" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		FROM BOARD_LIKE
+		WHERE BOARD_NO = ${boardNo}
+	</select>
+	
+	<select id="boardLikeCheck" resultType="_int">
+		SELECT COUNT(*) AS COUNT
+		FROM BOARD_LIKE
+		WHERE BOARD_NO = #{board_no} AND USER_NO = #{user_no}
+	</select>
+		
+</mapper>
