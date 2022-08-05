@@ -1,6 +1,7 @@
 # 뭉과외
 
 Description
+랜덤매칭이 가능한 그룹과외 웹사이트
 -----------
 
 #### Tech Stack
@@ -30,3 +31,5 @@ Description
  + Design Pattern
 
    - SpringMVC
+
+
