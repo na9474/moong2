@@ -2,6 +2,7 @@
 
 Description
 
+
 랜덤매칭이 가능한 그룹과외 웹사이트
 
 + 조건에 맞는 과외 매칭 서비스
@@ -9,6 +10,8 @@ Description
 + 게시글 좋아요 기능
 + 학생 데이터 조회 기능 (과목별 성적, 학생별 성적 조회)
 + 선생님 과외 시연 영상 업로드 기능
+
+https://drive.google.com/file/d/1rPXRq2m0LnD-NiUw9nV_EmvU9JmVodTI/view?usp=sharing
 -----------
 
 #### Tech Stack
@@ -41,4 +44,4 @@ Description
 
 
 <br/>
-https://drive.google.com/file/d/1rPXRq2m0LnD-NiUw9nV_EmvU9JmVodTI/view?usp=sharing
+
